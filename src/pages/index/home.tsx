@@ -3,6 +3,7 @@ import { HomeHeaders } from "../../components/header";
 import notice from "../../assets/notice.svg";
 import { HomeSwiper } from "../../components/swiper";
 import { HomeCard } from "../../components/home/card";
+import { HomeInput } from "../../components/home/input";
 
 export const Home = () => {
   return <div className="bg-[#F5F5F5] min-h-screen">
@@ -21,6 +22,10 @@ export const Home = () => {
 
     <div>
       <HomeCard />
+    </div>
+
+    <div>
+      <HomeInput />
     </div>
   </div>;
 }
