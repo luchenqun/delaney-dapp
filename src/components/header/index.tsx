@@ -8,11 +8,11 @@ export const HomeHeaders = () => {
       <img className="w-10 h-10" src={logo} alt="logo" />
       <div className="ml-3">
         <div className="text-base">Delaney</div>
-        <div className="text-primary">MUD/0.02USDT</div>
+        <div className="text-primary text-sm">MUD ≈ 0.25 USDT</div>
       </div>
     </div>
     <Badge content={Badge.dot}>
-      <img src={bell} alt="消息" />
+      <img className="w-6 h-6" src={bell} alt="消息" />
     </Badge>
   </div>;
 }

@@ -5,7 +5,7 @@ import mud from "../../assets/mud.png";
 
 export const HomeCard = () => {
   return <div className="bg-white mx-4 rounded-2xl p-3 mt-4 relative overflow-hidden">
-    <img src={logo} alt="" className="absolute right-[-5px] top-[-5px] opacity-20" />
+    <img src={logo} alt="" className="absolute w-20 h-20 right-[-8px] top-[-12px] opacity-20" />
     <div className="flex">
       <img className="w-12 h-12 rounded-[50%]" src={headImg} alt="" />
       <div className="ml-3">
@@ -17,14 +17,14 @@ export const HomeCard = () => {
       <div className="w-24 bg-[#F3F3F3] rounded-xl flex flex-wrap justify-center py-1">
         <div className="flex items-center">
           <img className="w-4 h-4" src={usdt} alt="" />
-          <span className="ml-1">USDT</span>
+          <span className="ml-1 text-sm">USDT</span>
         </div>
         <div className="font-medium text-base">1257.54</div>
       </div>
       <div className="w-24 bg-[#F3F3F3] rounded-xl flex flex-wrap justify-center py-1">
         <div className="flex items-center">
           <img className="w-4 h-4" src={mud} alt="" />
-          <span className="ml-1">MUD</span>
+          <span className="ml-1 text-sm">MUD</span>
         </div>
         <div className="font-medium text-base">1257.54</div>
       </div>

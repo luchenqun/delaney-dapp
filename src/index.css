@@ -8,6 +8,11 @@ body {
   --adm-color-primary: #46D69C;
 }
 
+#root {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 .adm-passcode-input-cell {
   --adm-color-background: #F3F3F3;
   --border-radius: 4px;
@@ -20,6 +25,12 @@ body {
 .adm-notice-bar {
   color: #090A04 !important;
   background-color: #FEC5331A !important;
-  font-size: 12px !important;
-  height: 24px !important;
+  font-size: 0.7rem !important;
+  height: 1.5rem !important;
+}
+
+.adm-button:not(.adm-button-default) {
+  color: #242424;
+  --border-radius: 0.75rem;
+  height: 2.75rem;
 }
