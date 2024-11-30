@@ -34,3 +34,11 @@ body {
   --border-radius: 0.75rem;
   height: 2.75rem;
 }
+
+.adm-center-popup {
+  --adm-center-popup-border-radius: 1rem;
+}
+
+.adm-auto-center-content {
+  font-size: 16px;
+}
