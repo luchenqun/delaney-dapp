@@ -42,3 +42,18 @@ body {
 .adm-auto-center-content {
   font-size: 16px;
 }
+
+.adm-tabs-tab-wrapper {
+  background: #fff;
+}
+
+.adm-tabs {
+  --active-line-height: 4px;
+  --fixed-active-line-width: 24px;
+}
+
+.adm-tag {
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 4px;
+}

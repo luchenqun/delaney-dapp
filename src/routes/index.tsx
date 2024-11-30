@@ -5,6 +5,8 @@ import { Home } from "../pages/index/home.tsx";
 import { IndexLayout } from "../components/layout/index.tsx";
 import { Benifit } from "../pages/benifit/index.tsx";
 import { Team } from "../pages/team/index.tsx";
+import { BenifitDetail } from "../pages/benifit/detail.tsx";
+import { HomeHistory } from "../pages/index/history.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -29,4 +31,12 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/benifit/detail',
+    element: <BenifitDetail />
+  },
+  {
+    path: '/home/history',
+    element: <HomeHistory />
+  }
 ]);
