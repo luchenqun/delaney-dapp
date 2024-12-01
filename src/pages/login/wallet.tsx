@@ -43,7 +43,6 @@ export const WalletConnect = () => {
       });
       return;
     } 
-    navigate('/login');
   }, [isConnected]);
 
   return (

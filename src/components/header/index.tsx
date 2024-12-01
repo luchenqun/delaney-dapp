@@ -15,12 +15,6 @@ export const HomeHeaders = () => {
 
   console.log(
     111,
-    {
-      functionName: 'mudPrice',
-      abi: delaneyAbi,
-      address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
-      args: [],
-    },
     data,
     error,
     failureReason

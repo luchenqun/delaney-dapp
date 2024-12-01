@@ -4,7 +4,7 @@ import logo from "../../assets/logo.svg";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../../utils/api";
+import { createUser, getUserInfo } from "../../utils/api";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -13,8 +13,15 @@ export const Login = () => {
   const { isConnected, address } = useAccount();
 
   useEffect(() => {
-    if (!isConnected) {
-      navigate("/");
+    if (isConnected && address) {
+      getUserInfo({ address }).then((res) => {
+        if (res.data.data) {
+          navigate('/home');
+        }
+      })
+      return;
+    } else {
+      navigate('/');
     }
   }, [isConnected]);
 
