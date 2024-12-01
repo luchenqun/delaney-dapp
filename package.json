@@ -4,22 +4,33 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite --mode dev",
+    "testnet": "vite --mode testnet",
+    "mainnet": "vite --mode mainnet",
+    "build:dev": "tsc && vite build --mode dev",
+    "build:testnet": "tsc && vite build --mode testnet",
+    "build": "tsc && vite build --mode mainnet",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reown/appkit": "^1.5.3",
+    "@reown/appkit-adapter-wagmi": "^1.5.3",
     "@smastrom/react-rating": "^1.5.0",
+    "@tanstack/react-query": "^5.62.0",
     "antd-mobile": "^5.38.1",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.7.8",
     "copy-to-clipboard": "^3.3.3",
+    "jdenticon": "^3.3.0",
     "postcss": "^8.4.49",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
     "swiper": "^11.1.15",
-    "tailwindcss": "^3.4.15"
+    "tailwindcss": "^3.4.15",
+    "viem": "^2.21.53",
+    "wagmi": "^2.13.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

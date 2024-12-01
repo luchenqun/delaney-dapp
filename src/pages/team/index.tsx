@@ -1,8 +1,37 @@
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
-import { NavBar } from "antd-mobile";
+import { DotLoading, NavBar } from "antd-mobile";
 import { PeopleCard } from "../../components/team/people-card";
+import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import { getUserInfo } from "../../utils/api";
+import { divideByMillionAndRound } from "../../utils/tools";
 
 export const Team = () => {
+  const [loading, setLoading] = useState(false);
+  const { address } = useAccount();
+  const [userInfo, setUserInfo] = useState<any>(null);
+
+  useEffect(() => {
+    if (address) {
+      setLoading(true);
+      getUserInfo({ address }).then((res) => {
+        setUserInfo(res.data.data);
+        setLoading(false);
+      });
+    }
+  }, [address]);
+
+  if (loading) {
+    return (
+      <>
+        <NavBar back={null}>我的团队</NavBar>
+        <div className="flex justify-center items-center h-screen text-5xl">
+          <DotLoading color="primary" />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <NavBar back={null}>我的团队</NavBar>
@@ -13,7 +42,7 @@ export const Team = () => {
             <div>
               <Rating
                 className="w-24 ml-1 relative"
-                value={3}
+                value={Math.max(userInfo?.star, userInfo?.min_star)}
                 readOnly
                 itemStyles={{
                   itemShapes: ThinRoundedStar,
@@ -26,21 +55,31 @@ export const Team = () => {
           <div className="flex justify-between items-center mt-4">
             <span className="text-[#989898] text-sm">直推质押</span>
             <div className="text-right">
-                <div className="font-semibold text-sm">120 USDT</div>
-                <div className="text-xs">≈350 MUD</div>
+              <div className="font-semibold text-sm">
+                {divideByMillionAndRound(userInfo?.usdt)} USDT
+              </div>
+              <div className="text-xs">
+                ≈{divideByMillionAndRound(userInfo?.mud)} MUD
+              </div>
             </div>
           </div>
           <div className="flex justify-between items-center mt-4">
             <span className="text-[#989898] text-sm">直推人数</span>
             <div>
-                <div className="font-semibold text-sm">120</div>
+              <div className="font-semibold text-sm">
+                {userInfo?.sub_person}
+              </div>
             </div>
           </div>
           <div className="flex justify-between items-center mt-4">
             <span className="text-[#989898] text-sm">团队质押</span>
             <div className="text-right">
-                <div className="font-semibold text-sm">120 USDT</div>
-                <div className="text-xs">≈350 MUD</div>
+              <div className="font-semibold text-sm">
+                {divideByMillionAndRound(userInfo?.team_usdt)} USDT
+              </div>
+              <div className="text-xs">
+                ≈{divideByMillionAndRound(userInfo?.team_mud)} MUD
+              </div>
             </div>
           </div>
         </div>

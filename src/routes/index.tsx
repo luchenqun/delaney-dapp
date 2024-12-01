@@ -7,11 +7,16 @@ import { Benifit } from "../pages/benifit/index.tsx";
 import { Team } from "../pages/team/index.tsx";
 import { BenifitDetail } from "../pages/benifit/detail.tsx";
 import { HomeHistory } from "../pages/index/history.tsx";
+import { WalletConnect } from "../pages/login/wallet.tsx";
 
 export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/",
+    element: <WalletConnect />,
   },
   {
     path: "/",
