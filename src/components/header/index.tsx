@@ -1,24 +1,30 @@
-import { Badge } from "antd-mobile";
-import logo from "../../assets/logo.svg";
-import bell from "../../assets/bell.svg";
-import { useAccount, useReadContract } from "wagmi";
-import delaneyAbi from "../../../abi/delaney.json";
+import { Badge } from 'antd-mobile';
+import logo from '../../assets/logo.svg';
+import bell from '../../assets/bell.svg';
+import { useAccount, useReadContract } from 'wagmi';
+import delaneyAbi from '../../../abi/delaney.json';
 
 export const HomeHeaders = () => {
   const { address } = useAccount();
-  const { data, refetch } = useReadContract({
-    functionName: "mudPrice",
+  const { data, refetch, error, failureReason } = useReadContract({
+    functionName: 'mudPrice',
     abi: delaneyAbi,
     address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
     args: [],
   });
 
-  console.log(111, {
-    functionName: "mudPrice",
-    abi: delaneyAbi,
-    address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
-    args: [],
-  }, data);
+  console.log(
+    111,
+    {
+      functionName: 'mudPrice',
+      abi: delaneyAbi,
+      address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
+      args: [],
+    },
+    data,
+    error,
+    failureReason
+  );
 
   return (
     <div className="bg-white px-4 py-1 flex justify-between items-center">
