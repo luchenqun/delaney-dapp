@@ -54,7 +54,9 @@ export const Benifit = () => {
 
   return (
     <>
-      <NavBar back={null}>领取收益</NavBar>
+      <div className="sticky top-0 z-10">
+        <NavBar back={null}>领取收益</NavBar>
+      </div>
       <div className="bg-[#F5F5F5] min-h-screen pt-3">
         <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
           <div className="text-base font-medium">收益</div>
