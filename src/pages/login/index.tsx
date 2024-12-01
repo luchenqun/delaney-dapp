@@ -14,7 +14,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (!isConnected) {
-      navigate("/login/wallet");
+      navigate("/");
     }
   }, [isConnected]);
 
