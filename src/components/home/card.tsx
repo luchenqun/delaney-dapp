@@ -5,7 +5,7 @@ import mud from "../../assets/mud.png";
 import copyIcon from "../../assets/copy.svg";
 import link from "../../assets/link.svg";
 import copy from "copy-to-clipboard";
-import { Modal } from "antd-mobile";
+import { DotLoading, Modal, Skeleton } from "antd-mobile";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "../../utils/api";
@@ -13,13 +13,16 @@ import { toSvg } from "jdenticon";
 import { divideByMillionAndRound } from "../../utils/tools";
 
 export const HomeCard = () => {
+  const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const [userInfo, setUserInfo] = useState<any>(null);
 
   useEffect(() => {
     if (address) {
+      setLoading(true);
       getUserInfo({ address }).then((res) => {
         setUserInfo(res.data.data);
+        setLoading(false);
       });
     }
   }, [address]);
@@ -37,6 +40,12 @@ export const HomeCard = () => {
       content: "复制网址成功, 分享给好友吧~",
     });
   };
+
+  if (loading) {
+    return <div className="bg-white h-36 mx-4 rounded-2xl text-2xl p-3 mt-4 relative overflow-hidden flex justify-center items-center">
+      <DotLoading />
+    </div>
+  }
 
   return (
     <div className="bg-white mx-4 rounded-2xl p-3 mt-4 relative overflow-hidden">
