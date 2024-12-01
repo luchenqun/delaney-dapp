@@ -48,3 +48,11 @@ export default tseslint.config({
   },
 })
 ```
+
+## delaney config
+* mud token address: 0x9922308f2d9202C0650347d06Cb2095F3dD234BE
+* usdt token address: 0x592d157a0765b43b0192Ba28F4b8cd4F50E326cF
+* pool address: 0x60D8A47c075E7E95cd58C7C5598208F58c89242C
+* api url: https://delaney-api.mud-chain.net
+* erc20 abi: import { erc20Abi } from 'viem';
+* delaney abi: ./abi/delaney.json 
