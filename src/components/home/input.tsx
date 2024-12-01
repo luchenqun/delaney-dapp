@@ -2,14 +2,28 @@ import { Button, Input } from "antd-mobile";
 import mud from "../../assets/mud.png";
 import right from "../../assets/right.svg";
 import { useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import { getDelegateUser } from "../../utils/api";
+import { divideByMillionAndRound } from "../../utils/tools";
 
 export const HomeInput = () => {
+  const { address } = useAccount();
   const navigate = useNavigate();
+  const [delegateUser, setDelegateUser] = useState<any>(null);
 
   const handleToDelegate = () => {
     navigate("/home/history");
   };
-  
+
+  useEffect(() => {
+    if (address) {
+      getDelegateUser({ address }).then((res) => {
+        setDelegateUser(res.data.data);
+      });
+    }
+  }, []);
+
   return (
     <div className="bg-white mx-4 rounded-2xl p-4 mt-4 relative overflow-hidden">
       <div className="flex items-center">
@@ -26,9 +40,9 @@ export const HomeInput = () => {
       >
         <span className="text-sm">已质押</span>
         <div className="flex items-center">
-          <div className="text-center mr-2">
-            <div className="text-sm">120USDT</div>
-            <div className="text-xs text-[#989898]">350MUD</div>
+          <div className="text-right mr-2">
+            <div className="text-sm">{divideByMillionAndRound(delegateUser?.usdt || 0)} USDT</div>
+            <div className="text-xs text-[#989898]">≈{divideByMillionAndRound(delegateUser?.mud || 0)} MUD</div>
           </div>
           <img src={right} className="w-4 h-4" alt="" />
         </div>
