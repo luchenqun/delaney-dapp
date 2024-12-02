@@ -15,20 +15,20 @@ if (!projectId) {
 export const config = createConfig({
   chains: network == Network.Testnet ? [mudTestnet] : [polygon],
   connectors: [injected(), coinbaseWallet({ appName: 'delaney' }), walletConnect({ projectId })],
-  transports: network == Network.Testnet ? { [mudTestnet.id]: http() } : { [polygon.id]: http() },
+  transports: network == Network.Testnet ? { [mudTestnet.id]: http() } : { [polygon.id]: http() }
 });
 
 const metadata = {
   name: 'bridge',
   description: 'mud chain bridge',
   url: '',
-  icons: [],
+  icons: []
 };
 
 // 2. Create wagmiConfig
 export const wagmiAdapter = new WagmiAdapter({
   networks: [mudTestnet],
-  projectId,
+  projectId
 });
 
 // 3. Create modal
@@ -38,6 +38,6 @@ createAppKit({
   metadata: metadata,
   projectId,
   features: {
-    analytics: true,
-  },
+    analytics: true
+  }
 });

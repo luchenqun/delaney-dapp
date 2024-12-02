@@ -1,12 +1,12 @@
-import copy from "copy-to-clipboard";
-import copyIcon from "../../assets/copy.svg";
-import { Button, Modal, Tag } from "antd-mobile";
+import copy from 'copy-to-clipboard';
+import copyIcon from '../../assets/copy.svg';
+import { Button, Modal, Tag } from 'antd-mobile';
 
 export const CardDelegate = () => {
   const handleCopy = () => {
-    copy("Text");
+    copy('Text');
     Modal.alert({
-      content: "复制成功",
+      content: '复制成功'
     });
   };
 
@@ -25,25 +25,20 @@ export const CardDelegate = () => {
           <div className="text-right">
             <div className="text-sm text-[#2A66FF] flex">
               125d4decaf5929f64...dada
-              <img
-                onClick={handleCopy}
-                className="ml-1"
-                src={copyIcon}
-                alt=""
-              />
+              <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
             </div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">质押时间</span>
           <div className="text-right">
-            <div className="text-sm">2021-07-06  14:19:04</div>
+            <div className="text-sm">2021-07-06 14:19:04</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">解锁时间</span>
           <div className="text-right">
-            <div className="text-sm">2021-07-06  14:19:04</div>
+            <div className="text-sm">2021-07-06 14:19:04</div>
           </div>
         </div>
         <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
@@ -56,7 +51,7 @@ export const CardDelegate = () => {
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">提取时间</span>
           <div className="text-right">
-            <div className="text-sm">2021-07-06  14:19:04</div>
+            <div className="text-sm">2021-07-06 14:19:04</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">

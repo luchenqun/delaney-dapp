@@ -1,5 +1,5 @@
-import { NavBar } from "antd-mobile";
-import { CardDelegate } from "../../components/home/card-delegate";
+import { NavBar } from 'antd-mobile';
+import { CardDelegate } from '../../components/home/card-delegate';
 
 export const HomeHistory = () => {
   const handleBack = () => {

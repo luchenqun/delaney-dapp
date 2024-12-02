@@ -7,7 +7,7 @@ export function divideByMillionAndRound(input: number | bigint) {
   return Number(result.toFixed(2));
 }
 
-export function formatAddressString(address: string)  {
+export function formatAddressString(address: string) {
   if (address.length <= 8) {
     return address;
   } else {
@@ -15,4 +15,4 @@ export function formatAddressString(address: string)  {
     const lastPart = address.substring(address.length - 6);
     return `${firstPart}...${lastPart}`;
   }
-};
+}

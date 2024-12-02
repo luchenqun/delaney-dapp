@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { getDynamicRewards } from "../../utils/api";
-import { useAccount } from "wagmi";
-import { InfiniteScroll, List } from "antd-mobile";
-import { BenifitCardPromotion } from "./card-promotion";
+import { useEffect, useState } from 'react';
+import { getDynamicRewards } from '../../utils/api';
+import { useAccount } from 'wagmi';
+import { InfiniteScroll, List } from 'antd-mobile';
+import { BenifitCardPromotion } from './card-promotion';
 
 export const DynamicList = () => {
   const { address } = useAccount();
@@ -42,14 +42,16 @@ export const DynamicList = () => {
     return getData(page + 1);
   };
 
-  return <div className="mt-3">
-    <List>
-      {dynamicRewards?.map((item: any) => (
-        <List.Item key={item.id}>
-          <BenifitCardPromotion info={item} />
-        </List.Item>
-      ))}
-      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
-    </List>
-  </div>;
+  return (
+    <div className="mt-3">
+      <List>
+        {dynamicRewards?.map((item: any) => (
+          <List.Item key={item.id}>
+            <BenifitCardPromotion info={item} />
+          </List.Item>
+        ))}
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      </List>
+    </div>
+  );
 };

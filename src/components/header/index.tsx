@@ -10,7 +10,7 @@ export const HomeHeaders = () => {
     functionName: 'mudPrice',
     abi: delaneyAbi,
     address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
-    args: [],
+    args: []
   });
 
   return (

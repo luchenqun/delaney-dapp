@@ -1,17 +1,14 @@
-import copy from "copy-to-clipboard";
-import copyIcon from "../../assets/copy.svg";
-import { Modal, Tag } from "antd-mobile";
-import {
-  divideByMillionAndRound,
-  formatAddressString,
-} from "../../utils/tools";
-import dayjs from "dayjs";
+import copy from 'copy-to-clipboard';
+import copyIcon from '../../assets/copy.svg';
+import { Modal, Tag } from 'antd-mobile';
+import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
+import dayjs from 'dayjs';
 
 export const BenifitCard = ({ info }: { info: any }) => {
   const handleCopy = () => {
     copy(info?.hash);
     Modal.alert({
-      content: "复制成功",
+      content: '复制成功'
     });
   };
 
@@ -31,9 +28,7 @@ export const BenifitCard = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center">
           <span className="text-[#989898] text-sm">收益</span>
           <div className="text-right">
-            <div className="text-sm">
-              {divideByMillionAndRound(info?.usdt)} USDT
-            </div>
+            <div className="text-sm">{divideByMillionAndRound(info?.usdt)} USDT</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
@@ -45,9 +40,7 @@ export const BenifitCard = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">解锁时间</span>
           <div className="text-right">
-            <div className="text-sm">
-              {dayjs.unix(info?.unlock_time).format("YYYY-MM-DD HH:mm:ss")}
-            </div>
+            <div className="text-sm">{dayjs.unix(info?.unlock_time).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
         </div>
         <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
@@ -56,31 +49,20 @@ export const BenifitCard = ({ info }: { info: any }) => {
           <div className="text-right">
             <div className="text-sm text-[#2A66FF] flex">
               {formatAddressString(info?.hash)}
-              <img
-                onClick={handleCopy}
-                className="ml-1"
-                src={copyIcon}
-                alt=""
-              />
+              <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
             </div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">领取时间</span>
           <div className="text-right">
-            <div className="text-sm">
-              {info?.claim_time
-                ? dayjs.unix(info?.claim_time).format("YYYY-MM-DD HH:mm:ss")
-                : "-"}
-            </div>
+            <div className="text-sm">{info?.claim_time ? dayjs.unix(info?.claim_time).format('YYYY-MM-DD HH:mm:ss') : '-'}</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">状态</span>
           <div className="text-right">
-            <div className="text-sm">
-              {renderStaus(info?.status)}
-            </div>
+            <div className="text-sm">{renderStaus(info?.status)}</div>
           </div>
         </div>
       </div>

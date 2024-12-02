@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
-import { Footer } from "./footer";
+import { Outlet } from 'react-router-dom';
+import { Footer } from './footer';
 
 export const IndexLayout = () => {
   return (

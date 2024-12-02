@@ -1,11 +1,11 @@
-import { Button, Input } from "antd-mobile";
-import mud from "../../assets/mud.png";
-import right from "../../assets/right.svg";
-import { useNavigate } from "react-router-dom";
-import { useAccount } from "wagmi";
-import { useEffect, useState } from "react";
-import { getDelegateUser } from "../../utils/api";
-import { divideByMillionAndRound } from "../../utils/tools";
+import { Button, Input } from 'antd-mobile';
+import mud from '../../assets/mud.png';
+import right from '../../assets/right.svg';
+import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
+import { useEffect, useState } from 'react';
+import { getDelegateUser } from '../../utils/api';
+import { divideByMillionAndRound } from '../../utils/tools';
 
 export const HomeInput = () => {
   const { address } = useAccount();
@@ -13,7 +13,7 @@ export const HomeInput = () => {
   const [delegateUser, setDelegateUser] = useState<any>(null);
 
   const handleToDelegate = () => {
-    navigate("/home/history");
+    navigate('/home/history');
   };
 
   useEffect(() => {
@@ -34,10 +34,7 @@ export const HomeInput = () => {
         <div className="text-sm mt-0.5 font-medium">120天</div>
         <div className="text-xs text-[#989898]">期限</div>
       </div>
-      <div
-        className="flex mt-6 justify-between items-center"
-        onClick={handleToDelegate}
-      >
+      <div className="flex mt-6 justify-between items-center" onClick={handleToDelegate}>
         <span className="text-sm">已质押</span>
         <div className="flex items-center">
           <div className="text-right mr-2">

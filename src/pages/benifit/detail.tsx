@@ -1,20 +1,20 @@
-import { DotLoading, NavBar, Tabs } from "antd-mobile";
-import check from "../../assets/check.svg";
-import lock from "../../assets/lock.svg";
-import time from "../../assets/time.svg";
-import { getDynamicRewardUser, getStaticRewardUser } from "../../utils/api";
-import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { divideByMillionAndRound } from "../../utils/tools";
-import { StaticList } from "../../components/benifit/static-list";
-import { DynamicList } from "../../components/benifit/dynamic-list";
+import { DotLoading, NavBar, Tabs } from 'antd-mobile';
+import check from '../../assets/check.svg';
+import lock from '../../assets/lock.svg';
+import time from '../../assets/time.svg';
+import { getDynamicRewardUser, getStaticRewardUser } from '../../utils/api';
+import { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+import { divideByMillionAndRound } from '../../utils/tools';
+import { StaticList } from '../../components/benifit/static-list';
+import { DynamicList } from '../../components/benifit/dynamic-list';
 
 export const BenifitDetail = () => {
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
   const [dynamicRewardUser, setDynamicRewardUser] = useState<any>(null);
   const [staticRewardUser, setStaticRewardUser] = useState<any>(null);
-  
+
   const handleBack = () => {
     history.back();
   };
@@ -22,27 +22,28 @@ export const BenifitDetail = () => {
   useEffect(() => {
     if (address) {
       setLoading(true);
-      Promise.all([
-        getDynamicRewardUser({ address }),
-        getStaticRewardUser({ address }),
-      ]).then(([dynamicRes, staticRes]) => {
-        setDynamicRewardUser(dynamicRes.data.data);
-        setStaticRewardUser(staticRes.data.data);
-        setLoading(false);
-      }).catch(error => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      });
+      Promise.all([getDynamicRewardUser({ address }), getStaticRewardUser({ address })])
+        .then(([dynamicRes, staticRes]) => {
+          setDynamicRewardUser(dynamicRes.data.data);
+          setStaticRewardUser(staticRes.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+          setLoading(false);
+        });
     }
   }, []);
 
   if (loading) {
-    return <div className="bg-[#F5F5F5] min-h-screen">
-      <NavBar onBack={handleBack}>收益列表详情</NavBar>
-      <div className="h-36 mx-4 text-2xl rounded-2xl mt-4 relative overflow-hidden flex justify-center items-center">
-        <DotLoading color="primary" />
+    return (
+      <div className="bg-[#F5F5F5] min-h-screen">
+        <NavBar onBack={handleBack}>收益列表详情</NavBar>
+        <div className="h-36 mx-4 text-2xl rounded-2xl mt-4 relative overflow-hidden flex justify-center items-center">
+          <DotLoading color="primary" />
+        </div>
       </div>
-    </div>
+    );
   }
 
   return (

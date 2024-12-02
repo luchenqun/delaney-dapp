@@ -1,19 +1,13 @@
-import { toSvg } from "jdenticon";
-import { divideByMillionAndRound, formatAddressString } from "../../utils/tools";
-import dayjs from "dayjs";
+import { toSvg } from 'jdenticon';
+import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
+import dayjs from 'dayjs';
 
 export const PeopleCard = ({ info }: { info: any }) => {
   console.log(info);
   return (
     <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3">
       <div className="flex items-center">
-        <img
-          className="w-12 h-12 rounded-[50%]"
-          src={`data:image/svg+xml;utf8,${encodeURIComponent(
-            toSvg(info?.address, 200)
-          )}`}
-          alt=""
-        />
+        <img className="w-12 h-12 rounded-[50%]" src={`data:image/svg+xml;utf8,${encodeURIComponent(toSvg(info?.address, 200))}`} alt="" />
         <span className="ml-3 text-sm">{formatAddressString(info?.address)}</span>
       </div>
       <div className="mt-4">
@@ -54,7 +48,7 @@ export const PeopleCard = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">注册时间</span>
           <div className="text-right">
-            <div className="text-sm">{dayjs.unix(info?.create_time).format("YYYY-MM-DD HH:mm:ss")}</div>
+            <div className="text-sm">{dayjs.unix(info?.create_time).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
         </div>
       </div>
