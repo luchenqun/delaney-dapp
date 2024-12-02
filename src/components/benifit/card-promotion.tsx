@@ -25,10 +25,8 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
     }
   };
 
-  console.log(info);
-
   return (
-    <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3">
+    <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
       <div>
         <div className="flex justify-between items-center">
           <span className="text-[#989898] text-sm">收益</span>

@@ -57,3 +57,25 @@ body {
   line-height: 20px;
   border-radius: 4px;
 }
+
+.adm-list-item {
+  background-color: transparent;
+  padding-left: 0;
+}
+
+.adm-list-body {
+  background-color: transparent;
+}
+
+.adm-list-item-content {
+  padding-right: 0;
+  border: none;
+}
+
+.adm-list-item-content-main {
+  padding: 8px 0;
+}
+
+.adm-list-default .adm-list-body {
+  border: none;
+}

@@ -2,26 +2,22 @@ import { DotLoading, NavBar, Tabs } from "antd-mobile";
 import check from "../../assets/check.svg";
 import lock from "../../assets/lock.svg";
 import time from "../../assets/time.svg";
-import { BenifitCard } from "../../components/benifit/card";
-import { BenifitCardPromotion } from "../../components/benifit/card-promotion";
-import { getDynamicRewards, getDynamicRewardUser, getStaticRewards, getStaticRewardUser } from "../../utils/api";
+import { getDynamicRewardUser, getStaticRewardUser } from "../../utils/api";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { divideByMillionAndRound } from "../../utils/tools";
+import { StaticList } from "../../components/benifit/static-list";
+import { DynamicList } from "../../components/benifit/dynamic-list";
 
 export const BenifitDetail = () => {
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
   const [dynamicRewardUser, setDynamicRewardUser] = useState<any>(null);
   const [staticRewardUser, setStaticRewardUser] = useState<any>(null);
-  const [staticRewards, setStaticRewards] = useState<any>(null);
-  const [dynamicRewards, setDynamicRewards] = useState<any>(null);
   
   const handleBack = () => {
     history.back();
   };
-
-  console.log(dynamicRewards);
 
   useEffect(() => {
     if (address) {
@@ -29,13 +25,9 @@ export const BenifitDetail = () => {
       Promise.all([
         getDynamicRewardUser({ address }),
         getStaticRewardUser({ address }),
-        getStaticRewards({ address }),
-        getDynamicRewards({ address })
-      ]).then(([dynamicRes, staticRes, staticRewardsRes, dynamicRewardsRes]) => {
+      ]).then(([dynamicRes, staticRes]) => {
         setDynamicRewardUser(dynamicRes.data.data);
         setStaticRewardUser(staticRes.data.data);
-        setStaticRewards(staticRewardsRes.data.data.items);
-        setDynamicRewards(dynamicRewardsRes.data.data.items);
         setLoading(false);
       }).catch(error => {
         console.error('Error fetching data:', error);
@@ -92,9 +84,7 @@ export const BenifitDetail = () => {
                 </div>
               </div>
             </div>
-            {staticRewards?.map((item: any) => (
-              <BenifitCard key={item.id} info={item} />
-            ))}
+            <StaticList />
           </Tabs.Tab>
           <Tabs.Tab title="推广收益" key="vegetables">
             <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
@@ -118,9 +108,7 @@ export const BenifitDetail = () => {
                 </div>
               </div>
             </div>
-            {dynamicRewards?.map((item: any) => (
-              <BenifitCardPromotion key={item.id} info={item} />
-            ))}
+            <DynamicList />
           </Tabs.Tab>
         </Tabs>
       </div>
