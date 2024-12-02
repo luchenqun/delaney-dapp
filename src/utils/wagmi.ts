@@ -12,6 +12,12 @@ if (!projectId) {
   throw new Error('VITE_PROJECT_ID is not set');
 }
 
+export const ADDRESS_CONFIG = {
+  delaney: import.meta.env.VITE_APP_DELANEY_ADDRESS,
+  mud: import.meta.env.VITE_APP_MUD_ADDRESS,
+  usdt: import.meta.env.VITE_APP_USDT_ADDRESS
+};
+
 export const config = createConfig({
   chains: network == Network.Testnet ? [mudTestnet] : [polygon],
   connectors: [injected(), coinbaseWallet({ appName: 'delaney' }), walletConnect({ projectId })],

@@ -6,16 +6,32 @@ import copyIcon from '../../assets/copy.svg';
 import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
 import { DotLoading, Modal, Skeleton } from 'antd-mobile';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { getUserInfo } from '../../utils/api';
 import { toSvg } from 'jdenticon';
 import { divideByMillionAndRound } from '../../utils/tools';
+import { erc20Abi } from 'viem';
+import { ADDRESS_CONFIG } from '../../utils/wagmi';
 
 export const HomeCard = () => {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const [userInfo, setUserInfo] = useState<any>(null);
+
+  const { data: mudBalance, isLoading: mudLoading } = useReadContract({
+    address: ADDRESS_CONFIG.mud,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [address as `0x${string}`]
+  });
+
+  const { data: usdtBalance, isLoading: usdtLoading } = useReadContract({
+    address: ADDRESS_CONFIG.usdt,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [address as `0x${string}`]
+  });
 
   useEffect(() => {
     if (address) {
@@ -41,7 +57,7 @@ export const HomeCard = () => {
     });
   };
 
-  if (loading) {
+  if (loading || mudLoading || usdtLoading) {
     return (
       <div className="bg-white h-36 mx-4 rounded-2xl text-2xl p-3 mt-4 relative overflow-hidden flex justify-center items-center">
         <DotLoading />
@@ -81,14 +97,14 @@ export const HomeCard = () => {
             <img className="w-4 h-4" src={usdt} alt="" />
             <span className="ml-1 text-sm">USDT</span>
           </div>
-          <div className="font-medium text-base w-full text-center">{divideByMillionAndRound(userInfo?.usdt)}</div>
+          <div className="font-medium text-base w-full text-center">{divideByMillionAndRound(usdtBalance || 0)}</div>
         </div>
         <div className="w-24 bg-[#F3F3F3] rounded-xl flex flex-wrap justify-center py-1">
           <div className="flex items-center">
             <img className="w-4 h-4" src={mud} alt="" />
             <span className="ml-1 text-sm">MUD</span>
           </div>
-          <div className="font-medium text-base w-full text-center">{divideByMillionAndRound(userInfo?.mud)}</div>
+          <div className="font-medium text-base w-full text-center">{divideByMillionAndRound(mudBalance || 0)}</div>
         </div>
         <div className="w-24 bg-[#FEC533] font-semibold text-base rounded-xl flex flex-wrap justify-center items-center py-1">交易</div>
       </div>
