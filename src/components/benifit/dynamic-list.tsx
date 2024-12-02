@@ -31,6 +31,7 @@ export const DynamicList = () => {
         getDynamicRewards({ address, page: p, page_size: 10 }).then((res) => {
           setDynamicRewards(res.data.data.items);
           setTotal(res.data.data.total);
+          setPage(res.data.data.pages);
           resolve();
         });
       }

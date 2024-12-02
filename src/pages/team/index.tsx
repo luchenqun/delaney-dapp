@@ -1,15 +1,19 @@
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
-import { DotLoading, NavBar } from "antd-mobile";
+import { DotLoading, InfiniteScroll, List, NavBar } from "antd-mobile";
 import { PeopleCard } from "../../components/team/people-card";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
-import { getUserInfo } from "../../utils/api";
+import { getUserInfo, getUsers } from "../../utils/api";
 import { divideByMillionAndRound } from "../../utils/tools";
 
 export const Team = () => {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const [userInfo, setUserInfo] = useState<any>(null);
+  const [list, setList] = useState<any[]>([]);
+  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (address) {
@@ -18,8 +22,25 @@ export const Team = () => {
         setUserInfo(res.data.data);
         setLoading(false);
       });
+      getList(1);
     }
   }, [address]);
+
+  const getList = (page: number) => {
+    return new Promise<void>((resolve) => {
+      getUsers({ address, page }).then((res) => {
+        setList(res.data.data.items);
+        setTotal(res.data.data.total);
+        setHasMore(res.data.data.total > res.data.data.items.length);
+        setPage(res.data.data.pages);
+      });
+      resolve();
+    });
+  }
+
+  const loadMore = () => {
+    return getList(page + 1);
+  }
 
   if (loading) {
     return (
@@ -84,7 +105,12 @@ export const Team = () => {
           </div>
         </div>
         <div className="ml-4 mt-6 font-semibold text-base">直推人员列表</div>
-        <PeopleCard />
+        {list?.map((item: any) => (
+          <List.Item key={item.id}>
+            <PeopleCard info={item} />
+          </List.Item>
+        ))}
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
       </div>
     </>
   );

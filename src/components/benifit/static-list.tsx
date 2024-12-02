@@ -31,6 +31,7 @@ export const StaticList = () => {
         getStaticRewards({ address, page: p, page_size: 10 }).then((res) => {
           setStaticRewards(res.data.data.items);
           setTotal(res.data.data.total);
+          setPage(res.data.data.pages);
           resolve();
         });
       }

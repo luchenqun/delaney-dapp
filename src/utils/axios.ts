@@ -11,9 +11,9 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use((response) => {
   if (response.data.code != 0) {
-    Toast.show({
-      content: response.data.msg,
-    });
+    // Toast.show({
+    //   content: response.data.msg,
+    // });
     return Promise.reject(response);
   }
   return response;

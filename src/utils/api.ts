@@ -43,3 +43,7 @@ export const getStaticRewards = (data: { address: string, page: number, page_siz
 export const getDynamicRewards = (data: { address: string, page: number, page_size: number }) => {
   return instance.get("dynamic-rewards", { params: data });
 };
+
+export const getUsers = (data: any) => {
+  return instance.get("users", { params: data });
+};
