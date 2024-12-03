@@ -5,14 +5,14 @@ import mud from '../../assets/mud.png';
 import copyIcon from '../../assets/copy.svg';
 import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
-import { DotLoading, Modal, Skeleton } from 'antd-mobile';
+import { DotLoading, Modal } from 'antd-mobile';
 import { useAccount, useReadContract } from 'wagmi';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getUser } from '../../utils/api';
-import { toSvg } from 'jdenticon';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { erc20Abi } from 'viem';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
+import JazziconAvatar from '../avatar';
 
 export const HomeCard = () => {
   const [loading, setLoading] = useState(false);
@@ -69,7 +69,7 @@ export const HomeCard = () => {
     <div className="bg-white mx-4 rounded-2xl p-3 mt-4 relative overflow-hidden">
       <img src={logo} alt="" className="absolute w-20 h-20 right-[-8px] top-[-12px] opacity-20" />
       <div className="flex">
-        <img className="w-12 h-12 rounded-[50%]" src={`data:image/svg+xml;utf8,${encodeURIComponent(toSvg(address, 200))}`} alt="" />
+        <JazziconAvatar address={address} diameter={12} />
         <div className="ml-3">
           <div className="text-sm flex items-center mt-1">
             <span>我的星级:</span>

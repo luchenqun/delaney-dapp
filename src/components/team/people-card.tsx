@@ -1,12 +1,14 @@
 import { toSvg } from 'jdenticon';
 import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
 import dayjs from 'dayjs';
+import JazziconAvatar from '../avatar';
 
 export const PeopleCard = ({ info }: { info: any }) => {
   return (
     <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3">
       <div className="flex items-center">
-        <img className="w-12 h-12 rounded-[50%]" src={`data:image/svg+xml;utf8,${encodeURIComponent(toSvg(info?.address, 200))}`} alt="" />
+        <JazziconAvatar address={info?.address} diameter={12} />
+        {/* <img className="w-12 h-12 rounded-[50%]" src={`data:image/svg+xml;utf8,${encodeURIComponent(toSvg(info?.address, 200))}`} alt="" /> */}
         <span className="ml-3 text-sm">{formatAddressString(info?.address)}</span>
       </div>
       <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>

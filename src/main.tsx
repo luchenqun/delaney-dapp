@@ -19,13 +19,11 @@ const App = () => {
   }, []);
 
   return (
-    <StrictMode>
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </WagmiProvider>
-    </StrictMode>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 };
 
