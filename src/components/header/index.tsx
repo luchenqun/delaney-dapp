@@ -14,7 +14,7 @@ export const HomeHeaders = () => {
   });
 
   return (
-    <div className="bg-white px-4 py-1 flex justify-between items-center">
+    <div className="bg-white px-4 py-1 flex justify-between items-center fixed top-0 left-0 right-0 z-10">
       <div className="flex">
         <img className="w-10 h-10" src={logo} alt="logo" />
         <div className="ml-3">

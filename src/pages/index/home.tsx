@@ -10,7 +10,7 @@ export const Home = () => {
     <div className="bg-[#F5F5F5] min-h-screen">
       <HomeHeaders />
 
-      <div className="my-3">
+      <div className="my-3 pt-12">
         <HomeSwiper />
       </div>
 
