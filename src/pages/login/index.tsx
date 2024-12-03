@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, getUserNoToast } from '../../utils/api';
+import { formatAddressString } from '../../utils/tools';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ export const Login = () => {
         <div className="mt-3 text-center text-base">
           你的钱包地址
           <span className="text-[#2A66FF]" onClick={handleToLink}>
-            {address}
+            {formatAddressString(address as string)}
           </span>
         </div>
         <div className="flex justify-center w-screen absolute bottom-20">
