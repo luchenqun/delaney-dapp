@@ -2,7 +2,7 @@ import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
 import { Button, Modal, Tag, Toast } from 'antd-mobile';
 import { useEffect, useState } from 'react';
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { divideByMillionAndRound, formatAddressString, afterSeconds } from '../../utils/tools';
 import dayjs from 'dayjs';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';

@@ -73,6 +73,10 @@ export const Benifit = () => {
     navigate('/benifit/detail');
   };
 
+  const handleToClaimDetail = () => {
+    navigate('/claim');
+  };
+
   const handleClaim = async () => {
     if (!address) {
       return;
@@ -123,7 +127,7 @@ export const Benifit = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center mt-2" onClick={handleToDetail}>
+          <div className="flex justify-between items-center mt-2" onClick={handleToClaimDetail}>
             <div>已提取</div>
             <div className="flex items-center">
               <div className="text-right">

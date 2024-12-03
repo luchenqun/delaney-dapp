@@ -73,3 +73,7 @@ export const getMessages = (data: any) => {
   return instance.get('messages', { params: data });
 };
 
+export const getClaims = (data: any) => {
+  return instance.get('claims', { params: data });
+};
+
