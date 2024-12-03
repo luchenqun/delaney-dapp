@@ -14,7 +14,7 @@ import { TxType } from '../../../src/utils/data';
 export const HomeInput = () => {
   const { address } = useAccount();
   const navigate = useNavigate();
-  const [delegateUser, setDelegateUser] = useState<any>(null);
+  const [delegateUserStat, setDelegateUserStat] = useState<any>(null);
   const [time, setTime] = useState('-');
   const [mudMax, setMudMax] = useState<number>(0);
   const [userInput, setUserInput] = useState<string | number>('');
@@ -90,7 +90,7 @@ export const HomeInput = () => {
   useEffect(() => {
     if (address) {
       getDelegateUserStat({ address }).then((res) => {
-        setDelegateUser(res.data.data);
+        setDelegateUserStat(res.data.data);
       });
     }
   }, []);
@@ -151,8 +151,8 @@ export const HomeInput = () => {
         <span className="text-sm">已质押</span>
         <div className="flex items-center">
           <div className="text-right mr-2">
-            <div className="text-sm">{divideByMillionAndRound(delegateUser?.usdt || 0)} USDT</div>
-            <div className="text-xs text-[#989898]">≈{divideByMillionAndRound(delegateUser?.mud || 0)} MUD</div>
+            <div className="text-sm">{divideByMillionAndRound(delegateUserStat?.usdt || 0)} USDT</div>
+            <div className="text-xs text-[#989898]">≈{divideByMillionAndRound(delegateUserStat?.mud || 0)} MUD</div>
           </div>
           <img src={right} className="w-4 h-4" alt="" />
         </div>
