@@ -63,13 +63,12 @@ export const Login = () => {
         <div className="flex justify-center mt-6">
           <PasscodeInput plain seperated onChange={handleChange} />
         </div>
-        {/* <div className="mt-3 text-center text-base">
-          请先{' '}
+        <div className="mt-3 text-center text-base">
+          你的钱包地址
           <span className="text-[#2A66FF]" onClick={handleToLink}>
-            连接钱包
-          </span>{' '}
-          以绑定邀请码
-        </div> */}
+            {address}
+          </span>
+        </div>
         <div className="flex justify-center w-screen absolute bottom-20">
           <Button onClick={handleConfirm} loading={loading} disabled={value.length !== 6} color="primary" className="w-80 h-11 rounded-xl text-xl">
             确认
