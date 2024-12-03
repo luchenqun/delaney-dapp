@@ -59,9 +59,9 @@ export const WalletConnect = () => {
         </div>
         <img className="mx-auto mt-12" src={wallet} alt="" />
         <div className="flex justify-center w-screen absolute bottom-20 flex-wrap">
-          <div className="mt-3 text-center text-base">
+          {/* <div className="mt-3 text-center text-base">
             请先 <span className="text-[#2A66FF]">连接钱包</span> 以绑定邀请码
-          </div>
+          </div> */}
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">{`连接钱包`}</div>
         </div>
       </div>
