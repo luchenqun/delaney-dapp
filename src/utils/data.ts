@@ -24,5 +24,7 @@ export const mudTestnet = {
 export const enum TxType {
   Delegate = 0,
   Approve = 1,
-  Claim = 2
+  Claim = 2,
+  Undelegate = 3,
+  Redelegate = 4
 }
