@@ -44,6 +44,7 @@ export const Login = () => {
       })
         .then(() => {
           setLoading(false);
+          navigate('/home');
         })
         .catch(() => {
           Modal.alert({
