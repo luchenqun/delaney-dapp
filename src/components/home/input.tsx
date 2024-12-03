@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { getDelegateUser } from '../../utils/api';
-import { divideByMillionAndRound, formatSeconds } from '../../utils/tools';
+import { divideByMillionAndRound, formatSeconds, afterSeconds } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { erc20Abi } from 'viem';
@@ -116,13 +116,13 @@ export const HomeInput = () => {
         address: ADDRESS_CONFIG.delaney,
         abi: delaneyAbi,
         functionName: 'delegate',
-        args: [BigInt(Number(userInput) * 1000000), 0, parseInt(new Date().getTime() / 1000) + 10 * 60]
+        args: [BigInt(Number(userInput) * 1000000), 0, afterSeconds(10 * 60)]
       });
       writeContract({
         address: ADDRESS_CONFIG.delaney,
         abi: delaneyAbi,
         functionName: 'delegate',
-        args: [BigInt(Number(userInput) * 1000000), 0, parseInt(new Date().getTime() / 1000) + 10 * 60]
+        args: [BigInt(Number(userInput) * 1000000), 0, afterSeconds(10 * 60)]
       });
       setTxType(TxType.Delegate);
     } else {
