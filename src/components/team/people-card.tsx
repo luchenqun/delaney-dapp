@@ -3,7 +3,6 @@ import { divideByMillionAndRound, formatAddressString } from '../../utils/tools'
 import dayjs from 'dayjs';
 
 export const PeopleCard = ({ info }: { info: any }) => {
-  console.log(info);
   return (
     <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3">
       <div className="flex items-center">
