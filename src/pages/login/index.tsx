@@ -1,4 +1,4 @@
-import { Button, PasscodeInput } from 'antd-mobile';
+import { Button, Modal, PasscodeInput } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import { useAccount } from 'wagmi';
@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, getUserNoToast } from '../../utils/api';
 import { formatAddressString } from '../../utils/tools';
+import { ExclamationCircleFill } from 'antd-mobile-icons';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -45,7 +46,20 @@ export const Login = () => {
           setLoading(false);
         })
         .catch(() => {
-          navigate('/');
+          Modal.alert({
+            header: (
+              <ExclamationCircleFill
+                style={{
+                  fontSize: 50,
+                  color: 'var(--adm-color-warning)'
+                }}
+              />
+            ),
+            title: '注意',
+            content: '邀请码错误'
+          });
+          setValue('');
+          setLoading(false);
         });
     }
   };
@@ -62,7 +76,7 @@ export const Login = () => {
         </div>
         <div className="mt-10 text-xl text-center font-semibold">请输入您的邀请码</div>
         <div className="flex justify-center mt-6">
-          <PasscodeInput plain seperated onChange={handleChange} />
+          <PasscodeInput value={value} plain seperated onChange={handleChange} />
         </div>
         <div className="mt-3 text-center text-base">
           你的钱包地址

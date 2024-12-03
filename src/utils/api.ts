@@ -2,7 +2,7 @@ import instance from './axios';
 import instanceNoToast from './axiosNoToast';
 
 export const createUser = (data: { address: string; parent_ref: string }) => {
-  return instance.post('create-user', data);
+  return instanceNoToast.post('create-user', data);
 };
 
 export const getUser = (data: { address: string }) => {
