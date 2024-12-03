@@ -104,7 +104,7 @@ export const HomeDelegate = () => {
         setDelegateUserStat(res.data.data);
       });
     }
-  }, []);
+  }, [address]);
 
   const handleDelegate = async () => {
     if (userInput) {
