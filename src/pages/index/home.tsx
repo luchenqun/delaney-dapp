@@ -3,7 +3,7 @@ import { HomeHeaders } from '../../components/header';
 import notice from '../../assets/notice.svg';
 import { HomeSwiper } from '../../components/swiper';
 import { HomeCard } from '../../components/home/card';
-import { HomeInput } from '../../components/home/input';
+import { HomeDelegate } from '../../components/home/delegate';
 
 export const Home = () => {
   return (
@@ -26,7 +26,7 @@ export const Home = () => {
       </div>
 
       <div>
-        <HomeInput />
+        <HomeDelegate />
       </div>
     </div>
   );
