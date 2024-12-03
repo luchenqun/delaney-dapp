@@ -1,4 +1,5 @@
 import instance from './axios';
+import instanceNoToast from './axiosNoToast';
 
 export const createUser = (data: { address: string; parent_ref: string }) => {
   return instance.post('create-user', data);
@@ -6,6 +7,10 @@ export const createUser = (data: { address: string; parent_ref: string }) => {
 
 export const getUser = (data: { address: string }) => {
   return instance.get('user', { params: data });
+};
+
+export const getUserNoToast = (data: { address: string }) => {
+  return instanceNoToast.get('user', { params: data });
 };
 
 export const getMudPrice = () => {

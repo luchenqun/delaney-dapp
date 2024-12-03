@@ -6,7 +6,7 @@ import { useAccount, useConnect } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../utils/api';
+import { getUserNoToast } from '../../utils/api';
 
 export const WalletConnect = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export const WalletConnect = () => {
 
   useEffect(() => {
     if (isConnected && address) {
-      getUser({ address })
+      getUserNoToast({ address })
         .then((res) => {
           if (res.data.data) {
             navigate('/home');
