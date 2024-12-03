@@ -3,7 +3,7 @@ import { DotLoading, InfiniteScroll, List, NavBar } from 'antd-mobile';
 import { PeopleCard } from '../../components/team/people-card';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
-import { getUserInfo, getUsers } from '../../utils/api';
+import { getUser, getUsers } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 
 export const Team = () => {
@@ -18,7 +18,7 @@ export const Team = () => {
   useEffect(() => {
     if (address) {
       setLoading(true);
-      getUserInfo({ address }).then((res) => {
+      getUser({ address }).then((res) => {
         setUserInfo(res.data.data);
         setLoading(false);
       });
@@ -28,7 +28,7 @@ export const Team = () => {
 
   const getList = (page: number) => {
     return new Promise<void>((resolve) => {
-      getUsers({ address, page }).then((res) => {
+      getUsers({ filters: { parent: `='${address?.toLowerCase()}'` }, page }).then((res) => {
         setList(res.data.data.items);
         setTotal(res.data.data.total);
         setHasMore(res.data.data.total > res.data.data.items.length);
@@ -77,7 +77,14 @@ export const Team = () => {
             <span className="text-[#989898] text-sm">直推质押</span>
             <div className="text-right">
               <div className="font-semibold text-sm">{divideByMillionAndRound(userInfo?.usdt)} USDT</div>
-              <div className="text-xs">≈{divideByMillionAndRound(userInfo?.mud)} MUD</div>
+              <div className="text-xs">{divideByMillionAndRound(userInfo?.mud)} MUD</div>
+            </div>
+          </div>
+          <div className="flex justify-between items-center mt-4">
+            <span className="text-[#989898] text-sm">团队质押</span>
+            <div className="text-right">
+              <div className="font-semibold text-sm">{divideByMillionAndRound(userInfo?.team_usdt)} USDT</div>
+              <div className="text-xs">{divideByMillionAndRound(userInfo?.team_mud)} MUD</div>
             </div>
           </div>
           <div className="flex justify-between items-center mt-4">
@@ -87,10 +94,9 @@ export const Team = () => {
             </div>
           </div>
           <div className="flex justify-between items-center mt-4">
-            <span className="text-[#989898] text-sm">团队质押</span>
-            <div className="text-right">
-              <div className="font-semibold text-sm">{divideByMillionAndRound(userInfo?.team_usdt)} USDT</div>
-              <div className="text-xs">≈{divideByMillionAndRound(userInfo?.team_mud)} MUD</div>
+            <span className="text-[#989898] text-sm">团队人数</span>
+            <div>
+              <div className="font-semibold text-sm">{userInfo?.team_person}</div>
             </div>
           </div>
         </div>

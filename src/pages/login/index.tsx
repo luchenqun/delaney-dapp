@@ -4,7 +4,7 @@ import logo from '../../assets/logo.svg';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUser, getUserInfo } from '../../utils/api';
+import { createUser, getUser } from '../../utils/api';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (isConnected && address) {
-      getUserInfo({ address }).then((res) => {
+      getUser({ address }).then((res) => {
         if (res.data.data) {
           navigate('/home');
         }

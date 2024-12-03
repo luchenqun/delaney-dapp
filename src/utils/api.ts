@@ -4,12 +4,25 @@ export const createUser = (data: { address: string; parent_ref: string }) => {
   return instance.post('create-user', data);
 };
 
-export const getUserInfo = (data: { address: string }) => {
+export const getUser = (data: { address: string }) => {
   return instance.get('user', { params: data });
 };
 
 export const getMudPrice = () => {
   return instance.get('mud-price');
+};
+
+type RewardIds = {
+  dynamic_ids: number[];
+  static_ids: number[];
+};
+
+export const clearClaim = (data: { address: string }) => {
+  return instance.post('clear-claim', data);
+};
+
+export const signClaim = (data: { address: string; usdt: number; min_mud: number; reward_ids: RewardIds }) => {
+  return instance.post('sign-claim', data);
 };
 
 export const getRewardUserStat = (data: { address: string }) => {

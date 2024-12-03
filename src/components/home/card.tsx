@@ -8,7 +8,7 @@ import copy from 'copy-to-clipboard';
 import { DotLoading, Modal, Skeleton } from 'antd-mobile';
 import { useAccount, useReadContract } from 'wagmi';
 import { useEffect, useState } from 'react';
-import { getUserInfo } from '../../utils/api';
+import { getUser } from '../../utils/api';
 import { toSvg } from 'jdenticon';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { erc20Abi } from 'viem';
@@ -36,7 +36,7 @@ export const HomeCard = () => {
   useEffect(() => {
     if (address) {
       setLoading(true);
-      getUserInfo({ address }).then((res) => {
+      getUser({ address }).then((res) => {
         setUserInfo(res.data.data);
         setLoading(false);
       });
