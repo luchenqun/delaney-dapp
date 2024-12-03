@@ -8,30 +8,19 @@ export const DynamicList = () => {
   const { address } = useAccount();
   const [dynamicRewards, setDynamicRewards] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
-
-  useEffect(() => {
-    if (address) {
-      loadMore();
-    }
-  }, [address]);
-
-  useEffect(() => {
-    if (total > dynamicRewards.length) {
-      setHasMore(true);
-    } else {
-      setHasMore(false);
-    }
-  }, [dynamicRewards]);
 
   const loadMore = () => {
     return new Promise<void>((resolve) => {
       if (address) {
         getDynamicRewards({ address, page: page + 1, page_size: 10 }).then((res) => {
           setDynamicRewards(dynamicRewards.concat(res.data.data.items));
-          setTotal(res.data.data.total);
           setPage(page + 1);
+          if (res.data.data.total > dynamicRewards.length) {
+            setHasMore(true);
+          } else {
+            setHasMore(false);
+          }
           resolve();
         });
       }

@@ -68,3 +68,8 @@ export const getDelegates = (data: any) => {
 export const getConfig = () => {
   return instance.get('configs');
 };
+
+export const getMessages = (data: any) => {
+  return instance.get('messages', { params: data });
+};
+

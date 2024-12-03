@@ -1,11 +1,14 @@
 import { Badge } from 'antd-mobile';
 import logo from '../../assets/logo.svg';
 import bell from '../../assets/bell.svg';
-import { useAccount, useReadContract } from 'wagmi';
+import { useReadContract } from 'wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { divideByMillionAndRound } from '../../utils/tools';
+import { useNavigate } from 'react-router-dom';
 
 export const HomeHeaders = () => {
+  const navigate = useNavigate();
+  
   const { data } = useReadContract({
     functionName: 'mudPrice',
     abi: delaneyAbi,
@@ -23,7 +26,7 @@ export const HomeHeaders = () => {
         </div>
       </div>
       <Badge content={Badge.dot}>
-        <img className="w-6 h-6" src={bell} alt="消息" />
+        <img className="w-6 h-6" src={bell} alt="消息" onClick={() => navigate('/message')} />
       </Badge>
     </div>
   );

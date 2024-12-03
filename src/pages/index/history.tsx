@@ -7,25 +7,12 @@ import { useAccount } from 'wagmi';
 export const HomeHistory = () => {
   const { address } = useAccount();
   const [data, setData] = useState<any[]>([]);
-  const [total, setTotal] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   
   const handleBack = () => {
     history.back();
   };
-
-  useEffect(() => {
-    if (total > data.length) {
-      setHasMore(true);
-    } else {
-      setHasMore(false);
-    }
-  }, [data, total]);
-
-  useEffect(() => {
-    loadMore();
-  }, []);
 
   const loadMore = () => {
     return new Promise<void>((resolve) => {
@@ -36,9 +23,13 @@ export const HomeHistory = () => {
         page: page + 1
       }).then((res) => {
         setData(data.concat(res.data.data.items));
-        setTotal(res.data.data.total);
         setPage(page + 1);
         resolve();
+        if (res.data.data.total > data.length) {
+          setHasMore(true);
+        } else {
+          setHasMore(false);
+        }
       });
     });
   };

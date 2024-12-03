@@ -8,6 +8,7 @@ import { Team } from '../pages/team/index.tsx';
 import { BenifitDetail } from '../pages/benifit/detail.tsx';
 import { HomeHistory } from '../pages/index/history.tsx';
 import { WalletConnect } from '../pages/login/wallet.tsx';
+import { Message } from '../pages/index/message.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -43,5 +44,9 @@ export const router = createBrowserRouter([
   {
     path: '/home/history',
     element: <HomeHistory />
+  },
+  {
+    path: '/message',
+    element: <Message />
   }
 ]);
