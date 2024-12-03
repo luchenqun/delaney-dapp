@@ -45,7 +45,9 @@ export const Team = () => {
   if (loading) {
     return (
       <>
-        <NavBar back={null}>我的团队</NavBar>
+        <div className="top-0 z-10 fixed left-0 right-0 bg-white">
+          <NavBar back={null}>我的团队</NavBar>
+        </div>
         <div className="flex justify-center items-center h-screen text-5xl">
           <DotLoading color="primary" />
         </div>
@@ -55,8 +57,10 @@ export const Team = () => {
 
   return (
     <>
-      <NavBar back={null}>我的团队</NavBar>
-      <div className="bg-[#F5F5F5] min-h-screen pt-3">
+      <div className="top-0 z-10 fixed left-0 right-0 bg-white">
+        <NavBar back={null}>我的团队</NavBar>
+      </div>
+      <div className="bg-[#F5F5F5] min-h-screen pt-12">
         <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
           <div className="flex justify-between items-center">
             <span className="text-[#989898] text-sm">我的星级</span>

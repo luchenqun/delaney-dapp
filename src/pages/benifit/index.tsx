@@ -3,7 +3,7 @@ import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { getClaimUserStat, getLatestClaim, getRewardUserStat, clearClaim, signClaim } from '../../utils/api';
+import { getClaimUserStat, getLatestClaim, getRewardUserStat, clearClaim, signClaim, getConfig } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
@@ -18,6 +18,7 @@ export const Benifit = () => {
   const { data: hash, writeContract, isPending, isError, status } = useWriteContract();
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
+  const [fee, setFee] = useState(0);
 
   useEffect(() => {
     if (!isConnected) {
@@ -54,12 +55,12 @@ export const Benifit = () => {
     }
     setLoading(true);
     await clearClaim({ address });
-    Promise.all([getRewardUserStat({ address }), getClaimUserStat({ address }), getLatestClaim({ address })])
-      .then(([rewardRes, claimRes, latestClaimRes]) => {
+    Promise.all([getRewardUserStat({ address }), getClaimUserStat({ address }), getLatestClaim({ address }), getConfig()])
+      .then(([rewardRes, claimRes, latestClaimRes, configRes]) => {
         setRewardUserStat(rewardRes.data.data);
         setClaimUserStat(claimRes.data.data);
         setLatestClaim(latestClaimRes.data.data);
-        console.log(JSON.stringify(latestClaimRes.data.data));
+        setFee(configRes.data.data.fee / 10000);
         setLoading(false);
       })
       .catch((error) => {
@@ -92,7 +93,9 @@ export const Benifit = () => {
   if (loading) {
     return (
       <div className="bg-[#F5F5F5] min-h-screen">
-        <NavBar back={null}>领取收益</NavBar>
+        <div className="top-0 z-10 fixed left-0 right-0 bg-white">
+          <NavBar back={null}>领取收益</NavBar>
+        </div>
         <div className="h-36 mx-4 rounded-2xl mt-4 text-2xl relative overflow-hidden flex justify-center items-center">
           <DotLoading color="primary" />
         </div>
@@ -102,10 +105,10 @@ export const Benifit = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-10">
+      <div className="top-0 z-10 fixed left-0 right-0 bg-white">
         <NavBar back={null}>领取收益</NavBar>
       </div>
-      <div className="bg-[#F5F5F5] min-h-screen pt-3">
+      <div className="bg-[#F5F5F5] min-h-screen pt-12">
         <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
           <div className="text-base font-medium">收益</div>
           <div className="flex justify-between items-center mt-4" onClick={handleToDetail}>
@@ -139,13 +142,13 @@ export const Benifit = () => {
           <div className="text-base relative top-[-0.5rem]">≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</div>
           <div className="w-full flex justify-between mt-4">
             <span>
-              手续费 <span className="text-[#46D69C]">2%</span>
+              手续费 <span className="text-[#46D69C]">{fee}%</span>
             </span>
-            <span>0.033 USDT</span>
+            <span>{divideByMillionAndRound(latestClaim?.mud || 0) * (fee) / 100} USDT</span>
           </div>
           <div className="w-full flex justify-between mt-2">
             <span>实际到账</span>
-            <span>≈ 80 MUD</span>
+            <span>≈ {divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee) / 100} MUD</span>
           </div>
           <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
           <Button loading={btnLoading} disabled={isLoading || !latestClaim?.usdt} color="primary" className="w-full" onClick={handleClaim}>

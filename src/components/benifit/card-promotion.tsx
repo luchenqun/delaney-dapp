@@ -38,21 +38,25 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
           </div>
         </div>
         <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
-        <div className="flex justify-between items-center">
-          <span className="text-[#989898] text-sm">领取哈希</span>
-          <div className="text-right">
-            <div className="text-sm text-[#2A66FF] flex">
-              {formatAddressString(info?.hash)}
-              <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
+        {info.status == 2 && (
+          <>
+            <div className="flex justify-between items-center">
+              <span className="text-[#989898] text-sm">领取哈希</span>
+              <div className="text-right">
+                <div className="text-sm text-[#2A66FF] flex">
+                  {formatAddressString(info?.hash)}
+                  <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-[#989898] text-sm">领取时间</span>
-          <div className="text-right">
-            <div className="text-sm">{info?.claim_time ? dayjs.unix(info?.claim_time).format('YYYY-MM-DD HH:mm:ss') : '-'}</div>
-          </div>
-        </div>
+            <div className="flex justify-between items-center mt-4">
+              <span className="text-[#989898] text-sm">领取时间</span>
+              <div className="text-right">
+                <div className="text-sm">{info?.claim_time ? dayjs.unix(info?.claim_time).format('YYYY-MM-DD HH:mm:ss') : '-'}</div>
+              </div>
+            </div>
+          </>
+        )}
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">状态</span>
           <div className="text-right">

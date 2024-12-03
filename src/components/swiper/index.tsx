@@ -1,4 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
 import swiper1 from '../../assets/swiper/1.png';
 import swiper2 from '../../assets/swiper/2.png';
 import 'swiper/css';
@@ -6,9 +7,10 @@ import 'swiper/css';
 export const HomeSwiper = () => {
   return (
     <Swiper
+      modules={[Autoplay]}
       slidesPerView={1.15}
       spaceBetween={6}
-      autoplay
+      autoplay={{ delay: 3000 }}
       slidesOffsetBefore={20}
       slidesOffsetAfter={20}
       onSlideChange={() => console.log('slide change')}

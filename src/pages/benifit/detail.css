@@ -1,0 +1,7 @@
+.adm-tabs-tab-list {
+    position: fixed;
+    top: 45px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
