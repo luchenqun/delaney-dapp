@@ -33,7 +33,7 @@ export const HomeInput = () => {
         window.location.reload();
       }, 1000);
     }
-  }, [isLoading, isSuccess, hash]);
+  }, [isLoading, isSuccess, txType, hash]);
 
   const { data: allowance, refetch: refetchAllowance } = useReadContract({
     address: ADDRESS_CONFIG.mud,
