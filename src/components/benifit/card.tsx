@@ -1,13 +1,13 @@
 import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
-import { Modal, Tag } from 'antd-mobile';
+import { Tag, Toast } from 'antd-mobile';
 import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
 import dayjs from 'dayjs';
 
 export const BenifitCard = ({ info }: { info: any }) => {
   const handleCopy = () => {
     copy(info?.hash);
-    Modal.alert({
+    Toast.show({
       content: '复制成功'
     });
   };
