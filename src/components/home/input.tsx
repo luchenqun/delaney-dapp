@@ -20,12 +20,23 @@ export const HomeInput = () => {
   const [userInput, setUserInput] = useState<string | number>('');
   const [isAllow, setIsAllow] = useState(false);
   const [txType, setTxType] = useState<TxType>(TxType.Approve);
-  const { data: hash, writeContract } = useWriteContract();
+  const { data: hash, writeContract, isPending, isError, status } = useWriteContract();
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
 
   useEffect(() => {
-    setBtnLoading(isLoading);
+    if (isPending) {
+      setBtnLoading(true);
+    }
+    if (isError) {
+      setBtnLoading(false);
+    }
+  }, [isPending, isError, status]);
+
+  useEffect(() => {
+    if (hash) {
+      setBtnLoading(isLoading);
+    }
     if (isSuccess) {
       Toast.show({ content: txType == TxType.Approve ? '授权成功' : '质押成功' });
       setTimeout(() => {
@@ -110,14 +121,9 @@ export const HomeInput = () => {
         return;
       }
     }
+    setBtnLoading(true);
     if (isAllow) {
       // 质押
-      console.log({
-        address: ADDRESS_CONFIG.delaney,
-        abi: delaneyAbi,
-        functionName: 'delegate',
-        args: [BigInt(Number(userInput) * 1000000), 0, afterSeconds(10 * 60)]
-      });
       writeContract({
         address: ADDRESS_CONFIG.delaney,
         abi: delaneyAbi,
