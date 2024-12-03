@@ -60,3 +60,7 @@ export const getDynamicRewards = (data: { address: string; page: number; page_si
 export const getUsers = (data: any) => {
   return instance.get('users', { params: data });
 };
+
+export const getDelegates = (data: any) => {
+  return instance.get('delegates', { params: data });
+};

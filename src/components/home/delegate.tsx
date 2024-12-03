@@ -193,7 +193,7 @@ export const HomeDelegate = () => {
       </div>
       <div className="flex justify-between mt-4 relative top-[-10px]">
         <span className="text-xs">质押价值</span>
-        <span className="text-xs text-[#FF3F3F]">≈ {divideByMillionAndRound(Number(userInput) * Number(mudPrice))} USDT</span>
+        <span className="text-xs text-[#FF3F3F]">≈ {divideByMillionAndRound(Number(userInput) * Number(mudPrice)) || '-'} USDT</span>
       </div>
       <div className="mt-4">
         <Button loading={btnLoading} disabled={!userInput} className="w-full" color="primary" onClick={handleDelegate}>
