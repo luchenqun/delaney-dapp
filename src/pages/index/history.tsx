@@ -18,6 +18,8 @@ export const HomeHistory = () => {
   useEffect(() => {
     if (total > data.length) {
       setHasMore(true);
+    } else {
+      setHasMore(false);
     }
   }, [data, total]);
 
@@ -35,7 +37,7 @@ export const HomeHistory = () => {
       }).then((res) => {
         setData(data.concat(res.data.data.items));
         setTotal(res.data.data.total);
-        setPage(res.data.data.pages);
+        setPage(page + 1);
         resolve();
       });
     });

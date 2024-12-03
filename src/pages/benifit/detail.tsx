@@ -8,6 +8,7 @@ import { useAccount } from 'wagmi';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { StaticList } from '../../components/benifit/static-list';
 import { DynamicList } from '../../components/benifit/dynamic-list';
+import './detail.css';
 
 export const BenifitDetail = () => {
   const { address } = useAccount();
@@ -51,8 +52,8 @@ export const BenifitDetail = () => {
       <div className="fixed top-0 z-10 bg-white w-screen">
         <NavBar onBack={handleBack}>质押列表详情</NavBar>
       </div>
-      <div className="bg-[#F5F5F5] min-h-screen pt-9">
-        <Tabs activeLineMode="fixed">
+      <div className="bg-[#F5F5F5] min-h-screen pt-20">
+        <Tabs activeLineMode="fixed" onChange={() => { window.scrollTo(0, 0); }}>
           <Tabs.Tab title="质押生息" key="fruits">
             <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
               <div className="flex justify-between items-center">
