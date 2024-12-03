@@ -5,7 +5,7 @@ export const network = import.meta.env.VITE_NETWORK as Network;
 export const enum Network {
   Dev = 'DEV',
   Testnet = 'TESTNET',
-  Mainnet = 'MAINNET',
+  Mainnet = 'MAINNET'
 }
 
 export const mudTestnet = {
@@ -13,10 +13,16 @@ export const mudTestnet = {
   name: 'MUD Testnet',
   nativeCurrency: { name: 'MUD', symbol: 'MUD', decimals: 18 },
   rpcUrls: {
-    default: { http: ['https://testnet-rpc.mud-chain.net/'] },
+    default: { http: ['https://testnet-rpc.mud-chain.net/'] }
   },
   blockExplorers: {
-    default: { name: 'mudscan', url: 'https://testnet-scan.mud-chain.net/' },
+    default: { name: 'mudscan', url: 'https://testnet-scan.mud-chain.net/' }
   },
-  contracts: {},
+  contracts: {}
 } as const satisfies Chain;
+
+export const enum TxType {
+  Delegate = 0,
+  Approve = 1,
+  Claim = 2
+}

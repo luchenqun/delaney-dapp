@@ -2,14 +2,14 @@ import { Button, Input, Toast } from 'antd-mobile';
 import mud from '../../assets/mud.png';
 import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
-import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { getDelegateUser } from '../../utils/api';
 import { divideByMillionAndRound, formatSeconds } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { erc20Abi } from 'viem';
-import { writeContract } from 'viem/actions';
+import { TxType } from '../../../src/utils/data';
 
 export const HomeInput = () => {
   const { address } = useAccount();
@@ -19,30 +19,21 @@ export const HomeInput = () => {
   const [mudMax, setMudMax] = useState<number>(0);
   const [userInput, setUserInput] = useState<string | number>('');
   const [isAllow, setIsAllow] = useState(false);
-  const { writeContract: writeContractDelegate, isSuccess: isSuccessDelegate } = useWriteContract();
-  const { writeContract: writeContractAllow, isSuccess: isSuccessAllow } = useWriteContract();
+  const [txType, setTxType] = useState<TxType>(TxType.Approve);
+  const { data: hash, writeContract } = useWriteContract();
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
 
   useEffect(() => {
-    if (isSuccessDelegate) {
-      Toast.show({
-        content: '质押成功'
-      });
-      setBtnLoading(false);
+    setBtnLoading(isLoading);
+    if (isSuccess) {
+      Toast.show({ content: txType == TxType.Approve ? '授权成功' : '质押成功' });
       setTimeout(() => {
+        // TODO 这里要刷新数据，不要重载页面
         window.location.reload();
       }, 1000);
     }
-  }, [isSuccessDelegate]);
-
-  useEffect(() => {
-    if (isSuccessAllow) {
-      Toast.show({
-        content: '授权成功'
-      });
-      refetchAllowance();
-    }
-  }, [isSuccessAllow]);
+  }, [isLoading, isSuccess, hash]);
 
   const { data: allowance, refetch: refetchAllowance } = useReadContract({
     address: ADDRESS_CONFIG.mud,
@@ -125,30 +116,24 @@ export const HomeInput = () => {
         address: ADDRESS_CONFIG.delaney,
         abi: delaneyAbi,
         functionName: 'delegate',
-        args: [BigInt((Number(userInput) * 1000000)), 0, parseInt(new Date().getTime() / 1000) + 10 * 60]
-      })
-      writeContractDelegate({
+        args: [BigInt(Number(userInput) * 1000000), 0, parseInt(new Date().getTime() / 1000) + 10 * 60]
+      });
+      writeContract({
         address: ADDRESS_CONFIG.delaney,
         abi: delaneyAbi,
         functionName: 'delegate',
-        args: [BigInt((Number(userInput) * 1000000)), 0, parseInt(new Date().getTime() / 1000) + 10 * 60]
+        args: [BigInt(Number(userInput) * 1000000), 0, parseInt(new Date().getTime() / 1000) + 10 * 60]
       });
-      setBtnLoading(true);
+      setTxType(TxType.Delegate);
     } else {
       // 授权
-      try {
-        await writeContractAllow({
-          address: ADDRESS_CONFIG.mud,
-          abi: erc20Abi,
-          functionName: 'approve',
-          args: [ADDRESS_CONFIG.delaney, 100000000000000n]
-        });
-      } catch (error) {
-        console.log(error);
-        Toast.show({
-          content: '授权失败'
-        });
-      }
+      writeContract({
+        address: ADDRESS_CONFIG.mud,
+        abi: erc20Abi,
+        functionName: 'approve',
+        args: [ADDRESS_CONFIG.delaney, 100000000000000n]
+      });
+      setTxType(TxType.Approve);
     }
   };
 
