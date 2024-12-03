@@ -9,6 +9,7 @@ import { BenifitDetail } from '../pages/benifit/detail.tsx';
 import { HomeHistory } from '../pages/index/history.tsx';
 import { WalletConnect } from '../pages/login/wallet.tsx';
 import { Message } from '../pages/index/message.tsx';
+import { LoginLayout } from '../components/layout/login.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -21,32 +22,38 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <IndexLayout />,
+    element: <LoginLayout />,
     children: [
       {
-        path: '/home',
-        element: <Home />
+        path: '/',
+        element: <IndexLayout />,
+        children: [
+          {
+            path: '/home',
+            element: <Home />
+          },
+          {
+            path: '/benifit',
+            element: <Benifit />
+          },
+          {
+            path: '/team',
+            element: <Team />
+          }
+        ]
       },
       {
-        path: '/benifit',
-        element: <Benifit />
+        path: '/benifit/detail',
+        element: <BenifitDetail />
       },
       {
-        path: '/team',
-        element: <Team />
+        path: '/home/history',
+        element: <HomeHistory />
+      },
+      {
+        path: '/message',
+        element: <Message />
       }
     ]
-  },
-  {
-    path: '/benifit/detail',
-    element: <BenifitDetail />
-  },
-  {
-    path: '/home/history',
-    element: <HomeHistory />
-  },
-  {
-    path: '/message',
-    element: <Message />
   }
 ]);

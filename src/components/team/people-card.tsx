@@ -1,4 +1,3 @@
-import { toSvg } from 'jdenticon';
 import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
 import dayjs from 'dayjs';
 import JazziconAvatar from '../avatar';
