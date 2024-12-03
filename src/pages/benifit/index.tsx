@@ -3,7 +3,7 @@ import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
-import { getClaimUser, getLatestClaim, getRewardUser } from '../../utils/api';
+import { getClaimUserStat, getLatestClaim, getRewardUserStat } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 
 export const Benifit = () => {
@@ -23,7 +23,7 @@ export const Benifit = () => {
   useEffect(() => {
     if (address) {
       setLoading(true);
-      Promise.all([getRewardUser({ address }), getClaimUser({ address }), getLatestClaim({ address })])
+      Promise.all([getRewardUserStat({ address }), getClaimUserStat({ address }), getLatestClaim({ address })])
         .then(([rewardRes, claimRes, latestClaimRes]) => {
           setRewardUser(rewardRes.data.data);
           setClaimUser(claimRes.data.data);

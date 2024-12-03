@@ -4,7 +4,7 @@ import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { useEffect, useState } from 'react';
-import { getDelegateUser } from '../../utils/api';
+import { getDelegateUserStat } from '../../utils/api';
 import { divideByMillionAndRound, formatSeconds, afterSeconds } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
@@ -89,7 +89,7 @@ export const HomeInput = () => {
 
   useEffect(() => {
     if (address) {
-      getDelegateUser({ address }).then((res) => {
+      getDelegateUserStat({ address }).then((res) => {
         setDelegateUser(res.data.data);
       });
     }

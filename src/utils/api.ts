@@ -12,23 +12,23 @@ export const getMudPrice = () => {
   return instance.get('mud-price');
 };
 
-export const getRewardUser = (data: { address: string }) => {
+export const getRewardUserStat = (data: { address: string }) => {
   return instance.get('reward-user-stat', { params: data });
 };
 
-export const getClaimUser = (data: { address: string }) => {
+export const getClaimUserStat = (data: { address: string }) => {
   return instance.get('claim-user-stat', { params: data });
 };
 
-export const getDelegateUser = (data: { address: string }) => {
+export const getDelegateUserStat = (data: { address: string }) => {
   return instance.get('delegate-user-stat', { params: data });
 };
 
-export const getDynamicRewardUser = (data: { address: string }) => {
+export const getDynamicRewardUserStat = (data: { address: string }) => {
   return instance.get('dynamic-reward-user-stat', { params: data });
 };
 
-export const getStaticRewardUser = (data: { address: string }) => {
+export const getStaticRewardUserStat = (data: { address: string }) => {
   return instance.get('static-reward-user-stat', { params: data });
 };
 

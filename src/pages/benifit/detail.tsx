@@ -2,7 +2,7 @@ import { DotLoading, NavBar, Tabs } from 'antd-mobile';
 import check from '../../assets/check.svg';
 import lock from '../../assets/lock.svg';
 import time from '../../assets/time.svg';
-import { getDynamicRewardUser, getStaticRewardUser } from '../../utils/api';
+import { getDynamicRewardUserStat, getStaticRewardUserStat } from '../../utils/api';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { divideByMillionAndRound } from '../../utils/tools';
@@ -22,7 +22,7 @@ export const BenifitDetail = () => {
   useEffect(() => {
     if (address) {
       setLoading(true);
-      Promise.all([getDynamicRewardUser({ address }), getStaticRewardUser({ address })])
+      Promise.all([getDynamicRewardUserStat({ address }), getStaticRewardUserStat({ address })])
         .then(([dynamicRes, staticRes]) => {
           setDynamicRewardUser(dynamicRes.data.data);
           setStaticRewardUser(staticRes.data.data);
