@@ -64,26 +64,30 @@ export const CardDelegate = ({ info }: { info: any }) => {
             <div className="text-sm">{divideByMillionAndRound(info.back_mud)} MUD</div>
           </div>
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-[#989898] text-sm">提取时间</span>
-          <div className="text-right">
-            <div className="text-sm">{info.undelegate_time ? dayjs.unix(info.undelegate_time).format('YYYY-MM-DD HH:mm:ss') : '-'}</div>
-          </div>
-        </div>
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-[#989898] text-sm">状态</span>
-          <div className="text-right">
-            <div className="text-sm">
-              {renderStatus()}
+        {info.status == 4 && (
+          <>
+            <div className="flex justify-between items-center mt-4">
+              <span className="text-[#989898] text-sm">提取时间</span>
+              <div className="text-right">
+                <div className="text-sm">{info.undelegate_time ? dayjs.unix(info.undelegate_time).format('YYYY-MM-DD HH:mm:ss') : '-'}</div>
+              </div>
             </div>
+            <div className="flex justify-between items-center mt-4">
+              <span className="text-[#989898] text-sm">状态</span>
+              <div className="text-right">
+                <div className="text-sm">{renderStatus()}</div>
+              </div>
+            </div>
+          </>
+        )}
+        {info.status == 0 && (
+          <div className="mt-6">
+            <Button color="primary" className="w-full">
+              <span className="text-white mr-1">120天 23小时52分</span>
+              <span className="text-sm relative top-[-1px]">可提取</span>
+            </Button>
           </div>
-        </div>
-        {info.status == 0 && (<div className="mt-6">
-          <Button color="primary" className="w-full">
-            <span className="text-white mr-1">120天 23小时52分</span>
-            <span className="text-sm relative top-[-1px]">可提取</span>
-          </Button>
-        </div>)}
+        )}
         <div className="flex gap-4 mt-4">
           <Button className="w-full bg-[#F3F3F3] rounded-xl">提取</Button>
           <Button className="w-full bg-[#FEC533] h-10 rounded-xl">复投</Button>
