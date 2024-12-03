@@ -13,8 +13,6 @@ export const HomeSwiper = () => {
       autoplay={{ delay: 3000 }}
       slidesOffsetBefore={20}
       slidesOffsetAfter={20}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
     >
       <SwiperSlide>
         <img className="rounded-2xl" src={swiper1} alt="" />
