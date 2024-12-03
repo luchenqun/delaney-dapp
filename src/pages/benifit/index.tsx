@@ -10,8 +10,8 @@ export const Benifit = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { address, isConnected } = useAccount();
-  const [rewardUser, setRewardUser] = useState<any>(null);
-  const [claimUser, setClaimUser] = useState<any>(null);
+  const [rewardUserStat, setRewardUserStat] = useState<any>(null);
+  const [claimUserStat, setClaimUserStat] = useState<any>(null);
   const [latestClaim, setLatestClaim] = useState<any>(null);
 
   useEffect(() => {
@@ -25,8 +25,8 @@ export const Benifit = () => {
       setLoading(true);
       Promise.all([getRewardUserStat({ address }), getClaimUserStat({ address }), getLatestClaim({ address })])
         .then(([rewardRes, claimRes, latestClaimRes]) => {
-          setRewardUser(rewardRes.data.data);
-          setClaimUser(claimRes.data.data);
+          setRewardUserStat(rewardRes.data.data);
+          setClaimUserStat(claimRes.data.data);
           setLatestClaim(latestClaimRes.data.data);
           setLoading(false);
         })
@@ -64,8 +64,8 @@ export const Benifit = () => {
             <div>累计总收益</div>
             <div className="flex items-center">
               <div className="text-right">
-                <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(rewardUser?.usdt || 0)} USDT</div>
-                <div className="text-xs">≈{divideByMillionAndRound(rewardUser?.mud || 0)} USDTMUD</div>
+                <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(rewardUserStat?.usdt || 0)} USDT</div>
+                <div className="text-xs">≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} USDTMUD</div>
               </div>
               <div className="ml-2">
                 <img src={right} alt="" />
@@ -76,8 +76,8 @@ export const Benifit = () => {
             <div>累计提取</div>
             <div className="flex items-center">
               <div className="text-right">
-                <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(claimUser?.usdt || 0)} USDT</div>
-                <div className="text-xs">≈{divideByMillionAndRound(claimUser?.mud || 0)} MUD</div>
+                <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(claimUserStat?.usdt || 0)} USDT</div>
+                <div className="text-xs">≈{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</div>
               </div>
               <div className="ml-2">
                 <img src={right} alt="" />
