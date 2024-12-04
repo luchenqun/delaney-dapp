@@ -1,4 +1,4 @@
-import { InfiniteScroll, List, NavBar } from 'antd-mobile';
+import { InfiniteScroll, List, NavBar, PullToRefresh } from 'antd-mobile';
 import { useState } from 'react';
 import { getClaims } from '../../utils/api';
 import { useAccount } from 'wagmi';
@@ -40,14 +40,22 @@ export const Claim = () => {
         奖励领取记录
       </NavBar>
       <div className="bg-[#F5F5F5] min-h-screen pt-10">
-        <List>
+        <PullToRefresh
+          onRefresh={async () => {
+            setData([]);
+            setPage(0);
+            setHasMore(true);
+          }}
+        >
+          <List>
           {data.map((item, index) => (
             <List.Item key={index}>
               <CardClaim info={item} />
             </List.Item>
           ))}
         </List>
-        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+          <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+        </PullToRefresh>
       </div>
     </>
   );

@@ -33,7 +33,7 @@ export const CardClaim = ({ info }: { info: any }) => {
             <div className="text-xs text-[#989898]">{divideByMillionAndRound(info.mud)} MUD</div>
           </div>
         </div>
-        <div className="flex justify-between items-center mt-4">
+        {info.status !== 2 && <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">交易哈希</span>
           <div className="text-right">
             <div className="text-sm text-[#2A66FF] flex">
@@ -41,13 +41,13 @@ export const CardClaim = ({ info }: { info: any }) => {
               <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
             </div>
           </div>
-        </div>
-        <div className="flex justify-between items-center mt-4">
+        </div>}
+        {info.status !== 2 && <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">领取时间</span>
           <div className="text-right">
             <div className="text-sm">{dayjs.unix(info.claim_time).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
-        </div>
+        </div>}
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">截止时间</span>
           <div className="text-right">
