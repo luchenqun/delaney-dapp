@@ -39,7 +39,7 @@ export const BenifitDetail = () => {
           setLoading(false);
         });
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -55,7 +55,7 @@ export const BenifitDetail = () => {
   return (
     <>
       <div className="fixed top-0 z-10 bg-white w-screen">
-        <NavBar onBack={handleBack}>质押列表详情</NavBar>
+        <NavBar onBack={handleBack}>收益列表详情</NavBar>
       </div>
       <div className="bg-[#F5F5F5] min-h-screen pt-24">
         <PullToRefresh
@@ -64,13 +64,18 @@ export const BenifitDetail = () => {
             await sleep(1000);
           }}
         >
-          <Tabs activeLineMode="fixed" onChange={() => { window.scrollTo(0, 0); }}>
+          <Tabs
+            activeLineMode="fixed"
+            onChange={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
             <Tabs.Tab title="质押生息" key="fruits">
               <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
                 <div className="flex justify-between items-center">
                   <span className="text-[#989898] text-sm flex items-center">
                     <img src={check} alt="" />
-                    <span className="ml-1">直推质押</span>
+                    <span className="ml-1">已领取</span>
                   </span>
                   <div className="text-right">
                     <div className="font-semibold text-sm">{divideByMillionAndRound(staticRewardUser?.claimed_usdt || 0)} USDT</div>
@@ -104,7 +109,7 @@ export const BenifitDetail = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-[#989898] text-sm flex items-center">
                     <img src={check} alt="" />
-                    <span className="ml-1">直推质押</span>
+                    <span className="ml-1">已领取</span>
                   </span>
                   <div className="text-right">
                     <div className="font-semibold text-sm">{divideByMillionAndRound(dynamicRewardUser?.claimed_usdt || 0)} USDT</div>

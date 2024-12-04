@@ -47,10 +47,12 @@ export const BenifitCard = ({ info }: { info: any }) => {
         {info.status == 2 && (
           <>
             <div className="flex justify-between items-center">
-              <span className="text-[#989898] text-sm">领取哈希</span>
+              <span className="text-[#989898] text-sm">交易哈希</span>
               <div className="text-right">
                 <div className="text-sm text-[#2A66FF] flex">
-                  <a href={getHashUrl(info.hash)} target="_blank">{formatAddressString(info.hash)}</a>
+                  <a href={getHashUrl(info.hash)} target="_blank">
+                    {formatAddressString(info.hash)}
+                  </a>
                   <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
                 </div>
               </div>

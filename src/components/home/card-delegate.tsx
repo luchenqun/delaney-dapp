@@ -69,13 +69,13 @@ export const CardDelegate = ({ info }: { info: any }) => {
     if (info.status === 0) {
       return <Tag color="#2db7f5">质押中</Tag>;
     } else if (info.status === 1) {
-      return <Tag color="success">成功</Tag>;
+      return <Tag color="success">已质押</Tag>;
     } else if (info.status === 2) {
-      return <Tag color="danger">失败</Tag>;
+      return <Tag color="danger">质押失败</Tag>;
     } else if (info.status === 3) {
-      return <Tag color="warning">取回中</Tag>;
+      return <Tag color="warning">提取中</Tag>;
     } else if (info.status === 4) {
-      return <Tag color="default">已取回</Tag>;
+      return <Tag color="default">已提取</Tag>;
     }
   };
 
@@ -109,10 +109,12 @@ export const CardDelegate = ({ info }: { info: any }) => {
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
-          <span className="text-[#989898] text-sm">质押哈希</span>
+          <span className="text-[#989898] text-sm">交易哈希</span>
           <div className="text-right">
             <div className="text-sm text-[#2A66FF] flex">
-              <a href={getHashUrl(info.hash)} target="_blank">{formatAddressString(info.hash)}</a>
+              <a href={getHashUrl(info.hash)} target="_blank">
+                {formatAddressString(info.hash)}
+              </a>
               <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
             </div>
           </div>
@@ -158,20 +160,23 @@ export const CardDelegate = ({ info }: { info: any }) => {
               <span className="text-white mr-1">
                 <Countdown date={dayjs.unix(info.unlock_time).toDate()} renderer={renderer} />
               </span>
-              <span className="text-sm relative top-[-1px]">可提取</span>
+              <span className="text-sm relative top-[-1px]">后可复投或提取</span>
             </Button>
           </div>
         )}
-        {info.status == 1 && dayjs().isAfter(dayjs.unix(info.unlock_time)) && (<>
-          <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
-          <div className="flex gap-4 mt-4">
-            <Button loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
-              复投
-            </Button>
-            <Button loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
-              提取
-            </Button>
-          </div></>)}
+        {info.status == 1 && dayjs().isAfter(dayjs.unix(info.unlock_time)) && (
+          <>
+            <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
+            <div className="flex gap-4 mt-4">
+              <Button loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
+                复投
+              </Button>
+              <Button loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
+                提取
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

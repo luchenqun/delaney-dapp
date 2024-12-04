@@ -151,18 +151,23 @@ export const Benifit = () => {
               </div>
             </div>
             <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-6 pt-6 text-center">
-              <div className="text-[#989898]">可提取数量</div>
+              <div className="text-[#989898]">可提取</div>
               <div className="text-[2rem] font-semibold">{divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</div>
               <div className="text-base relative top-[-0.5rem]">≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</div>
               <div className="w-full flex justify-between mt-4">
                 <span>
                   手续费 <span className="text-[#46D69C]">{fee}%</span>
                 </span>
-                <span>{divideByMillionAndRound(latestClaim?.mud || 0) * (fee) / 100} USDT</span>
+                <span>{(divideByMillionAndRound(latestClaim?.mud || 0) * fee) / 100} USDT</span>
               </div>
               <div className="w-full flex justify-between mt-2">
                 <span>实际到账</span>
-                <span>≈ {divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee) / 100} MUD</span>
+                <span>≈ {(divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee)) / 100} MUD</span>
+              </div>
+              <div className="w-full flex justify-between mt-2">
+                <span>最少提取</span>
+                {/* 通过合约获取 */}
+                <span> 1 USDT</span>
               </div>
               <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
               <Button loading={btnLoading} disabled={isLoading || !latestClaim?.usdt} color="primary" className="w-full" onClick={handleClaim}>

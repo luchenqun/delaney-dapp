@@ -191,7 +191,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       </div>
       <div className="flex justify-between mt-4">
         <div className="text-center">
-          <div className="text-sm">20%年化+推广</div>
+          <div className="text-sm">121%年化+推广</div>
           <div className="text-xs text-[#989898]">收益</div>
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
@@ -217,10 +217,12 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
           全部
         </div>
       </div>
-      <div className="flex justify-between mt-4 relative top-[-10px]">
-        <span className="text-xs">质押价值</span>
-        <span className="text-xs text-[#FF3F3F]">≈ {divideByMillionAndRound(Number(userInput) * Number(mudPrice)) || '-'} USDT</span>
-      </div>
+      {userInput && (
+        <div className="flex justify-between mt-4 relative top-[-10px]">
+          <span className="text-xs">质押价值</span>
+          <span className="text-xs text-[#FF3F3F]">≈ {divideByMillionAndRound(Number(userInput) * Number(mudPrice)) || '-'} USDT</span>
+        </div>
+      )}
       <div className="mt-4">
         <Button loading={btnLoading} disabled={!userInput} className="w-full" color="primary" onClick={handleDelegate}>
           {isAllow ? '质押' : '授权'}
