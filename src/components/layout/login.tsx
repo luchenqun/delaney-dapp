@@ -26,7 +26,7 @@ export const LoginLayout = () => {
         navigate('/');
       });
     }
-  }, [isConnected]);
+  }, [isConnected, address, navigate]);
 
   return <Outlet />;
 };
