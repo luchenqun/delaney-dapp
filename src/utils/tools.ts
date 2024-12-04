@@ -45,3 +45,7 @@ export function formatSeconds(seconds: number): string {
 export function afterSeconds(seconds: number) {
   return parseInt((new Date().getTime() / 1000).toString()) + seconds;
 }
+
+export function getHashUrl(hash: string) {
+  return `${import.meta.env.VITE_APP_HASH_URL}${hash}`;
+}

@@ -1,7 +1,7 @@
 import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
 import { Tag, Toast } from 'antd-mobile';
-import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
+import { divideByMillionAndRound, formatAddressString, getHashUrl } from '../../utils/tools';
 import dayjs from 'dayjs';
 
 export const CardClaim = ({ info }: { info: any }) => {
@@ -37,7 +37,7 @@ export const CardClaim = ({ info }: { info: any }) => {
           <span className="text-[#989898] text-sm">交易哈希</span>
           <div className="text-right">
             <div className="text-sm text-[#2A66FF] flex">
-              {formatAddressString(info.hash)}
+              <a href={getHashUrl(info.hash)} target="_blank">{formatAddressString(info.hash)}</a>
               <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
             </div>
           </div>

@@ -2,7 +2,7 @@ import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
 import { Tag, Toast } from 'antd-mobile';
 import dayjs from 'dayjs';
-import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
+import { divideByMillionAndRound, formatAddressString, getHashUrl } from '../../utils/tools';
 
 export const BenifitCardPromotion = ({ info }: { info: any }) => {
   const handleCopy = () => {
@@ -44,7 +44,7 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
               <span className="text-[#989898] text-sm">领取哈希</span>
               <div className="text-right">
                 <div className="text-sm text-[#2A66FF] flex">
-                  {formatAddressString(info?.hash)}
+                  <a href={getHashUrl(info.hash)} target="_blank">{formatAddressString(info.hash)}</a>
                   <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
                 </div>
               </div>

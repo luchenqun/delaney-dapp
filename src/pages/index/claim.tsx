@@ -39,7 +39,7 @@ export const Claim = () => {
       <NavBar onBack={handleBack} className="fixed top-0 left-0 right-0 z-10 bg-white">
         奖励领取记录
       </NavBar>
-      <div className="bg-[#F5F5F5] min-h-screen pt-10">
+      <div className="bg-[#F5F5F5] min-h-screen pt-12">
         <PullToRefresh
           onRefresh={async () => {
             setData([]);
