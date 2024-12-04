@@ -82,3 +82,6 @@ export const getClaims = (data: any) => {
   return instance.get('claims', { params: data });
 };
 
+export const setMessageRead = (data: { address: string; }) => {
+  return instance.post('set-message-all-read', data);
+};

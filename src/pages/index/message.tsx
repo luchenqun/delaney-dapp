@@ -2,27 +2,25 @@ import { InfiniteScroll, List, NavBar } from 'antd-mobile';
 import { useNavigate } from 'react-router-dom';
 import clear from '../../assets/clear.svg';
 import empty from '../../assets/empty.svg';
-import { useState } from 'react';
-import { getMessages } from '../../utils/api';
+import { useEffect, useState } from 'react';
+import { getMessages, setMessageRead } from '../../utils/api';
 import message from '../../assets/message.svg';
 import { useAccount } from 'wagmi';
 import dayjs from 'dayjs';
 import './message.css';
 export const Message = () => {
   const navigate = useNavigate();
+  const { address } = useAccount();
+  
+  useEffect(() => {
+    if (address) {
+      setMessageRead({ address: address as string });;
+    }
+  }, [address]);
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-10 bg-white">
-        <NavBar
-          onBack={() => navigate('/home')}
-          right={
-            <>
-              <div className="flex justify-end">
-                <img src={clear} alt="清空" />
-              </div>
-            </>
-          }
-        >
+        <NavBar onBack={() => navigate('/home')}>
           消息
         </NavBar>
       </div>
@@ -62,7 +60,7 @@ const MessageContent = () => {
 
   return (
     <>
-      {data.length === 0 && (
+      {data.length === 0 && !hasMore && (
         <div className="felx h-full items-center justify-center">
           <div className="flex flex-col items-center mt-32">
             <img src={empty} alt="" />

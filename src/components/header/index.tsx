@@ -7,10 +7,13 @@ import { divideByMillionAndRound, formatAddressString } from '../../utils/tools'
 import { useNavigate } from 'react-router-dom';
 import copyIcon from '../../assets/copy.svg';
 import copy from 'copy-to-clipboard';
+import { useEffect, useState } from 'react';
+import { getMessages } from '../../utils/api';
 
 export const HomeHeaders = () => {
   const navigate = useNavigate();
   const { address } = useAccount();
+  const [messageUnread, setMessageUnread] = useState(false);
 
   const { data } = useReadContract({
     functionName: 'mudPrice',
@@ -26,6 +29,21 @@ export const HomeHeaders = () => {
     });
   };
 
+  useEffect(() => {
+    if (address) {
+      getMessages({
+        'filters[address]': `='${address?.toLocaleLowerCase()}'`,
+        'filters[is_read]': '=false'
+      }).then((res) => {
+        if (res.data.data.total > 0) {
+          setMessageUnread(true);
+        } else {
+          setMessageUnread(false);
+        }
+      });
+    }
+  }, [address]);
+
   return (
     <div className="bg-white px-4 py-1 flex justify-between items-center fixed top-0 left-0 right-0 z-10">
       <div className="flex">
@@ -38,7 +56,7 @@ export const HomeHeaders = () => {
           <div className="text-primary text-sm">{data ? `MUD ≈ ${divideByMillionAndRound(data as bigint)} USDT` : '-'}</div>
         </div>
       </div>
-      <Badge content={Badge.dot}>
+      <Badge content={messageUnread ? Badge.dot : ''}>
         <img className="w-6 h-6" src={bell} alt="消息" onClick={() => navigate('/message')} />
       </Badge>
     </div>
