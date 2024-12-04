@@ -1,35 +1,28 @@
 import { Badge, Toast } from 'antd-mobile';
 import logo from '../../assets/logo.svg';
 import bell from '../../assets/bell.svg';
-import { useAccount, useReadContract } from 'wagmi';
-import delaneyAbi from '../../../abi/delaney.json';
+import { useAccount } from 'wagmi';
 import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
 import { useNavigate } from 'react-router-dom';
 import copyIcon from '../../assets/copy.svg';
 import copy from 'copy-to-clipboard';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getMessages } from '../../utils/api';
+import { useMudPrice } from '../../hook/useMudPrice';
 
 export const HomeHeaders = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const { address } = useAccount();
   const [messageUnread, setMessageUnread] = useState(false);
+  const { price } = useMudPrice(); 
 
   useImperativeHandle(ref, () => ({
     refresh: () => {
       if (address) {
         getMessageUnread();
-        refetch();
       }
     }
   }));
-
-  const { data, refetch } = useReadContract({
-    functionName: 'mudPrice',
-    abi: delaneyAbi,
-    address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
-    args: []
-  });
 
   const handleCopy = () => {
     copy(address as string);
@@ -66,7 +59,7 @@ export const HomeHeaders = forwardRef((props, ref) => {
             {formatAddressString(address as string)}
             <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
           </div>
-          <div className="text-primary text-sm">{data ? `MUD ≈ ${divideByMillionAndRound(data as bigint)} USDT` : '-'}</div>
+          <div className="text-primary text-sm">{price ? `MUD ≈ ${divideByMillionAndRound(price as bigint)} USDT` : '-'}</div>
         </div>
       </div>
       <Badge content={messageUnread ? Badge.dot : ''}>

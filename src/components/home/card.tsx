@@ -6,32 +6,37 @@ import copyIcon from '../../assets/copy.svg';
 import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
 import { DotLoading, Modal, Toast } from 'antd-mobile';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getUser } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
-import { erc20Abi } from 'viem';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import JazziconAvatar from '../avatar';
+import useContractBalance from '../../hook/useContractBalance';
 
 export const HomeCard = forwardRef((props, ref) => {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const [userInfo, setUserInfo] = useState<any>(null);
 
-  const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useReadContract({
-    address: ADDRESS_CONFIG.mud,
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [address as `0x${string}`]
-  });
+  const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useContractBalance(address as string, ADDRESS_CONFIG.mud as string);
+  const { data: usdtBalance, isLoading: usdtLoading, refetch: refetchUsdt } = useContractBalance(address as string, ADDRESS_CONFIG.usdt as string);
 
-  const { data: usdtBalance, isLoading: usdtLoading, refetch: refetchUsdt } = useReadContract({
-    address: ADDRESS_CONFIG.usdt,
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [address as `0x${string}`]
-  });
+  // const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useReadContract({
+  //   address: ADDRESS_CONFIG.mud,
+  //   abi: erc20Abi,
+  //   functionName: 'balanceOf',
+  //   args: [address as `0x${string}`]
+  // });
+
+  // const { data: usdtBalance, isLoading: usdtLoading, refetch: refetchUsdt } = useReadContract({
+  //   address: ADDRESS_CONFIG.usdt,
+  //   abi: erc20Abi,
+  //   functionName: 'balanceOf',
+  //   args: [address as `0x${string}`]
+  // });
+
+  console.log(mudBalance, usdtBalance);
 
   useImperativeHandle(ref, () => ({
     refresh: () => {

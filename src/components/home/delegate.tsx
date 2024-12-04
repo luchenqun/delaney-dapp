@@ -10,6 +10,8 @@ import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { erc20Abi } from 'viem';
 import { TxType } from '../../utils/data';
+import useContractBalance from '../../hook/useContractBalance';
+import { useMudPrice } from '../../hook/useMudPrice';
 
 export const HomeDelegate = forwardRef((props: any, ref) => {
   const { address } = useAccount();
@@ -75,12 +77,14 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
     }
   }, [allowance, userInput]);
 
-  const { data: mudBalance, refetch: refetchMud } = useReadContract({
-    address: ADDRESS_CONFIG.mud,
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [address as `0x${string}`]
-  });
+  // const { data: mudBalance, refetch: refetchMud } = useReadContract({
+  //   address: ADDRESS_CONFIG.mud,
+  //   abi: erc20Abi,
+  //   functionName: 'balanceOf',
+  //   args: [address as `0x${string}`]
+  // });
+
+  const { data: mudBalance, refetch: refetchMud } = useContractBalance(address as string, ADDRESS_CONFIG.mud);
 
   const { data: configData, refetch: refetchConfig } = useReadContract({
     address: ADDRESS_CONFIG.delaney,
@@ -89,12 +93,14 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
     args: []
   });
 
-  const { data: mudPrice, refetch: refetchMudPrice } = useReadContract({
-    functionName: 'mudPrice',
-    abi: delaneyAbi,
-    address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
-    args: []
-  });
+  // const { data: mudPrice, refetch: refetchMudPrice } = useReadContract({
+  //   functionName: 'mudPrice',
+  //   abi: delaneyAbi,
+  //   address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
+  //   args: []
+  // });
+
+  const { price: mudPrice, refetch: refetchMudPrice } = useMudPrice();
 
   const handleAll = () => {
     if (mudBalance) {
