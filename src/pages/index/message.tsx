@@ -11,18 +11,16 @@ import './message.css';
 export const Message = () => {
   const navigate = useNavigate();
   const { address } = useAccount();
-  
+
   useEffect(() => {
     if (address) {
-      setMessageRead({ address: address as string });;
+      setMessageRead({ address: address as string });
     }
   }, [address]);
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-10 bg-white">
-        <NavBar onBack={() => navigate('/home')}>
-          消息
-        </NavBar>
+        <NavBar onBack={() => navigate('/home')}>消息</NavBar>
       </div>
       <div className="pt-10 bg-[#F5F5F5] min-h-screen">
         <MessageContent />
@@ -44,7 +42,7 @@ const MessageContent = () => {
         page_size: 10,
         sort_field: 'create_time',
         sort_order: 'desc',
-        'filters[address]': `='${address?.toLocaleLowerCase()}'`
+        filters: { address: `='${address?.toLocaleLowerCase()}'` }
       }).then((res) => {
         setData(data.concat(res.data.data.items));
         setPage(page + 1);

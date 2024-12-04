@@ -31,7 +31,12 @@ export const Team = () => {
 
   const getList = (page: number) => {
     return new Promise<void>((resolve) => {
-      getUsers({ filters: { parent: `='${address?.toLowerCase()}'` }, page }).then((res) => {
+      getUsers({
+        filters: { parent: `='${address?.toLowerCase()}'` },
+        page,
+        sort_field: 'create_time',
+        sort_order: 'desc'
+      }).then((res) => {
         setList(res.data.data.items);
         setHasMore(res.data.data.total > res.data.data.items.length);
         setPage(res.data.data.pages);

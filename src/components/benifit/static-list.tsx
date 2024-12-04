@@ -16,7 +16,9 @@ export const StaticList = () => {
         getStaticRewards({
           filters: { address: `='${address?.toLocaleLowerCase()}'` },
           page: page + 1,
-          page_size: 10
+          page_size: 10,
+          sort_field: 'create_time',
+          sort_order: 'desc'
         }).then((res) => {
           setStaticRewards(staticRewards.concat(res.data.data.items));
           setPage(page + 1);

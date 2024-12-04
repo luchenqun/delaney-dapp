@@ -9,15 +9,15 @@ export const Claim = () => {
   const [data, setData] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
-  
+
   const handleBack = () => {
     history.back();
   };
 
   const loadMore = () => {
     return new Promise<void>((resolve) => {
-      getClaims({ 
-        'filters[address]': `='${address?.toLocaleLowerCase()}'`, 
+      getClaims({
+        filters: { address: `='${address?.toLocaleLowerCase()}'` },
         sort_field: 'create_time',
         sort_order: 'desc',
         page: page + 1
@@ -48,12 +48,12 @@ export const Claim = () => {
           }}
         >
           <List>
-          {data.map((item, index) => (
-            <List.Item key={index}>
-              <CardClaim info={item} />
-            </List.Item>
-          ))}
-        </List>
+            {data.map((item, index) => (
+              <List.Item key={index}>
+                <CardClaim info={item} />
+              </List.Item>
+            ))}
+          </List>
           <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
         </PullToRefresh>
       </div>

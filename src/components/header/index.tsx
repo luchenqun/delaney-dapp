@@ -7,19 +7,19 @@ import { useNavigate } from 'react-router-dom';
 import copyIcon from '../../assets/copy.svg';
 import copy from 'copy-to-clipboard';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import { getMessages } from '../../utils/api';
+import { getHasUnreadMessage } from '../../utils/api';
 import { useMudPrice } from '../../hook/useMudPrice';
 
 export const HomeHeaders = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const { address } = useAccount();
   const [messageUnread, setMessageUnread] = useState(false);
-  const { price } = useMudPrice(); 
+  const { price } = useMudPrice();
 
   useImperativeHandle(ref, () => ({
     refresh: () => {
       if (address) {
-        getMessageUnread();
+        getHasUnreadMessage();
       }
     }
   }));
@@ -33,20 +33,15 @@ export const HomeHeaders = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (address) {
-      getMessageUnread();
+      hasUnreadMessage();
     }
   }, [address]);
 
-  const getMessageUnread = async () => {
-    getMessages({
-      'filters[address]': `='${address?.toLocaleLowerCase()}'`,
-      'filters[is_read]': '=false'
+  const hasUnreadMessage = async () => {
+    getHasUnreadMessage({
+      address
     }).then((res) => {
-      if (res.data.data.total > 0) {
-        setMessageUnread(true);
-      } else {
-        setMessageUnread(false);
-      }
+      setMessageUnread(res.data.data.has_unread);
     });
   };
 
@@ -68,4 +63,3 @@ export const HomeHeaders = forwardRef((props, ref) => {
     </div>
   );
 });
-  
