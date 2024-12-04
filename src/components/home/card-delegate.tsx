@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { TxType } from '../../utils/data';
+import Countdown from 'react-countdown';
 
 export const CardDelegate = ({ info }: { info: any }) => {
   const { data: hash, writeContract, isPending, isError, status } = useWriteContract();
@@ -78,6 +79,25 @@ export const CardDelegate = ({ info }: { info: any }) => {
     }
   };
 
+  const renderer = ({ days, hours, minutes, completed, seconds }: any) => {
+    if (completed) {
+      return <span>已到期</span>;
+    }
+    let timeString = '';
+    if (days > 0) {
+      timeString += `${days}天`;
+    }
+    if (days > 0 || hours > 0) {
+      timeString += `${hours}小时`;
+    }
+    if (days > 0 || hours > 0 || minutes > 0) {
+      timeString += `${minutes}分`;
+    }
+    timeString += `${seconds}秒`;
+
+    return <span>{timeString}</span>;
+  };
+
   return (
     <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
       <div>
@@ -132,23 +152,26 @@ export const CardDelegate = ({ info }: { info: any }) => {
             <div className="text-sm">{renderStatus()}</div>
           </div>
         </div>
-        {info.status == 0 && (
+        {info.status == 1 && dayjs().isBefore(dayjs.unix(info.unlock_time)) && (
           <div className="mt-6">
             <Button color="primary" className="w-full">
-              <span className="text-white mr-1">120天 23小时52分</span>
+              <span className="text-white mr-1">
+                <Countdown date={dayjs.unix(info.unlock_time).toDate()} renderer={renderer} />
+              </span>
               <span className="text-sm relative top-[-1px]">可提取</span>
             </Button>
           </div>
         )}
-        <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
-        <div className="flex gap-4 mt-4">
-          <Button loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
-            复投
-          </Button>
-          <Button loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
-            提取
-          </Button>
-        </div>
+        {info.status == 1 && dayjs().isAfter(dayjs.unix(info.unlock_time)) && (<>
+          <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
+          <div className="flex gap-4 mt-4">
+            <Button loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
+              复投
+            </Button>
+            <Button loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
+              提取
+            </Button>
+          </div></>)}
       </div>
     </div>
   );
