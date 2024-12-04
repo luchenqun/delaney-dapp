@@ -1,6 +1,6 @@
 import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
-import { Button, Modal, Tag, Toast } from 'antd-mobile';
+import { Button, Tag, Toast } from 'antd-mobile';
 import { useEffect, useState } from 'react';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { divideByMillionAndRound, formatAddressString, afterSeconds } from '../../utils/tools';
@@ -39,7 +39,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
 
   const handleCopy = () => {
     copy(info.hash);
-    Modal.alert({
+    Toast.show({
       content: '复制成功'
     });
   };

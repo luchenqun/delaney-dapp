@@ -5,7 +5,7 @@ import mud from '../../assets/mud.png';
 import copyIcon from '../../assets/copy.svg';
 import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
-import { DotLoading, Modal } from 'antd-mobile';
+import { DotLoading, Modal, Toast } from 'antd-mobile';
 import { useAccount, useReadContract } from 'wagmi';
 import { useEffect, useRef, useState } from 'react';
 import { getUser } from '../../utils/api';
@@ -45,7 +45,7 @@ export const HomeCard = () => {
 
   const handleCopy = () => {
     copy(userInfo?.ref);
-    Modal.alert({
+    Toast.show({
       content: '复制成功'
     });
   };
