@@ -7,15 +7,24 @@ import { divideByMillionAndRound, formatAddressString } from '../../utils/tools'
 import { useNavigate } from 'react-router-dom';
 import copyIcon from '../../assets/copy.svg';
 import copy from 'copy-to-clipboard';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getMessages } from '../../utils/api';
 
-export const HomeHeaders = () => {
+export const HomeHeaders = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const { address } = useAccount();
   const [messageUnread, setMessageUnread] = useState(false);
 
-  const { data } = useReadContract({
+  useImperativeHandle(ref, () => ({
+    refresh: () => {
+      if (address) {
+        getMessageUnread();
+        refetch();
+      }
+    }
+  }));
+
+  const { data, refetch } = useReadContract({
     functionName: 'mudPrice',
     abi: delaneyAbi,
     address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
@@ -31,18 +40,22 @@ export const HomeHeaders = () => {
 
   useEffect(() => {
     if (address) {
-      getMessages({
-        'filters[address]': `='${address?.toLocaleLowerCase()}'`,
-        'filters[is_read]': '=false'
-      }).then((res) => {
-        if (res.data.data.total > 0) {
-          setMessageUnread(true);
-        } else {
-          setMessageUnread(false);
-        }
-      });
+      getMessageUnread();
     }
   }, [address]);
+
+  const getMessageUnread = async () => {
+    getMessages({
+      'filters[address]': `='${address?.toLocaleLowerCase()}'`,
+      'filters[is_read]': '=false'
+    }).then((res) => {
+      if (res.data.data.total > 0) {
+        setMessageUnread(true);
+      } else {
+        setMessageUnread(false);
+      }
+    });
+  };
 
   return (
     <div className="bg-white px-4 py-1 flex justify-between items-center fixed top-0 left-0 right-0 z-10">
@@ -61,4 +74,5 @@ export const HomeHeaders = () => {
       </Badge>
     </div>
   );
-};
+});
+  

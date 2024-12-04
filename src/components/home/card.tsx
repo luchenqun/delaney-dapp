@@ -7,41 +7,55 @@ import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
 import { DotLoading, Modal, Toast } from 'antd-mobile';
 import { useAccount, useReadContract } from 'wagmi';
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getUser } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { erc20Abi } from 'viem';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import JazziconAvatar from '../avatar';
 
-export const HomeCard = () => {
+export const HomeCard = forwardRef((props, ref) => {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const [userInfo, setUserInfo] = useState<any>(null);
 
-  const { data: mudBalance, isLoading: mudLoading } = useReadContract({
+  const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useReadContract({
     address: ADDRESS_CONFIG.mud,
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address as `0x${string}`]
   });
 
-  const { data: usdtBalance, isLoading: usdtLoading } = useReadContract({
+  const { data: usdtBalance, isLoading: usdtLoading, refetch: refetchUsdt } = useReadContract({
     address: ADDRESS_CONFIG.usdt,
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address as `0x${string}`]
   });
 
+  useImperativeHandle(ref, () => ({
+    refresh: () => {
+      if (address) {
+        getUserInfo();
+        refetchMud();
+        refetchUsdt();
+      }
+    }
+  }));
+
   useEffect(() => {
     if (address) {
-      setLoading(true);
-      getUser({ address }).then((res) => {
-        setUserInfo(res.data.data);
-        setLoading(false);
-      });
+      getUserInfo();
     }
   }, [address]);
+
+  const getUserInfo = () => {
+    setLoading(true);
+    getUser({ address: address as string }).then((res) => {
+      setUserInfo(res.data.data);
+      setLoading(false);
+    });
+  };
 
   const handleCopy = () => {
     copy(userInfo?.ref);
@@ -110,4 +124,4 @@ export const HomeCard = () => {
       </div>
     </div>
   );
-};
+});

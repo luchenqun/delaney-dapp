@@ -1,6 +1,7 @@
-import { InfiniteScroll, List, NavBar } from 'antd-mobile';
+import { InfiniteScroll, List, NavBar, PullToRefresh } from 'antd-mobile';
 import { CardDelegate } from '../../components/home/card-delegate';
-import { useEffect, useState } from 'react';
+import { sleep } from 'antd-mobile/es/utils/sleep'
+import { useState } from 'react';
 import { getDelegates } from '../../utils/api';
 import { useAccount } from 'wagmi';
 
@@ -39,7 +40,15 @@ export const HomeHistory = () => {
       <NavBar onBack={handleBack} className="fixed top-0 left-0 right-0 z-10 bg-white">
         质押列表详情
       </NavBar>
-      <div className="bg-[#F5F5F5] min-h-screen pt-10">
+      <div className="bg-[#F5F5F5] min-h-screen pt-12">
+      <PullToRefresh
+        onRefresh={async () => {
+          await sleep(1000);
+          setData([]);
+          setPage(0);
+          setHasMore(true);
+        }}
+      >
         <List>
           {data.map((item, index) => (
             <List.Item key={index}>
@@ -47,7 +56,8 @@ export const HomeHistory = () => {
             </List.Item>
           ))}
         </List>
-        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+          <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+        </PullToRefresh>
       </div>
     </>
   );

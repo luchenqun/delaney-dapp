@@ -1,4 +1,4 @@
-import { Button, DotLoading, NavBar, Toast } from 'antd-mobile';
+import { Button, DotLoading, NavBar, PullToRefresh, Toast } from 'antd-mobile';
 import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import { getClaimUserStat, getLatestClaim, getRewardUserStat, clearClaim, signCl
 import { divideByMillionAndRound } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
+import { sleep } from 'antd-mobile/es/utils/sleep';
 
 export const Benifit = () => {
   const navigate = useNavigate();
@@ -112,53 +113,64 @@ export const Benifit = () => {
       <div className="top-0 z-10 fixed left-0 right-0 bg-white">
         <NavBar back={null}>领取收益</NavBar>
       </div>
-      <div className="bg-[#F5F5F5] min-h-screen pt-12">
-        <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
-          <div className="text-base font-medium">收益</div>
-          <div className="flex justify-between items-center mt-4" onClick={handleToDetail}>
-            <div>总收益</div>
-            <div className="flex items-center">
-              <div className="text-right">
-                <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(rewardUserStat?.usdt || 0)} USDT</div>
-                <div className="text-xs">≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</div>
+      <div className="bg-[#F5F5F5] min-h-screen pt-14">
+        <PullToRefresh
+          onRefresh={async () => {
+            if (address) {
+              fetchData(address);
+              await sleep(1000);
+            }
+          }}
+        >
+          <>
+            <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
+              <div className="text-base font-medium">收益</div>
+              <div className="flex justify-between items-center mt-4" onClick={handleToDetail}>
+                <div>总收益</div>
+                <div className="flex items-center">
+                  <div className="text-right">
+                    <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(rewardUserStat?.usdt || 0)} USDT</div>
+                    <div className="text-xs">≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</div>
+                  </div>
+                  <div className="ml-2">
+                    <img src={right} alt="" />
+                  </div>
+                </div>
               </div>
-              <div className="ml-2">
-                <img src={right} alt="" />
+              <div className="flex justify-between items-center mt-2" onClick={handleToClaimDetail}>
+                <div>已提取</div>
+                <div className="flex items-center">
+                  <div className="text-right">
+                    <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(claimUserStat?.usdt || 0)} USDT</div>
+                    <div className="text-xs">{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</div>
+                  </div>
+                  <div className="ml-2">
+                    <img src={right} alt="" />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex justify-between items-center mt-2" onClick={handleToClaimDetail}>
-            <div>已提取</div>
-            <div className="flex items-center">
-              <div className="text-right">
-                <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(claimUserStat?.usdt || 0)} USDT</div>
-                <div className="text-xs">{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</div>
+            <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-6 pt-6 text-center">
+              <div className="text-[#989898]">可提取数量</div>
+              <div className="text-[2rem] font-semibold">{divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</div>
+              <div className="text-base relative top-[-0.5rem]">≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</div>
+              <div className="w-full flex justify-between mt-4">
+                <span>
+                  手续费 <span className="text-[#46D69C]">{fee}%</span>
+                </span>
+                <span>{divideByMillionAndRound(latestClaim?.mud || 0) * (fee) / 100} USDT</span>
               </div>
-              <div className="ml-2">
-                <img src={right} alt="" />
+              <div className="w-full flex justify-between mt-2">
+                <span>实际到账</span>
+                <span>≈ {divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee) / 100} MUD</span>
               </div>
+              <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
+              <Button loading={btnLoading} disabled={isLoading || !latestClaim?.usdt} color="primary" className="w-full" onClick={handleClaim}>
+                提取
+              </Button>
             </div>
-          </div>
-        </div>
-        <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-6 pt-6 text-center">
-          <div className="text-[#989898]">可提取数量</div>
-          <div className="text-[2rem] font-semibold">{divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</div>
-          <div className="text-base relative top-[-0.5rem]">≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</div>
-          <div className="w-full flex justify-between mt-4">
-            <span>
-              手续费 <span className="text-[#46D69C]">{fee}%</span>
-            </span>
-            <span>{divideByMillionAndRound(latestClaim?.mud || 0) * (fee) / 100} USDT</span>
-          </div>
-          <div className="w-full flex justify-between mt-2">
-            <span>实际到账</span>
-            <span>≈ {divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee) / 100} MUD</span>
-          </div>
-          <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
-          <Button loading={btnLoading} disabled={isLoading || !latestClaim?.usdt} color="primary" className="w-full" onClick={handleClaim}>
-            提取
-          </Button>
-        </div>
+          </>
+        </PullToRefresh>
       </div>
     </>
   );

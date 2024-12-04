@@ -3,7 +3,7 @@ import mud from '../../assets/mud.png';
 import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getDelegateUserStat } from '../../utils/api';
 import { divideByMillionAndRound, formatSeconds, afterSeconds } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
@@ -11,7 +11,7 @@ import delaneyAbi from '../../../abi/delaney.json';
 import { erc20Abi } from 'viem';
 import { TxType } from '../../utils/data';
 
-export const HomeDelegate = () => {
+export const HomeDelegate = forwardRef((props: any, ref) => {
   const { address } = useAccount();
   const navigate = useNavigate();
   const [delegateUserStat, setDelegateUserStat] = useState<any>(null);
@@ -23,6 +23,22 @@ export const HomeDelegate = () => {
   const { data: hash, writeContract, isPending, isError, status } = useWriteContract();
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    refresh: () => {
+      refreshData();
+    }
+  }));
+
+  const refreshData = () => {
+    if (address) {
+      getData();
+      refetchAllowance();
+      refetchMud();
+      refetchConfig();
+      refetchMudPrice();
+    }
+  };
 
   useEffect(() => {
     if (isPending) {
@@ -40,8 +56,8 @@ export const HomeDelegate = () => {
     if (isSuccess) {
       Toast.show({ content: txType == TxType.Approve ? '授权成功' : '质押成功' });
       setTimeout(() => {
-        // TODO 这里要刷新数据，不要重载页面
-        window.location.reload();
+        refreshData();
+        props?.refresh?.();
       }, 1000);
     }
   }, [isLoading, isSuccess, txType, hash]);
@@ -59,21 +75,21 @@ export const HomeDelegate = () => {
     }
   }, [allowance, userInput]);
 
-  const { data: mudBalance } = useReadContract({
+  const { data: mudBalance, refetch: refetchMud } = useReadContract({
     address: ADDRESS_CONFIG.mud,
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address as `0x${string}`]
   });
 
-  const { data: configData } = useReadContract({
+  const { data: configData, refetch: refetchConfig } = useReadContract({
     address: ADDRESS_CONFIG.delaney,
     abi: delaneyAbi,
     functionName: 'getConfigs',
     args: []
   });
 
-  const { data: mudPrice } = useReadContract({
+  const { data: mudPrice, refetch: refetchMudPrice } = useReadContract({
     functionName: 'mudPrice',
     abi: delaneyAbi,
     address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
@@ -100,11 +116,15 @@ export const HomeDelegate = () => {
 
   useEffect(() => {
     if (address) {
-      getDelegateUserStat({ address }).then((res) => {
-        setDelegateUserStat(res.data.data);
-      });
+      getData();
     }
   }, [address]);
+
+  const getData = () => {
+    getDelegateUserStat({ address: address as string }).then((res) => {
+      setDelegateUserStat(res.data.data);
+    });
+  };
 
   const handleDelegate = async () => {
     if (userInput) {
@@ -202,4 +222,4 @@ export const HomeDelegate = () => {
       </div>
     </div>
   );
-};
+});
