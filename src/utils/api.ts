@@ -54,11 +54,11 @@ export const getLatestClaim = (data: { address: string }) => {
   return instance.get('latest-claim', { params: data });
 };
 
-export const getStaticRewards = (data: { address: string; page: number; page_size: number }) => {
+export const getStaticRewards = (data: { filters: any; page: number; page_size: number }) => {
   return instance.get('static-rewards', { params: data });
 };
 
-export const getDynamicRewards = (data: { address: string; page: number; page_size: number }) => {
+export const getDynamicRewards = (data: { filters: any; page: number; page_size: number }) => {
   return instance.get('dynamic-rewards', { params: data });
 };
 
@@ -82,6 +82,6 @@ export const getClaims = (data: any) => {
   return instance.get('claims', { params: data });
 };
 
-export const setMessageRead = (data: { address: string; }) => {
+export const setMessageRead = (data: { address: string }) => {
   return instance.post('set-message-all-read', data);
 };

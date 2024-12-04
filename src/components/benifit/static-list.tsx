@@ -13,7 +13,11 @@ export const StaticList = () => {
   const loadMore = () => {
     return new Promise<void>((resolve) => {
       if (address) {
-        getStaticRewards({ address, page: page + 1, page_size: 10 }).then((res) => {
+        getStaticRewards({
+          filters: { address: `='${address?.toLocaleLowerCase()}'` },
+          page: page + 1,
+          page_size: 10
+        }).then((res) => {
           setStaticRewards(staticRewards.concat(res.data.data.items));
           setPage(page + 1);
           resolve();

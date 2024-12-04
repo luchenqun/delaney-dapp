@@ -13,7 +13,11 @@ export const DynamicList = () => {
   const loadMore = () => {
     return new Promise<void>((resolve) => {
       if (address) {
-        getDynamicRewards({ address, page: page + 1, page_size: 10 }).then((res) => {
+        getDynamicRewards({
+          filters: { address: `='${address?.toLocaleLowerCase()}'` },
+          page: page + 1,
+          page_size: 10
+        }).then((res) => {
           setDynamicRewards(dynamicRewards.concat(res.data.data.items));
           setPage(page + 1);
           if (res.data.data.total > dynamicRewards.length) {
