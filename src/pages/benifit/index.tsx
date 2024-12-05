@@ -95,19 +95,6 @@ export const Benifit = () => {
     });
   };
 
-  if (loading) {
-    return (
-      <div className="bg-[#F5F5F5] min-h-screen">
-        <div className="top-0 z-10 fixed left-0 right-0 header-bg">
-          <NavBar back={null}>领取收益</NavBar>
-        </div>
-        <div className="h-36 mx-4 rounded-2xl mt-4 text-2xl relative overflow-hidden flex justify-center items-center">
-          <DotLoading color="primary" />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="top-0 z-10 fixed left-0 right-0 header-bg">
@@ -123,13 +110,15 @@ export const Benifit = () => {
           }}
         >
           <>
-            <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
-              <div className="text-base font-medium">收益</div>
-              <div className="flex justify-between items-center mt-4" onClick={handleToDetail}>
-                <div>总收益</div>
-                <div className="flex items-center">
-                  <div className="text-right">
-                    <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(rewardUserStat?.usdt || 0)} USDT</div>
+            <div className="w-[21.4rem] flex justify-between gap-2 mx-auto rounded-2xl">
+              <div className="bg-white px-3 py-2 rounded-lg w-full" onClick={handleToDetail}>
+                <div className="flex justify-between">
+                  <span>总收益</span>
+                  <span>(USDT)</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-left">
+                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">{divideByMillionAndRound(rewardUserStat?.usdt || 0)}</div>
                     <div className="text-xs">≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</div>
                   </div>
                   <div className="ml-2">
@@ -137,11 +126,14 @@ export const Benifit = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between items-center mt-2" onClick={handleToClaimDetail}>
-                <div>已提取</div>
-                <div className="flex items-center">
-                  <div className="text-right">
-                    <div className="text-sm text-[#FF3F3F] font-medium">{divideByMillionAndRound(claimUserStat?.usdt || 0)} USDT</div>
+              <div className="bg-white px-3 py-2 rounded-lg w-full" onClick={handleToClaimDetail}>
+              <div className="flex justify-between">
+                  <span>已提取</span>
+                  <span>(USDT)</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-left">
+                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">{divideByMillionAndRound(claimUserStat?.usdt || 0)}</div>
                     <div className="text-xs">{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</div>
                   </div>
                   <div className="ml-2">
@@ -150,7 +142,7 @@ export const Benifit = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-6 pt-6 text-center">
+            <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3 pt-6 text-center">
               <div className="text-[#989898]">可提取</div>
               <div className="text-[2rem] font-semibold">{divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</div>
               <div className="text-base relative top-[-0.5rem]">≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</div>
