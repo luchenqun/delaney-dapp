@@ -36,7 +36,7 @@ export const Claim = () => {
 
   return (
     <>
-      <NavBar onBack={handleBack} className="fixed top-0 left-0 right-0 z-10 bg-white">
+      <NavBar onBack={handleBack} className="fixed top-0 left-0 right-0 z-10 header-bg">
         奖励领取记录
       </NavBar>
       <div className="bg-[#F5F5F5] min-h-screen pt-12">

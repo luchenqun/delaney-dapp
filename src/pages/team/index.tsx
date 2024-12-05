@@ -52,7 +52,7 @@ export const Team = () => {
   if (loading) {
     return (
       <>
-        <div className="top-0 z-10 fixed left-0 right-0 bg-white">
+        <div className="top-0 z-10 fixed left-0 right-0 header-bg">
           <NavBar back={null}>我的团队</NavBar>
         </div>
         <div className="flex justify-center items-center h-screen text-5xl">
@@ -64,7 +64,7 @@ export const Team = () => {
 
   return (
     <>
-      <div className="top-0 z-10 fixed left-0 right-0 bg-white">
+      <div className="top-0 z-10 fixed left-0 right-0 header-bg">
         <NavBar back={null}>我的团队</NavBar>
       </div>
       <div className="bg-[#F5F5F5] min-h-screen pt-14">

@@ -98,7 +98,7 @@ export const Benifit = () => {
   if (loading) {
     return (
       <div className="bg-[#F5F5F5] min-h-screen">
-        <div className="top-0 z-10 fixed left-0 right-0 bg-white">
+        <div className="top-0 z-10 fixed left-0 right-0 header-bg">
           <NavBar back={null}>领取收益</NavBar>
         </div>
         <div className="h-36 mx-4 rounded-2xl mt-4 text-2xl relative overflow-hidden flex justify-center items-center">
@@ -110,7 +110,7 @@ export const Benifit = () => {
 
   return (
     <>
-      <div className="top-0 z-10 fixed left-0 right-0 bg-white">
+      <div className="top-0 z-10 fixed left-0 right-0 header-bg">
         <NavBar back={null}>领取收益</NavBar>
       </div>
       <div className="bg-[#F5F5F5] min-h-screen pt-14">

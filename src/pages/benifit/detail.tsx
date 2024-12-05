@@ -44,7 +44,9 @@ export const BenifitDetail = () => {
   if (loading) {
     return (
       <div className="bg-[#F5F5F5] min-h-screen">
-        <NavBar onBack={handleBack}>质押列表详情</NavBar>
+        <div className="fixed top-0 z-10 header-bg w-screen">
+          <NavBar onBack={handleBack}>收益列表详情</NavBar>
+        </div>
         <div className="h-36 mx-4 text-2xl rounded-2xl mt-4 relative overflow-hidden flex justify-center items-center">
           <DotLoading color="primary" />
         </div>
@@ -54,7 +56,7 @@ export const BenifitDetail = () => {
 
   return (
     <>
-      <div className="fixed top-0 z-10 bg-white w-screen">
+      <div className="fixed top-0 z-10 header-bg w-screen">
         <NavBar onBack={handleBack}>收益列表详情</NavBar>
       </div>
       <div className="bg-[#F5F5F5] min-h-screen pt-24">
