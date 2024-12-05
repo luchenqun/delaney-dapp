@@ -20,6 +20,7 @@ export const Benifit = () => {
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
   const [fee, setFee] = useState(0);
+  const [claimMinUsdt, setClaimMinUsdt] = useState(0);
 
   useEffect(() => {
     if (!isConnected) {
@@ -61,6 +62,7 @@ export const Benifit = () => {
         setRewardUserStat(rewardRes.data.data);
         setClaimUserStat(claimRes.data.data);
         setLatestClaim(latestClaimRes.data.data);
+        setClaimMinUsdt(configRes.data.data.claim_min_usdt);
         setFee(configRes.data.data.fee / 10000);
         setLoading(false);
       })
@@ -158,7 +160,7 @@ export const Benifit = () => {
               <div className="text-base relative top-[-0.5rem]">
                 {loading ? <><Skeleton.Paragraph className="h-3" lineCount={1} animated /></> : <>≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</>}
               </div>
-              <div className="w-full flex justify-between mt-4">
+              <div className="w-full flex justify-between mt-4 items-center">
                 <span className="flex-shrink-0">
                   手续费 <span className="text-[#46D69C]">{fee}%</span>
                 </span>
@@ -166,19 +168,20 @@ export const Benifit = () => {
                   {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <>{(divideByMillionAndRound(latestClaim?.mud || 0) * fee) / 100} USDT</>}
                 </span>
               </div>
-              <div className="w-full flex justify-between mt-2">
+              <div className="w-full flex justify-between mt-2 items-center">
                 <span className="flex-shrink-0">实际到账</span>
                 <span>
                   {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <>{(divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee)) / 100} USDT</>}
                 </span>
               </div>
-              <div className="w-full flex justify-between mt-2">
-                <span>最少提取</span>
-                {/* 通过合约获取 */}
-                <span> 1 USDT</span>
+              <div className="w-full flex justify-between mt-2 items-center">
+                <span className="flex-shrink-0">最少提取</span>
+                <span>
+                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <> {claimMinUsdt} USDT</>}
+                </span>
               </div>
               <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
-              <Button loading={btnLoading} disabled={isLoading || !latestClaim?.usdt} color="primary" className="w-full" onClick={handleClaim}>
+              <Button loading={btnLoading} disabled={isLoading || !latestClaim?.usdt || latestClaim?.usdt < claimMinUsdt} color="primary" className="w-full" onClick={handleClaim}>
                 提取
               </Button>
             </div>
