@@ -15,6 +15,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
   const [txType, setTxType] = useState<TxType>(TxType.Approve);
+  const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
     if (isPending) {
@@ -81,7 +82,8 @@ export const CardDelegate = ({ info }: { info: any }) => {
 
   const renderer = ({ days, hours, minutes, completed, seconds }: any) => {
     if (completed) {
-      return <span>已到期</span>;
+      setIsExpired(true);
+      return '已到期';
     }
     let timeString = '';
     if (days > 0) {
@@ -154,7 +156,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
             <div className="text-sm">{renderStatus()}</div>
           </div>
         </div>
-        {info.status == 1 && dayjs().isBefore(dayjs.unix(info.unlock_time)) && (
+        {info.status == 1 && !isExpired && dayjs().isBefore(dayjs.unix(info.unlock_time)) && (
           <div className="mt-6">
             <Button color="primary" className="w-full">
               <span className="text-white mr-1">
@@ -164,7 +166,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
             </Button>
           </div>
         )}
-        {info.status == 1 && dayjs().isAfter(dayjs.unix(info.unlock_time)) && (
+        {info.status == 1 && (dayjs().isAfter(dayjs.unix(info.unlock_time)) || isExpired) && (
           <>
             <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
             <div className="flex gap-4 mt-4">
