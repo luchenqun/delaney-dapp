@@ -177,7 +177,7 @@ export const Benifit = () => {
               <div className="w-full flex justify-between mt-2 items-center">
                 <span className="flex-shrink-0">最少提取</span>
                 <span>
-                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <> {claimMinUsdt} USDT</>}
+                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <> {divideByMillionAndRound(claimMinUsdt)} USDT</>}
                 </span>
               </div>
               <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
