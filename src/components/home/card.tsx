@@ -36,7 +36,9 @@ export const HomeCard = forwardRef((props, ref) => {
   //   args: [address as `0x${string}`]
   // });
 
-  console.log(mudBalance, usdtBalance);
+  const handleTrade = () => {
+    window.open('https://swap.transit.finance/?locale=zh&utm_source=tokenpocket&inputChain=MATIC&inputSymbol=USDT&inputCurrency=0xc2132d05d31c914a87c6611c10748aeb04b58e8f&outputChain=MATIC&outputCurrency=0xf6EaC236757e82D6772E8bD02D36a0c791d78C51&outputSymbol=MUD#/');
+  };
 
   useImperativeHandle(ref, () => ({
     refresh: () => {
@@ -127,7 +129,7 @@ export const HomeCard = forwardRef((props, ref) => {
           </div>
           <div className="font-medium text-base w-full text-center">{divideByMillionAndRound(mudBalance || 0)}</div>
         </div>
-        <div className="w-24 bg-[#FEC533] font-semibold text-base rounded-xl flex flex-wrap justify-center items-center py-1">交易</div>
+        <div className="w-24 bg-[#FEC533] font-semibold text-base rounded-xl flex flex-wrap justify-center items-center py-1" onClick={handleTrade}>交易</div>
       </div>
     </div>
   );
