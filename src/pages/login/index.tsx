@@ -25,7 +25,7 @@ export const Login = () => {
     } else {
       navigate('/');
     }
-  }, [isConnected]);
+  }, [isConnected, address]);
 
   const handleToLink = () => {
     navigate('/');
