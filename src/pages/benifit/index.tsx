@@ -1,4 +1,4 @@
-import { Button, DotLoading, NavBar, PullToRefresh, Toast } from 'antd-mobile';
+import { Button, DotLoading, NavBar, PullToRefresh, Skeleton, Toast } from 'antd-mobile';
 import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -117,9 +117,13 @@ export const Benifit = () => {
                   <span>(USDT)</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="text-left">
-                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">{divideByMillionAndRound(rewardUserStat?.usdt || 0)}</div>
-                    <div className="text-xs">≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</div>
+                  <div className="text-left w-full">
+                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">
+                      {loading ? <><Skeleton.Paragraph lineCount={1} animated /></> : <> {divideByMillionAndRound(rewardUserStat?.usdt || 0)}</>}
+                    </div>
+                    <div className="text-xs">
+                      {loading ? <><Skeleton.Paragraph className="h-3" lineCount={1} animated /></> : <>≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</>}
+                    </div>
                   </div>
                   <div className="ml-2">
                     <img src={right} alt="" />
@@ -127,14 +131,18 @@ export const Benifit = () => {
                 </div>
               </div>
               <div className="bg-white px-3 py-2 rounded-lg w-full" onClick={handleToClaimDetail}>
-              <div className="flex justify-between">
+                <div className="flex justify-between">
                   <span>已提取</span>
                   <span>(USDT)</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="text-left">
-                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">{divideByMillionAndRound(claimUserStat?.usdt || 0)}</div>
-                    <div className="text-xs">{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</div>
+                  <div className="text-left w-full">
+                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">
+                      {loading ? <><Skeleton.Paragraph lineCount={1} animated /></> : <> {divideByMillionAndRound(claimUserStat?.usdt || 0)}</>}
+                    </div>
+                    <div className="text-xs">
+                      {loading ? <><Skeleton.Paragraph className="h-3" lineCount={1} animated /></> : <>≈{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</>}
+                    </div>
                   </div>
                   <div className="ml-2">
                     <img src={right} alt="" />
@@ -144,17 +152,25 @@ export const Benifit = () => {
             </div>
             <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3 pt-6 text-center">
               <div className="text-[#989898]">可提取</div>
-              <div className="text-[2rem] font-semibold">{divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</div>
-              <div className="text-base relative top-[-0.5rem]">≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</div>
+              <div className="text-[2rem] font-semibold">
+                {loading ? <><Skeleton.Title className="h-10" animated /></> : <> {divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</>}
+              </div>
+              <div className="text-base relative top-[-0.5rem]">
+                {loading ? <><Skeleton.Paragraph className="h-3" lineCount={1} animated /></> : <>≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</>}
+              </div>
               <div className="w-full flex justify-between mt-4">
-                <span>
+                <span className="flex-shrink-0">
                   手续费 <span className="text-[#46D69C]">{fee}%</span>
                 </span>
-                <span>{(divideByMillionAndRound(latestClaim?.mud || 0) * fee) / 100} USDT</span>
+                <span>
+                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <>{(divideByMillionAndRound(latestClaim?.mud || 0) * fee) / 100} USDT</>}
+                </span>
               </div>
               <div className="w-full flex justify-between mt-2">
-                <span>实际到账</span>
-                <span>≈ {(divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee)) / 100} MUD</span>
+                <span className="flex-shrink-0">实际到账</span>
+                <span>
+                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <>{(divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee)) / 100} USDT</>}
+                </span>
               </div>
               <div className="w-full flex justify-between mt-2">
                 <span>最少提取</span>

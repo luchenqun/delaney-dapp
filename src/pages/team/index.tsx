@@ -1,5 +1,5 @@
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating';
-import { DotLoading, InfiniteScroll, List, NavBar, PullToRefresh } from 'antd-mobile';
+import { DotLoading, InfiniteScroll, List, NavBar, PullToRefresh, Skeleton } from 'antd-mobile';
 import { PeopleCard } from '../../components/team/people-card';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
@@ -55,8 +55,20 @@ export const Team = () => {
         <div className="top-0 z-10 fixed left-0 right-0 header-bg">
           <NavBar back={null}>我的团队</NavBar>
         </div>
-        <div className="flex justify-center items-center h-screen text-5xl">
-          <DotLoading color="primary" />
+        <div className="bg-[#F5F5F5] min-h-screen pt-14 px-4">
+          <Skeleton animated style={{
+              '--width': '100%',
+              '--height': '200px',
+              '--border-radius': '8px'
+            }}
+          />
+          <div className="ml-4 mt-6 font-semibold text-base">直推人员列表</div>
+          <Skeleton animated className="mt-2" style={{
+              '--width': '100%',
+              '--height': '400px',
+              '--border-radius': '8px'
+            }}
+          />
         </div>
       </>
     );

@@ -5,7 +5,7 @@ import mud from '../../assets/mud.png';
 import copyIcon from '../../assets/copy.svg';
 import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
-import { DotLoading, Modal, Toast } from 'antd-mobile';
+import { DotLoading, Modal, Skeleton, Toast } from 'antd-mobile';
 import { useAccount } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getUser } from '../../utils/api';
@@ -78,8 +78,10 @@ export const HomeCard = forwardRef((props, ref) => {
 
   if (loading || mudLoading || usdtLoading) {
     return (
-      <div className="bg-white h-36 mx-4 rounded-2xl text-2xl p-3 mt-4 relative overflow-hidden flex justify-center items-center">
-        <DotLoading />
+      <div className="bg-white h-[8.5rem] mx-4 rounded-2xl text-2xl p-3 mt-4 relative overflow-hidden flex justify-center items-center w-[21.4rem]">
+        <div className="w-full">
+          <Skeleton.Paragraph animated />
+        </div>
       </div>
     );
   }
