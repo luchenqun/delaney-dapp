@@ -120,11 +120,23 @@ export const Benifit = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="text-left w-full">
-                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">
-                      {loading ? <><Skeleton.Paragraph lineCount={1} animated /></> : <> {divideByMillionAndRound(rewardUserStat?.usdt || 0)}</>}
+                    <div className="text-2xl font-medium leading-9">
+                      {loading ? (
+                        <>
+                          <Skeleton.Paragraph lineCount={1} animated />
+                        </>
+                      ) : (
+                        <> {divideByMillionAndRound(rewardUserStat?.usdt || 0)}</>
+                      )}
                     </div>
                     <div className="text-xs">
-                      {loading ? <><Skeleton.Paragraph className="h-3" lineCount={1} animated /></> : <>≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</>}
+                      {loading ? (
+                        <>
+                          <Skeleton.Paragraph className="h-3" lineCount={1} animated />
+                        </>
+                      ) : (
+                        <>≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</>
+                      )}
                     </div>
                   </div>
                   <div className="ml-2">
@@ -139,11 +151,23 @@ export const Benifit = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="text-left w-full">
-                    <div className="text-2xl text-[#FF3F3F] font-medium leading-9">
-                      {loading ? <><Skeleton.Paragraph lineCount={1} animated /></> : <> {divideByMillionAndRound(claimUserStat?.usdt || 0)}</>}
+                    <div className="text-2xl font-medium leading-9">
+                      {loading ? (
+                        <>
+                          <Skeleton.Paragraph lineCount={1} animated />
+                        </>
+                      ) : (
+                        <> {divideByMillionAndRound(claimUserStat?.usdt || 0)}</>
+                      )}
                     </div>
                     <div className="text-xs">
-                      {loading ? <><Skeleton.Paragraph className="h-3" lineCount={1} animated /></> : <>≈{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</>}
+                      {loading ? (
+                        <>
+                          <Skeleton.Paragraph className="h-3" lineCount={1} animated />
+                        </>
+                      ) : (
+                        <>≈{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</>
+                      )}
                     </div>
                   </div>
                   <div className="ml-2">
@@ -155,29 +179,59 @@ export const Benifit = () => {
             <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3 pt-6 text-center">
               <div className="text-[#989898]">可提取</div>
               <div className="text-[2rem] font-semibold">
-                {loading ? <><Skeleton.Title className="h-10" animated /></> : <> {divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</>}
+                {loading ? (
+                  <>
+                    <Skeleton.Title className="h-10" animated />
+                  </>
+                ) : (
+                  <> {divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</>
+                )}
               </div>
               <div className="text-base relative top-[-0.5rem]">
-                {loading ? <><Skeleton.Paragraph className="h-3" lineCount={1} animated /></> : <>≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</>}
+                {loading ? (
+                  <>
+                    <Skeleton.Paragraph className="h-3" lineCount={1} animated />
+                  </>
+                ) : (
+                  <>≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</>
+                )}
               </div>
               <div className="w-full flex justify-between mt-4 items-center">
                 <span className="flex-shrink-0">
                   手续费 <span className="text-[#46D69C]">{fee}%</span>
                 </span>
                 <span>
-                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <>{(divideByMillionAndRound(latestClaim?.mud || 0) * fee) / 100} USDT</>}
+                  {loading ? (
+                    <>
+                      <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
+                    </>
+                  ) : (
+                    <>{(divideByMillionAndRound(latestClaim?.mud || 0) * fee) / 100} USDT</>
+                  )}
                 </span>
               </div>
               <div className="w-full flex justify-between mt-2 items-center">
                 <span className="flex-shrink-0">实际到账</span>
                 <span>
-                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <>{(divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee)) / 100} USDT</>}
+                  {loading ? (
+                    <>
+                      <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
+                    </>
+                  ) : (
+                    <>{(divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee)) / 100} USDT</>
+                  )}
                 </span>
               </div>
               <div className="w-full flex justify-between mt-2 items-center">
                 <span className="flex-shrink-0">最少提取</span>
                 <span>
-                  {loading ? <><Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated /></> : <> {divideByMillionAndRound(claimMinUsdt)} USDT</>}
+                  {loading ? (
+                    <>
+                      <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
+                    </>
+                  ) : (
+                    <> {divideByMillionAndRound(claimMinUsdt)} USDT</>
+                  )}
                 </span>
               </div>
               <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
