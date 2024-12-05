@@ -23,7 +23,7 @@ export const Home = () => {
         refreshAllData();
       }}
     >
-      <div className="bg-[#F5F5F5] min-h-screen">
+      <div className="bg-[#F5F5F5] min-h-screen pb-5">
         <HomeHeaders ref={headerRef} />
 
         <div className="my-3 pt-12">
