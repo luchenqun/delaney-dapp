@@ -18,9 +18,7 @@ export const HomeHeaders = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     refresh: () => {
-      if (address) {
-        getHasUnreadMessage();
-      }
+      hasUnreadMessage(address);
     }
   }));
 
@@ -32,17 +30,15 @@ export const HomeHeaders = forwardRef((props, ref) => {
   };
 
   useEffect(() => {
-    if (address) {
-      hasUnreadMessage();
-    }
+    hasUnreadMessage(address);
   }, [address]);
 
-  const hasUnreadMessage = async () => {
-    getHasUnreadMessage({
-      address
-    }).then((res) => {
-      setMessageUnread(res.data.data.has_unread);
-    });
+  const hasUnreadMessage = async (address: string | undefined) => {
+    if (address) {
+      getHasUnreadMessage({ address }).then((res) => {
+        setMessageUnread(res.data.data.has_unread);
+      });
+    }
   };
 
   return (
