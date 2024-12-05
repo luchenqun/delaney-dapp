@@ -56,14 +56,19 @@ export const Team = () => {
           <NavBar back={null}>我的团队</NavBar>
         </div>
         <div className="bg-[#F5F5F5] min-h-screen pt-14 px-4">
-          <Skeleton animated style={{
+          <Skeleton
+            animated
+            style={{
               '--width': '100%',
               '--height': '200px',
               '--border-radius': '8px'
             }}
           />
           <div className="ml-4 mt-6 font-semibold text-base">直推人员列表</div>
-          <Skeleton animated className="mt-2" style={{
+          <Skeleton
+            animated
+            className="mt-2"
+            style={{
               '--width': '100%',
               '--height': '400px',
               '--border-radius': '8px'
@@ -109,8 +114,8 @@ export const Team = () => {
               <div className="flex justify-between items-center mt-4">
                 <span className="text-[#989898] text-sm">直推质押</span>
                 <div className="text-right">
-                  <div className="font-semibold text-sm">{divideByMillionAndRound(userInfo?.usdt)} USDT</div>
-                  <div className="text-xs">{divideByMillionAndRound(userInfo?.mud)} MUD</div>
+                  <div className="font-semibold text-sm">{divideByMillionAndRound(userInfo?.sub_usdt)} USDT</div>
+                  <div className="text-xs">{divideByMillionAndRound(userInfo?.sub_mud)} MUD</div>
                 </div>
               </div>
               <div className="flex justify-between items-center mt-4">
