@@ -132,6 +132,10 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
     });
   };
 
+  const handleGetBtnDisabled = () => {
+    return !userInput || Number(userInput) <= mudMax || Number(userInput) > (Number(mudBalance) / 1000000);
+  };
+
   const handleDelegate = async () => {
     if (userInput) {
       const input = Number(userInput);
@@ -225,7 +229,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
         </div>
       )}
       <div className="mt-4">
-        <Button loading={btnLoading} disabled={!userInput} className="w-full" color="primary" onClick={handleDelegate}>
+        <Button loading={btnLoading} disabled={!userInput || handleGetBtnDisabled()} className="w-full" color="primary" onClick={handleDelegate}>
           {isAllow ? '质押' : '授权'}
         </Button>
       </div>
