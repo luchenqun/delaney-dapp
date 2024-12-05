@@ -63,7 +63,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
       functionName: 'undelegate',
       args: [info.cid, 0, afterSeconds(10 * 60)]
     });
-    setTxType(TxType.Redelegate);
+    setTxType(TxType.Undelegate);
   };
 
   const renderStatus = () => {
