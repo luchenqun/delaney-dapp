@@ -135,14 +135,14 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   const handleDelegate = async () => {
     if (userInput) {
       const input = Number(userInput);
-      if (input > mudMax) {
+      if (input > (Number(mudBalance) / 1000000)) {
         Toast.show({
           content: '质押数量不能超过最大可质押数量'
         });
         refetchAllowance();
-      } else if (input <= 0) {
+      } else if (input <= mudMax) {
         Toast.show({
-          content: '质押数量不能低于10 USDT'
+          content: '质押数量不能低于起投金额'
         });
         return;
       }
@@ -195,9 +195,10 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
           <div className="text-xs text-[#989898]">收益</div>
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
-        <div className="text-center">
+        <div className="text-center relative">
           <div className="text-sm">{divideByMillionAndRound(configData?.[13] || 0)} USDT</div>
           <div className="text-xs text-[#989898]">≈ {mudMax} MUD</div>
+          <div className="absolute right-[-15px] top-[-15px] text-xs rounded-lg rounded-bl-none bg-[#FF3636] font-[10px] text-white px-1">起投</div>
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
         <div className="text-center">
