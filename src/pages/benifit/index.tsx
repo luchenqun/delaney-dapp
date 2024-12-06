@@ -1,9 +1,9 @@
-import { Button, DotLoading, NavBar, PullToRefresh, Skeleton, Toast } from 'antd-mobile';
+import { Button, DotLoading, NavBar, PullToRefresh, Skeleton, Toast, NoticeBar } from 'antd-mobile';
 import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { getClaimUserStat, getLatestClaim, getRewardUserStat, clearClaim, signClaim, getConfig } from '../../utils/api';
+import { getClaimUserStat, getLatestClaim, getRewardUserStat, signClaim, getConfig } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
@@ -56,7 +56,6 @@ export const Benifit = () => {
       return;
     }
     setLoading(true);
-    await clearClaim({ address });
     Promise.all([getRewardUserStat({ address }), getClaimUserStat({ address }), getLatestClaim({ address }), getConfig()])
       .then(([rewardRes, claimRes, latestClaimRes, configRes]) => {
         setRewardUserStat(rewardRes.data.data);
@@ -87,6 +86,8 @@ export const Benifit = () => {
     setBtnLoading(true);
     const minMud = 0;
     const res = await signClaim({ address, usdt: latestClaim.usdt, min_mud: minMud, reward_ids: latestClaim.reward_ids });
+    latestClaim.is_sign = true;
+    setLatestClaim(latestClaim);
     const { signature, deadline } = res.data.data;
     console.log({ signature, deadline });
     writeContract({
@@ -234,8 +235,21 @@ export const Benifit = () => {
                   )}
                 </span>
               </div>
+              <div className="w-full justify-between mt-2 items-center mt-4">
+                {loading ? (
+                  <Skeleton.Paragraph className="w-full" lineCount={1} animated />
+                ) : (
+                  <NoticeBar content={latestClaim?.is_sign ? '您有一笔交易正在提取中，点击已提取可查看' : '一天只允许提取一次奖励，点击提取后不允许取消'} color="alert" />
+                )}
+              </div>
               <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
-              <Button loading={btnLoading} disabled={isLoading || !latestClaim?.usdt || latestClaim?.usdt < claimMinUsdt} color="primary" className="w-full" onClick={handleClaim}>
+              <Button
+                loading={btnLoading}
+                disabled={isLoading || !latestClaim?.usdt || latestClaim?.usdt < claimMinUsdt || latestClaim?.is_sign}
+                color="primary"
+                className="w-full"
+                onClick={handleClaim}
+              >
                 提取
               </Button>
             </div>
