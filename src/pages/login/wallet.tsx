@@ -2,7 +2,7 @@ import { Modal } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount, useConnect, useSignMessage } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ export const WalletConnect = () => {
   const navigate = useNavigate();
   const { connect, isError, isSuccess } = useConnect();
   const { isConnected, address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
 
   const handleConnect = () => {
     connect({ connector: injected() });
@@ -33,17 +34,25 @@ export const WalletConnect = () => {
   }, [isSuccess, isError]);
 
   useEffect(() => {
+    console.log('getUserNoToast2');
     if (isConnected && address) {
-      getUserNoToast({ address })
-        .then((res) => {
+      if (localStorage.getItem(address + 'sign')) {
+        getUserNoToast({ address }).then((res) => {
           if (res.data.data) {
             navigate('/home');
           }
-        })
-        .catch(() => {
-          navigate('/login');
         });
-      return;
+      } else {
+        console.log('sign.....');
+        signMessageAsync({ message: 'verify your account' })
+          .then((data) => {
+            localStorage.setItem(address + 'sign', data);
+            navigate('/home');
+          })
+          .catch(() => {
+            navigate('/');
+          });
+      }
     }
   }, [isConnected]);
 

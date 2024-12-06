@@ -10,6 +10,10 @@ export const getUser = (data: { address: string }) => {
 };
 
 export const getUserNoToast = (data: { address: string }) => {
+  if (!localStorage.getItem(data.address + 'sign')) {
+    console.log('--------->dafdadfasd');
+    return Promise.reject();
+  }
   return instanceNoToast.get('user', { params: data });
 };
 

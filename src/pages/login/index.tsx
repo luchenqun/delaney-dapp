@@ -1,7 +1,7 @@
 import { Button, Modal, PasscodeInput } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, getUserNoToast } from '../../utils/api';
@@ -13,15 +13,27 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState('');
   const { isConnected, address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
 
   useEffect(() => {
     if (isConnected && address) {
-      getUserNoToast({ address }).then((res) => {
-        if (res.data.data) {
-          navigate('/home');
-        }
-      });
-      return;
+      if (localStorage.getItem(address + 'sign')) {
+        getUserNoToast({ address }).then((res) => {
+          if (res.data.data) {
+            navigate('/home');
+          }
+        });
+      } else {
+        console.log('sign2.....');
+        signMessageAsync({ message: 'verify your account' })
+          .then((data) => {
+            localStorage.setItem(address + 'sign', data);
+            navigate('/home');
+          })
+          .catch(() => {
+            navigate('/');
+          });
+      }
     } else {
       navigate('/');
     }
