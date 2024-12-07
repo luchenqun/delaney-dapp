@@ -15,13 +15,18 @@ export const WalletConnect = () => {
   const { isConnected, address, chainId } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const [isChangeChain, setIsChangeChain] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
 
-  const handleConnect = () => {
+  // 连接处理
+  const handleConnect = async () => {
     if (isChangeChain) {
-      switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID )});
+      switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID) });
       return;
     }
-    connect({ connector: injected() });
+    if (!isConnected) {
+      connect({ connector: injected() });
+      return;
+    }
   };
 
   useEffect(() => {
@@ -40,30 +45,65 @@ export const WalletConnect = () => {
   }, [isSuccess, isError]);
 
   useEffect(() => {
-    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
-      setIsChangeChain(true);
-      return;
-    }
-    if (isConnected && address) {
-      if (localStorage.getItem(address + 'sign')) {
-        getUserNoToast({ address }).then((res) => {
+    const verifyUser = async () => {
+      if (!isConnected || !address || isVerifying) return;
+      
+      setIsVerifying(true);
+      
+      // 检查网络
+      if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
+        setIsChangeChain(true);
+        setIsVerifying(false);
+        return;
+      }
+
+      // 检查签名
+      const signature = localStorage.getItem(address + 'sign');
+      if (signature) {
+        // 验证用户是否存在
+        try {
+          const res = await getUserNoToast({ address });
           if (res.data.data) {
             navigate('/home');
+          } else {
+            navigate('/login'); // 跳转到邀请码页面
           }
-        });
-      } else {
-        console.log('sign.....');
-        signMessageAsync({ message: 'verify your account' })
-          .then((data) => {
-            localStorage.setItem(address + 'sign', data);
-            navigate('/home');
-          })
-          .catch(() => {
-            navigate('/');
+        } catch (error) {
+          console.log(error);
+          Modal.alert({
+            content: '验证失败，请重试'
           });
+        }
+      } else {
+        // 请求签名
+        try {
+          const signature = await signMessageAsync({ message: 'verify your account' });
+          localStorage.setItem(address + 'sign', signature);
+          const res = await getUserNoToast({ address });
+          if (res.data.data) {
+            navigate('/home');
+          } else {
+            navigate('/login'); // 跳转到邀请码页面
+          }
+        } catch (error) {
+          console.log(error);
+          navigate('/');
+        }
       }
-    }
-  }, [isConnected, chainId]);
+      setIsVerifying(false);
+    };
+
+    verifyUser();
+  }, [isConnected, chainId, address]);
+
+
+  // 按钮文案逻辑
+  const getButtonText = () => {
+    if (isChangeChain) return '切换网络';
+    if (!isConnected) return '连接钱包';
+    if (isVerifying) return '验证中...';
+    return '连接钱包';
+  };
 
   return (
     <>
@@ -81,7 +121,7 @@ export const WalletConnect = () => {
             请先 <span className="text-[#2A66FF]">连接钱包</span> 以绑定邀请码
           </div> */}
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
-            {isChangeChain ? `切换网络` : `连接钱包`}
+            {getButtonText()}
           </div>
         </div>
       </div>
