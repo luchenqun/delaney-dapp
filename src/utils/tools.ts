@@ -8,6 +8,7 @@ export function divideByMillionAndRound(input: number | bigint) {
 }
 
 export function formatAddressString(address: string) {
+  if (!address) return '';
   if (address.length <= 8) {
     return address;
   } else {
