@@ -5,7 +5,7 @@ import { getUserNoToast } from '../../utils/api';
 import { Toast } from 'antd-mobile';
 
 export const LoginLayout = () => {
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, chainId } = useAccount();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +24,18 @@ export const LoginLayout = () => {
       }
     }
   }, [isConnected, address, navigate]);
+
+  useEffect(() => {
+    const id = import.meta.env.VITE_APP_CHAIN_ID;
+    if (chainId !== Number(id)) {
+      Toast.show({
+        content: '请切换到主网',
+        afterClose: () => {
+          navigate('/');
+        }
+      });
+    }
+  }, [chainId]);
 
   return <Outlet />;
 };

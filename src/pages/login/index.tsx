@@ -12,10 +12,14 @@ export const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState('');
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, chainId } = useAccount();
   const { signMessageAsync } = useSignMessage();
 
   useEffect(() => {
+    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
+      navigate('/');
+      return;
+    }
     if (isConnected && address) {
       if (localStorage.getItem(address + 'sign')) {
         getUserNoToast({ address }).then((res) => {
@@ -37,7 +41,7 @@ export const Login = () => {
     } else {
       navigate('/');
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, chainId]);
 
   const handleToLink = () => {
     navigate('/');
