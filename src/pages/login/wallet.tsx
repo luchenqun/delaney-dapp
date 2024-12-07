@@ -75,6 +75,7 @@ export const WalletConnect = () => {
       return;
     }
 
+    const key = address + 'sign';
     const signature = (localStorage.getItem(key) as `0x${string}`) || '0x' + '0'.repeat(130);
     console.log({ signature });
 

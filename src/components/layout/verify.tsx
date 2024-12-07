@@ -25,7 +25,9 @@ export const VerifyLayout = () => {
         // 连接上了，根据情况跳转到输入邀请码页面或者主页
         const key = address + 'sign';
 
-        const signature = (localStorage.getItem(key) as `0x${string}`) || '0x' + '0'.repeat(130);
+        const signature =
+          (localStorage.getItem(key) as `0x${string}`) ||
+          '0x66edc32e2ab001213321ab7d959a2207fcef5190cc9abb6da5b0d2a8a9af2d4d2b0700e2c317c4106f337fd934fbbb0bf62efc8811a78603b33a8265d3b8f8cb1c';
         console.log({ signature });
 
         const res = await getUserNoToast({ address });
