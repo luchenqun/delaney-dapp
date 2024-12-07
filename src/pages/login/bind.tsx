@@ -15,33 +15,33 @@ export const Bind = () => {
   const { isConnected, address, chainId } = useAccount();
   const { signMessageAsync } = useSignMessage();
 
-  useEffect(() => {
-    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
-      navigate('/');
-      return;
-    }
-    if (isConnected && address) {
-      if (localStorage.getItem(address + 'sign')) {
-        getUserNoToast({ address }).then((res) => {
-          if (res.data.data) {
-            navigate('/home');
-          }
-        });
-      } else {
-        console.log('sign2.....');
-        signMessageAsync({ message: 'verify your account' })
-          .then((data) => {
-            localStorage.setItem(address + 'sign', data);
-            navigate('/home');
-          })
-          .catch(() => {
-            navigate('/');
-          });
-      }
-    } else {
-      navigate('/');
-    }
-  }, [isConnected, address, chainId]);
+  // useEffect(() => {
+  //   if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
+  //     navigate('/');
+  //     return;
+  //   }
+  //   if (isConnected && address) {
+  //     if (localStorage.getItem(address + 'sign')) {
+  //       getUserNoToast({ address }).then((res) => {
+  //         if (res.data.data) {
+  //           navigate('/home');
+  //         }
+  //       });
+  //     } else {
+  //       console.log('sign2.....');
+  //       signMessageAsync({ message: 'verify your account' })
+  //         .then((data) => {
+  //           localStorage.setItem(address + 'sign', data);
+  //           navigate('/home');
+  //         })
+  //         .catch(() => {
+  //           navigate('/');
+  //         });
+  //     }
+  //   } else {
+  //     navigate('/');
+  //   }
+  // }, [isConnected, address, chainId]);
 
   const handleToLink = () => {
     navigate('/');

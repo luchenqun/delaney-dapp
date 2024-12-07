@@ -32,7 +32,7 @@ export const WalletConnect = () => {
   useEffect(() => {
     if (isSuccess) {
       Toast.show({ content: '钱包连接成功' });
-      navigate('/login');
+      navigate('/bind');
     }
     if (isError) {
       Toast.show({ content: '钱包连接失败，请重试' });
