@@ -8,7 +8,7 @@ import { createUser, getUserNoToast } from '../../utils/api';
 import { formatAddressString } from '../../utils/tools';
 import { ExclamationCircleFill } from 'antd-mobile-icons';
 
-export const Login = () => {
+export const Bind = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState('');

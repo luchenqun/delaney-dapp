@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { Login } from '../pages/login/index.tsx';
+import { Bind } from '../pages/login/bind.tsx';
 import { Home } from '../pages/index/home.tsx';
 import { IndexLayout } from '../components/layout/index.tsx';
 import { Benifit } from '../pages/benifit/index.tsx';
@@ -18,8 +18,8 @@ export const router = createBrowserRouter([
     element: <VerifyLayout />,
     children: [
       {
-        path: '/login',
-        element: <Login />
+        path: '/bind',
+        element: <Bind />
       },
       {
         path: '/connect`',
