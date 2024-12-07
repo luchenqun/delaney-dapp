@@ -38,7 +38,7 @@ export const VerifyLayout = () => {
       } catch (error) {
         console.log(error);
         // 出现了错误，要么用户不存在或者取消签名，那么依然要求用户进行登录
-        navigate('/login');
+        navigate('/bind');
       }
     };
 

@@ -2,61 +2,100 @@ import { Toast } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
-import { useAccount, useConnect, useSwitchChain } from 'wagmi';
+import { useAccount, useConnect, useSwitchChain, useSignMessage } from 'wagmi';
+import { verifyMessage } from 'viem';
 import { injected } from 'wagmi/connectors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthCheck } from '../../hook/useAuthCheck';
+
+export const enum ActionType {
+  Connect = 0,
+  Switch = 1,
+  Sign = 2
+}
+const message = 'verify you account';
 
 export const WalletConnect = () => {
   const navigate = useNavigate();
-  const { switchChain } = useSwitchChain();
-  const { connect, isError, isSuccess } = useConnect();
+  const { connect, isError: isErrorConnect, isSuccess: isSuccessConnect } = useConnect();
+  const { switchChain, isError: isErrorSwitchChain, isSuccess: isSuccessSwitchChain } = useSwitchChain();
+  const { signMessage, data: signData, isError: isErrorSignMessage, isSuccess: isSuccessSignMessage } = useSignMessage();
   const { isConnected, address, chainId } = useAccount();
-  const [isVerifying, setIsVerifying] = useState(false);
-  const { verifyWallet: authCheck } = useAuthCheck();
+  const [loading, setLoading] = useState(false);
+  const [action, setAction] = useState(ActionType.Connect);
+  const [actionText, setActionText] = useState('连接钱包');
 
   // 连接处理
   const handleConnect = async () => {
-    if (!isConnected) {
+    setLoading(true);
+    const key = address + 'sign';
+    const signature = (localStorage.getItem(key) as `0x${string}`) || '0x' + '0'.repeat(130);
+    console.log({ signature });
+
+    if (action === ActionType.Connect) {
       connect({ connector: injected() });
+    } else if (action === ActionType.Switch) {
+      switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID) });
+    } else {
+      signMessage({ message: 'hello world' });
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccessSwitchChain) {
+      Toast.show({ content: '钱包连接成功' });
+    }
+    if (isErrorSwitchChain) {
+      Toast.show({ content: '钱包连接失败，请重试' });
+    }
+    if (isSuccessSwitchChain) {
+      Toast.show({ content: '切换链成功' });
+    }
+    if (isErrorSwitchChain) {
+      Toast.show({ content: '切换链失败，请重试' });
+    }
+
+    if (isSuccessSignMessage && signData) {
+      const key = address + 'sign';
+      localStorage.setItem(key, signData);
+      navigate('/bind'); // 签完名任务完成，给到bind页面判断用户是否需要绑定邀请码或者直接登录
+    }
+
+    setLoading(false);
+  }, [isSuccessSwitchChain, isErrorSwitchChain, isErrorConnect, isSuccessConnect, isErrorSignMessage, isSuccessSignMessage]);
+
+  useEffect(() => {
+    if (!isConnected || !address) {
+      setAction(ActionType.Connect);
       return;
     }
 
     if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
-      switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID) });
+      setAction(ActionType.Switch);
       return;
     }
-  };
 
-  useEffect(() => {
-    if (isSuccess) {
-      Toast.show({ content: '钱包连接成功' });
-      navigate('/bind');
-    }
-    if (isError) {
-      Toast.show({ content: '钱包连接失败，请重试' });
-    }
-  }, [isSuccess, isError]);
+    const signature = (localStorage.getItem(key) as `0x${string}`) || '0x' + '0'.repeat(130);
+    console.log({ signature });
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      if (isVerifying) return;
-      setIsVerifying(true);
-      await authCheck(isConnected, address, chainId);
-      setIsVerifying(false);
-    };
-
-    verifyUser();
+    verifyMessage({ address, message, signature }).then((valid) => {
+      if (valid) {
+        navigate('/');
+      } else {
+        setAction(ActionType.Sign);
+      }
+    });
   }, [isConnected, chainId, address]);
 
-  // 按钮文案逻辑
-  const getButtonText = () => {
-    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) return '切换网络';
-    if (!isConnected) return '连接钱包';
-    if (isVerifying) return '验证中...';
-    return '连接钱包';
-  };
+  useEffect(() => {
+    if (loading) {
+      setActionText('处理中...');
+      return;
+    }
+    if (action == ActionType.Connect) setActionText('连接钱包');
+    if (action == ActionType.Switch) setActionText('切换网络');
+    if (action == ActionType.Sign) setActionText('登录');
+  }, [action]);
 
   return (
     <>
@@ -71,7 +110,7 @@ export const WalletConnect = () => {
         <img className="mx-auto mt-12" src={wallet} alt="" />
         <div className="flex justify-center w-screen absolute bottom-20 flex-wrap">
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
-            {getButtonText()}
+            {actionText}
           </div>
         </div>
       </div>
