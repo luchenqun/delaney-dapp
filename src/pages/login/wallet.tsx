@@ -29,10 +29,6 @@ export const WalletConnect = () => {
   // 连接处理
   const handleConnect = async () => {
     setLoading(true);
-    const key = address + 'sign';
-    const signature = (localStorage.getItem(key) as `0x${string}`) || '0x' + '0'.repeat(130);
-    console.log({ signature });
-
     if (action === ActionType.Connect) {
       connect({ connector: injected() });
     } else if (action === ActionType.Switch) {
