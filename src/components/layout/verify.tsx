@@ -18,7 +18,7 @@ export const VerifyLayout = () => {
       try {
         // 如果没有连接钱包或者钱包连接错误，通通跳转到连接钱包页面
         if (!isConnected || !address || chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
-          navigate('/');
+          navigate('/connect');
           return;
         }
 
@@ -31,7 +31,7 @@ export const VerifyLayout = () => {
         const res = await getUserNoToast({ address });
         const valid = await verifyMessage({ address, message, signature });
         if (res.data.data) {
-          navigate(valid ? '/' : '/connect');
+          navigate(valid ? '/' : '/connect'); // 签名登录在钱包页面完成
         } else {
           navigate('/bind');
         }
