@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         element: <Bind />
       },
       {
-        path: '/connect`',
+        path: '/connect',
         element: <WalletConnect />
       },
       {
