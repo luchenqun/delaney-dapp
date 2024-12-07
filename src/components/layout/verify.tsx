@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { useWalletVerify } from '../../hook/useWalletVerify';
+import { useAuthCheck } from '../../hook/useAuthCheck';
 
 export const VerifyLayout = () => {
+  console.log('<==============================> VerifyLayout');
+
   const { isConnected, address, chainId } = useAccount();
-  const { verifyWallet } = useWalletVerify();
+  const { verifyWallet } = useAuthCheck();
 
   useEffect(() => {
     verifyWallet(isConnected, address, chainId);

@@ -3,11 +3,11 @@ import { useSignMessage } from 'wagmi';
 import { getUserNoToast } from '../utils/api';
 import { Toast } from 'antd-mobile';
 
-export const useWalletVerify = () => {
+export const useAuthCheck = () => {
   const navigate = useNavigate();
   const { signMessageAsync } = useSignMessage();
 
-  const verifyWallet = async (isConnected: boolean, address: string | undefined, chainId?: number) => {
+  const authCheck = async (isConnected: boolean, address: string | undefined, chainId?: number) => {
     if (!isConnected || !address || chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
       navigate('/');
       return false;
@@ -46,5 +46,5 @@ export const useWalletVerify = () => {
     return true;
   };
 
-  return { verifyWallet };
+  return { verifyWallet: authCheck };
 };

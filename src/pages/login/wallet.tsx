@@ -6,7 +6,7 @@ import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWalletVerify } from '../../hook/useWalletVerify';
+import { useAuthCheck } from '../../hook/useAuthCheck';
 
 export const WalletConnect = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export const WalletConnect = () => {
   const { connect, isError, isSuccess } = useConnect();
   const { isConnected, address, chainId } = useAccount();
   const [isVerifying, setIsVerifying] = useState(false);
-  const { verifyWallet } = useWalletVerify();
+  const { verifyWallet: authCheck } = useAuthCheck();
 
   // 连接处理
   const handleConnect = async () => {
@@ -43,7 +43,7 @@ export const WalletConnect = () => {
     const verifyUser = async () => {
       if (isVerifying) return;
       setIsVerifying(true);
-      await verifyWallet(isConnected, address, chainId);
+      await authCheck(isConnected, address, chainId);
       setIsVerifying(false);
     };
 
