@@ -72,7 +72,7 @@ export const HomeCard = forwardRef((props, ref) => {
   };
 
   const handleLink = () => {
-    copy(window.location.origin);
+    copy("https://delaney.app");
     Modal.alert({
       content: '复制网址成功, 分享给好友吧~'
     });
