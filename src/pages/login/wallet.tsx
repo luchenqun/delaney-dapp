@@ -2,24 +2,24 @@ import { Modal } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
-import { useAccount, useConnect, useSignMessage, useSwitchChain } from 'wagmi';
+import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserNoToast } from '../../utils/api';
+import { useWalletVerify } from '../../hook/useWalletVerify';
 
 export const WalletConnect = () => {
   const navigate = useNavigate();
   const { switchChain } = useSwitchChain();
   const { connect, isError, isSuccess } = useConnect();
   const { isConnected, address, chainId } = useAccount();
-  const { signMessageAsync } = useSignMessage();
-  const [isChangeChain, setIsChangeChain] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isWrongChain, setIsWrongChain] = useState(false);
+  const { verifyWallet } = useWalletVerify();
 
   // 连接处理
   const handleConnect = async () => {
-    if (isChangeChain) {
+    if (isWrongChain) {
       switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID) });
       return;
     }
@@ -49,46 +49,9 @@ export const WalletConnect = () => {
       if (!isConnected || !address || isVerifying) return;
       
       setIsVerifying(true);
-      
-      // 检查网络
-      if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
-        setIsChangeChain(true);
-        setIsVerifying(false);
-        return;
-      }
-
-      // 检查签名
-      const signature = localStorage.getItem(address + 'sign');
-      if (signature) {
-        // 验证用户是否存在
-        try {
-          const res = await getUserNoToast({ address });
-          if (res.data.data) {
-            navigate('/home');
-          } else {
-            navigate('/login'); // 跳转到邀请码页面
-          }
-        } catch (error) {
-          console.log(error);
-          Modal.alert({
-            content: '验证失败，请重试'
-          });
-        }
-      } else {
-        // 请求签名
-        try {
-          const signature = await signMessageAsync({ message: 'verify your account' });
-          localStorage.setItem(address + 'sign', signature);
-          const res = await getUserNoToast({ address });
-          if (res.data.data) {
-            navigate('/home');
-          } else {
-            navigate('/login'); // 跳转到邀请码页面
-          }
-        } catch (error) {
-          console.log(error);
-          navigate('/');
-        }
+      const isCorrectChain = await verifyWallet(address, chainId);
+      if (!isCorrectChain) {
+        setIsWrongChain(true);
       }
       setIsVerifying(false);
     };
@@ -99,7 +62,7 @@ export const WalletConnect = () => {
 
   // 按钮文案逻辑
   const getButtonText = () => {
-    if (isChangeChain) return '切换网络';
+    if (isWrongChain) return '切换网络';
     if (!isConnected) return '连接钱包';
     if (isVerifying) return '验证中...';
     return '连接钱包';

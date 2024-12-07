@@ -1,41 +1,29 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { getUserNoToast } from '../../utils/api';
-import { Toast } from 'antd-mobile';
+import { useWalletVerify } from '../../hook/useWalletVerify';
 
 export const LoginLayout = () => {
   const { isConnected, address, chainId } = useAccount();
   const navigate = useNavigate();
+  const { verifyWallet } = useWalletVerify();
 
   useEffect(() => {
-    if (!isConnected) {
-      navigate('/');
-    } else {
+    const verifyUser = async () => {
+      if (!isConnected) {
+        navigate('/');
+        return;
+      }
+
       if (localStorage.getItem(address + 'sign')) {
-        getUserNoToast({ address: address as string }).then((res) => {
-          if (!res.data.data) {
-            Toast.show({ content: '请先连接钱包' });
-            navigate('/');
-          }
-        });
+        await verifyWallet(address as string, chainId);
       } else {
         navigate('/');
       }
-    }
-  }, [isConnected, address, navigate]);
+    };
 
-  useEffect(() => {
-    const id = import.meta.env.VITE_APP_CHAIN_ID;
-    if (chainId !== Number(id)) {
-      Toast.show({
-        content: '请切换到主网',
-        afterClose: () => {
-          navigate('/');
-        }
-      });
-    }
-  }, [chainId]);
+    verifyUser();
+  }, [isConnected, address, chainId]);
 
   return <Outlet />;
 };
