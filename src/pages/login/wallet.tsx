@@ -18,17 +18,13 @@ export const WalletConnect = () => {
 
   const handleConnect = () => {
     if (isChangeChain) {
-      switchChain({ chainId: import.meta.env.VITE_APP_CHAIN_ID });
+      switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID )});
       return;
     }
     connect({ connector: injected() });
   };
 
   useEffect(() => {
-    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
-      setIsChangeChain(true);
-      return;
-    }
     if (isSuccess) {
       Modal.alert({
         content: '钱包连接成功'
@@ -41,10 +37,13 @@ export const WalletConnect = () => {
         content: '钱包连接失败，请重试'
       });
     }
-  }, [isSuccess, isError, chainId]);
+  }, [isSuccess, isError]);
 
   useEffect(() => {
-    console.log('getUserNoToast2');
+    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
+      setIsChangeChain(true);
+      return;
+    }
     if (isConnected && address) {
       if (localStorage.getItem(address + 'sign')) {
         getUserNoToast({ address }).then((res) => {
@@ -64,7 +63,7 @@ export const WalletConnect = () => {
           });
       }
     }
-  }, [isConnected]);
+  }, [isConnected, chainId]);
 
   return (
     <>
