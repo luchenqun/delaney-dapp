@@ -14,50 +14,56 @@ import { Claim } from '../pages/index/claim.tsx';
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/',
-    element: <WalletConnect />
-  },
-  {
     path: '/',
     element: <VerifyLayout />,
     children: [
       {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/connect`',
+        element: <WalletConnect />
+      },
+      {
         path: '/',
-        element: <IndexLayout />,
+        // element: <VerifyLayout />,
         children: [
           {
-            path: '/home',
-            element: <Home />
+            path: '/',
+            element: <IndexLayout />,
+            children: [
+              {
+                path: '/',
+                element: <Home />
+              },
+              {
+                path: '/benifit',
+                element: <Benifit />
+              },
+              {
+                path: '/team',
+                element: <Team />
+              }
+            ]
           },
           {
-            path: '/benifit',
-            element: <Benifit />
+            path: '/benifit/detail',
+            element: <BenifitDetail />
           },
           {
-            path: '/team',
-            element: <Team />
+            path: '/home/history',
+            element: <HomeHistory />
+          },
+          {
+            path: '/message',
+            element: <Message />
+          },
+          {
+            path: '/claim',
+            element: <Claim />
           }
         ]
-      },
-      {
-        path: '/benifit/detail',
-        element: <BenifitDetail />
-      },
-      {
-        path: '/home/history',
-        element: <HomeHistory />
-      },
-      {
-        path: '/message',
-        element: <Message />
-      },
-      {
-        path: '/claim',
-        element: <Claim />
       }
     ]
   }
