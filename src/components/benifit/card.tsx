@@ -38,6 +38,12 @@ export const BenifitCard = ({ info }: { info: any }) => {
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
+          <span className="text-[#989898] text-sm">发放时间</span>
+          <div className="text-right">
+            <div className="text-sm">{info?.create_time ? dayjs.unix(info?.create_time).format('YYYY-MM-DD HH:mm:ss') : '-'}</div>
+          </div>
+        </div>
+        <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">解锁时间</span>
           <div className="text-right">
             <div className="text-sm">{dayjs.unix(info?.unlock_time).format('YYYY-MM-DD HH:mm:ss')}</div>
