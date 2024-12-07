@@ -37,7 +37,7 @@ export const WalletConnect = () => {
     } else if (action === ActionType.Switch) {
       switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID) });
     } else {
-      signMessage({ message: 'hello world' });
+      signMessage({ message });
     }
   };
 
