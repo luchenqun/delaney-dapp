@@ -2,23 +2,33 @@ import { Modal } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
-import { useAccount, useConnect, useSignMessage } from 'wagmi';
+import { useAccount, useConnect, useSignMessage, useSwitchChain } from 'wagmi';
 import { injected } from 'wagmi/connectors';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserNoToast } from '../../utils/api';
 
 export const WalletConnect = () => {
   const navigate = useNavigate();
+  const { switchChain } = useSwitchChain();
   const { connect, isError, isSuccess } = useConnect();
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, chainId } = useAccount();
   const { signMessageAsync } = useSignMessage();
+  const [isChangeChain, setIsChangeChain] = useState(false);
 
   const handleConnect = () => {
+    if (isChangeChain) {
+      switchChain({ chainId: import.meta.env.VITE_APP_CHAIN_ID });
+      return;
+    }
     connect({ connector: injected() });
   };
 
   useEffect(() => {
+    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
+      setIsChangeChain(true);
+      return;
+    }
     if (isSuccess) {
       Modal.alert({
         content: '钱包连接成功'
@@ -31,7 +41,7 @@ export const WalletConnect = () => {
         content: '钱包连接失败，请重试'
       });
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, chainId]);
 
   useEffect(() => {
     console.log('getUserNoToast2');
@@ -71,7 +81,9 @@ export const WalletConnect = () => {
           {/* <div className="mt-3 text-center text-base">
             请先 <span className="text-[#2A66FF]">连接钱包</span> 以绑定邀请码
           </div> */}
-          <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">{`连接钱包`}</div>
+          <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
+            {isChangeChain ? `切换网络` : `连接钱包`}
+          </div>
         </div>
       </div>
     </>
