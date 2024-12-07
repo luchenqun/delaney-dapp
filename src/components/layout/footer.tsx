@@ -18,7 +18,7 @@ export const Footer = () => {
 
   const tabs = [
     {
-      key: '/home',
+      key: '/',
       title: '首页',
       icon: <img src={home} alt="" />,
       activeIcon: <img src={activeHome} alt="" />
