@@ -10,11 +10,11 @@ export const VerifyLayout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('============> VerifyLayout', { isConnected, address, chainId });
     // 这里只解决跳转链接的问题
     const authCheck = async () => {
       const message = 'verify you account';
       let useIsExist = false;
+      let valid = false;
       try {
         // 如果没有连接钱包或者钱包连接错误，通通跳转到连接钱包页面
         if (!isConnected || !address || chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
@@ -31,8 +31,8 @@ export const VerifyLayout = () => {
         console.log({ signature });
 
         const res = await getUserNoToast({ address });
-        useIsExist = res.data.data;
-        const valid = await verifyMessage({ address, message, signature });
+        useIsExist = !!res.data.data;
+        valid = await verifyMessage({ address, message, signature });
         if (useIsExist) {
           navigate(valid ? '/' : '/connect'); // 签名登录在钱包页面完成
         } else {
@@ -42,6 +42,7 @@ export const VerifyLayout = () => {
         console.log(error);
         navigate(useIsExist ? '/connect' : '/bind');
       }
+      console.log('============> VerifyLayout', { isConnected, address, chainId, valid, useIsExist });
     };
 
     authCheck();
