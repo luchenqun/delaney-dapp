@@ -20,7 +20,7 @@ export const Message = () => {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-10 header-bg">
-        <NavBar onBack={() => navigate('/home')}>消息</NavBar>
+        <NavBar onBack={() => navigate('/')}>消息</NavBar>
       </div>
       <div className="pt-10 bg-[#F5F5F5] min-h-screen">
         <MessageContent />

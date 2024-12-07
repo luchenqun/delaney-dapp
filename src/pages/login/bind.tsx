@@ -1,7 +1,7 @@
 import { Button, Modal, PasscodeInput } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
-import { useAccount, useSignMessage } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, getUserNoToast } from '../../utils/api';
@@ -13,35 +13,20 @@ export const Bind = () => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState('');
   const { isConnected, address, chainId } = useAccount();
-  const { signMessageAsync } = useSignMessage();
 
-  // useEffect(() => {
-  //   if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
-  //     navigate('/');
-  //     return;
-  //   }
-  //   if (isConnected && address) {
-  //     if (localStorage.getItem(address + 'sign')) {
-  //       getUserNoToast({ address }).then((res) => {
-  //         if (res.data.data) {
-  //           navigate('/home');
-  //         }
-  //       });
-  //     } else {
-  //       console.log('sign2.....');
-  //       signMessageAsync({ message: 'verify your account' })
-  //         .then((data) => {
-  //           localStorage.setItem(address + 'sign', data);
-  //           navigate('/home');
-  //         })
-  //         .catch(() => {
-  //           navigate('/');
-  //         });
-  //     }
-  //   } else {
-  //     navigate('/');
-  //   }
-  // }, [isConnected, address, chainId]);
+  useEffect(() => {
+    if (address) {
+      getUserNoToast({ address }).then((res) => {
+        if (res.data.data) {
+          navigate('/');
+        } else {
+          navigate('/bind');
+        }
+      });
+    } else {
+      navigate('/bind');
+    }
+  }, [isConnected, address, chainId]);
 
   const handleToLink = () => {
     navigate('/');
@@ -55,12 +40,12 @@ export const Bind = () => {
     if (address) {
       setLoading(true);
       createUser({
-        address: address,
+        address,
         parent_ref: value
       })
         .then(() => {
           setLoading(false);
-          navigate('/home');
+          navigate('/');
         })
         .catch(() => {
           Modal.alert({
