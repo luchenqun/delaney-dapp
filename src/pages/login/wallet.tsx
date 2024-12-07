@@ -65,6 +65,7 @@ export const WalletConnect = () => {
   }, [isSuccessSwitchChain, isErrorSwitchChain, isErrorConnect, isSuccessConnect, isErrorSignMessage, isSuccessSignMessage]);
 
   useEffect(() => {
+    console.log('wallet --------->', { isConnected, chainId, address });
     if (!isConnected || !address) {
       setAction(ActionType.Connect);
       return;
@@ -76,16 +77,24 @@ export const WalletConnect = () => {
     }
 
     const key = address + 'sign';
-    const signature = (localStorage.getItem(key) as `0x${string}`) || '0x' + '0'.repeat(130);
+    const signature =
+      (localStorage.getItem(key) as `0x${string}`) ||
+      '0x0x66edc32e2ab001213321ab7d959a2207fcef5190cc9abb6da5b0d2a8a9af2d4d2b0700e2c317c4106f337fd934fbbb0bf62efc8811a78603b33a8265d3b8f8cb1c';
     console.log({ signature });
 
-    verifyMessage({ address, message, signature }).then((valid) => {
-      if (valid) {
-        navigate('/');
-      } else {
+    verifyMessage({ address, message, signature })
+      .then((valid) => {
+        console.log('--->', valid);
+        if (valid) {
+          navigate('/');
+        } else {
+          setAction(ActionType.Sign);
+        }
+      })
+      .catch((err) => {
+        console.log('----', err);
         setAction(ActionType.Sign);
-      }
-    });
+      });
   }, [isConnected, chainId, address]);
 
   useEffect(() => {
