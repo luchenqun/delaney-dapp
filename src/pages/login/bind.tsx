@@ -29,7 +29,7 @@ export const Bind = () => {
   }, [isConnected, address, chainId]);
 
   const handleToLink = () => {
-    navigate('/');
+    // navigate('/');
   };
 
   const handleChange = (value: string) => {
@@ -81,7 +81,7 @@ export const Bind = () => {
           <PasscodeInput value={value} plain seperated onChange={handleChange} />
         </div>
         <div className="mt-3 text-center text-base">
-          你的钱包地址
+          你的钱包地址&nbsp;
           <span className="text-[#2A66FF]" onClick={handleToLink}>
             {formatAddressString(address as string)}
           </span>

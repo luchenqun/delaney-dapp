@@ -2,6 +2,7 @@ import { Toast } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
+import { formatAddressString } from '../../utils/tools';
 import { useAccount, useConnect, useSwitchChain, useSignMessage } from 'wagmi';
 import { verifyMessage } from 'viem';
 import { injected } from 'wagmi/connectors';
@@ -118,6 +119,10 @@ export const WalletConnect = () => {
           </div>
         </div>
         <img className="mx-auto mt-12" src={wallet} alt="" />
+        <div className="mt-3 text-center text-base">
+          你的钱包地址&nbsp;
+          <span className="text-[#2A66FF]">{formatAddressString(address as string)}</span>
+        </div>
         <div className="flex justify-center w-screen absolute bottom-20 flex-wrap">
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
             {actionText}
