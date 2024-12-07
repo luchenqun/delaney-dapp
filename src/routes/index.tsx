@@ -9,7 +9,7 @@ import { BenifitDetail } from '../pages/benifit/detail.tsx';
 import { HomeHistory } from '../pages/index/history.tsx';
 import { WalletConnect } from '../pages/login/wallet.tsx';
 import { Message } from '../pages/index/message.tsx';
-import { LoginLayout } from '../components/layout/login.tsx';
+import { VerifyLayout } from '../components/layout/verify.tsx';
 import { Claim } from '../pages/index/claim.tsx';
 
 export const router = createBrowserRouter([
@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <LoginLayout />,
+    element: <VerifyLayout />,
     children: [
       {
         path: '/',

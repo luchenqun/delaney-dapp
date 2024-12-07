@@ -1,4 +1,4 @@
-import { Modal } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
@@ -14,55 +14,45 @@ export const WalletConnect = () => {
   const { connect, isError, isSuccess } = useConnect();
   const { isConnected, address, chainId } = useAccount();
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isWrongChain, setIsWrongChain] = useState(false);
   const { verifyWallet } = useWalletVerify();
 
   // 连接处理
   const handleConnect = async () => {
-    if (isWrongChain) {
-      switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID) });
-      return;
-    }
     if (!isConnected) {
       connect({ connector: injected() });
+      return;
+    }
+
+    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
+      switchChain({ chainId: Number(import.meta.env.VITE_APP_CHAIN_ID) });
       return;
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      Modal.alert({
-        content: '钱包连接成功'
-      });
+      Toast.show({ content: '钱包连接成功' });
       navigate('/login');
     }
     if (isError) {
-      // 连接失败的处理
-      Modal.alert({
-        content: '钱包连接失败，请重试'
-      });
+      Toast.show({ content: '钱包连接失败，请重试' });
     }
   }, [isSuccess, isError]);
 
   useEffect(() => {
     const verifyUser = async () => {
-      if (!isConnected || !address || isVerifying) return;
-      
+      if (isVerifying) return;
       setIsVerifying(true);
-      const isCorrectChain = await verifyWallet(address, chainId);
-      if (!isCorrectChain) {
-        setIsWrongChain(true);
-      }
+      await verifyWallet(isConnected, address, chainId);
       setIsVerifying(false);
     };
 
     verifyUser();
   }, [isConnected, chainId, address]);
 
-
   // 按钮文案逻辑
   const getButtonText = () => {
-    if (isWrongChain) return '切换网络';
+    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) return '切换网络';
     if (!isConnected) return '连接钱包';
     if (isVerifying) return '验证中...';
     return '连接钱包';
@@ -80,9 +70,6 @@ export const WalletConnect = () => {
         </div>
         <img className="mx-auto mt-12" src={wallet} alt="" />
         <div className="flex justify-center w-screen absolute bottom-20 flex-wrap">
-          {/* <div className="mt-3 text-center text-base">
-            请先 <span className="text-[#2A66FF]">连接钱包</span> 以绑定邀请码
-          </div> */}
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
             {getButtonText()}
           </div>

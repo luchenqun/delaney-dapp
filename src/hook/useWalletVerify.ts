@@ -1,15 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useSignMessage } from 'wagmi';
 import { getUserNoToast } from '../utils/api';
-import { Modal } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 
 export const useWalletVerify = () => {
   const navigate = useNavigate();
   const { signMessageAsync } = useSignMessage();
 
-  const verifyWallet = async (address: string, chainId?: number) => {
-    // 检查网络
-    if (chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
+  const verifyWallet = async (isConnected: boolean, address: string | undefined, chainId?: number) => {
+    if (!isConnected || !address || chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
       navigate('/');
       return false;
     }
@@ -26,9 +25,7 @@ export const useWalletVerify = () => {
         }
       } catch (error) {
         console.log(error);
-        Modal.alert({
-          content: '验证失败，请重试'
-        });
+        Toast.show({ content: '验证失败，请重试' });
         navigate('/login');
       }
     } else {
