@@ -58,7 +58,7 @@ export const WalletConnect = () => {
 
   return (
     <>
-      <div>
+      <div className="min-h-screen">
         <img className="w-screen absolute left-0 top-0" src={colorBg} alt="背景" />
         <div className="relative z-10 w-full flex justify-center pt-24">
           <div className="flex flex-wrap justify-center">
