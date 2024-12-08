@@ -138,10 +138,10 @@ export const Team = () => {
                 </div>
               </div>
             </div>
-            <div className="ml-4 mt-6 font-semibold text-base">直推人员列表</div>
+            <div className="ml-4 mt-6 font-semibold text-base">社区列表</div>
             {list?.map((item: any) => (
               <List.Item key={item.id}>
-                <PeopleCard info={item} />
+                <PeopleCard info={item} depth={userInfo?.depth || 0} />
               </List.Item>
             ))}
             <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />

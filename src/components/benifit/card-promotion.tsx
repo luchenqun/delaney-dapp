@@ -5,8 +5,8 @@ import dayjs from 'dayjs';
 import { divideByMillionAndRound, formatAddressString, getHashUrl } from '../../utils/tools';
 
 export const BenifitCardPromotion = ({ info }: { info: any }) => {
-  const handleCopy = () => {
-    copy(info?.hash);
+  const handleCopy = (data: string) => {
+    copy(data);
     Toast.show({
       content: '复制成功'
     });
@@ -32,6 +32,22 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
+          <span className="text-[#989898] text-sm">收益来源</span>
+          <div className="text-right">
+            <div className="text-sm">
+              {formatAddressString(info?.delegator as string)}
+              <img
+                onClick={() => {
+                  handleCopy(info?.delegator);
+                }}
+                className="ml-1"
+                src={copyIcon}
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">收益类型</span>
           <div className="text-right">
             <div className="text-sm">{info?.type === 0 ? '个人奖励' : '团队奖励'}</div>
@@ -53,7 +69,14 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
                   <a href={getHashUrl(info.hash)} target="_blank">
                     {formatAddressString(info.hash)}
                   </a>
-                  <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
+                  <img
+                    onClick={() => {
+                      handleCopy(info?.hash);
+                    }}
+                    className="ml-1"
+                    src={copyIcon}
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
