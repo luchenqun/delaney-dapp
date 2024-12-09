@@ -52,7 +52,11 @@ export function afterSeconds(seconds: number) {
 }
 
 export function getHashUrl(hash: string) {
-  return `${import.meta.env.VITE_APP_HASH_URL}${hash}`;
+  return `${import.meta.env.VITE_APP_HASH_URL}/tx/${hash}`;
+}
+
+export function getAddressUrl(address: string) {
+  return `${import.meta.env.VITE_APP_HASH_URL}/address/${address}`;
 }
 
 export function authorizationKey(address: string) {

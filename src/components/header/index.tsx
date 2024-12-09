@@ -2,7 +2,7 @@ import { Badge, Toast } from 'antd-mobile';
 import logo from '../../assets/logo.svg';
 import bell from '../../assets/bell.svg';
 import { useAccount } from 'wagmi';
-import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
+import { divideByMillionAndRound, formatAddressString, getAddressUrl } from '../../utils/tools';
 import { useNavigate } from 'react-router-dom';
 import copyIcon from '../../assets/copy.svg';
 import copy from 'copy-to-clipboard';
@@ -47,7 +47,7 @@ export const HomeHeaders = forwardRef((props, ref) => {
         <img className="w-10 h-10" src={logo} alt="logo" />
         <div className="ml-3">
           <div className="text-base flex items-center">
-            {formatAddressString(address as string)}
+            <span onClick={() => { window.open(getAddressUrl(address as string), '_blank'); }}>{formatAddressString(address as string)}</span>
             <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
           </div>
           <div className="text-primary text-sm">{price ? `MUD ≈ ${divideByMillionAndRound(price as bigint)} USDT` : '-'}</div>

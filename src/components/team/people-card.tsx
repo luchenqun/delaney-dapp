@@ -1,4 +1,4 @@
-import { divideByMillionAndRound, formatAddressString } from '../../utils/tools';
+import { divideByMillionAndRound, formatAddressString, getAddressUrl } from '../../utils/tools';
 import JazziconAvatar from '../avatar';
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating';
 import copyIcon from '../../assets/copy.svg';
@@ -16,7 +16,8 @@ export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
       <div className="flex items-center">
         <JazziconAvatar address={info?.address} diameter={12} />
         <div>
-          <span className="ml-3 text-sm flex items-center">{formatAddressString(info?.address)}
+          <span className="ml-3 text-sm flex items-center">
+            <span onClick={() => window.open(getAddressUrl(info?.address), '_blank')}>{formatAddressString(info?.address)}</span>
             <img onClick={() => handleCopy(info?.address)} className="ml-1" src={copyIcon} alt="" /></span>
           <div className="ml-3 text-sm flex items-center mt-2">邀请码: {info?.ref}
             <img onClick={() => handleCopy(info?.ref)} className="ml-1" src={copyIcon} alt="" /></div>
