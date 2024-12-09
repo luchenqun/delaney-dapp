@@ -3,7 +3,7 @@ import { InfiniteScroll, List, NavBar, PullToRefresh, Skeleton } from 'antd-mobi
 import { PeopleCard } from '../../components/team/people-card';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
-import { getUser, getUsers } from '../../utils/api';
+import { getTeamUsers, getUser } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { sleep } from 'antd-mobile/es/utils/sleep';
 import teamBg from '../../assets/bg.svg';
@@ -33,17 +33,15 @@ export const Team = () => {
 
   const getList = (page: number) => {
     return new Promise<void>((resolve) => {
-      getUsers({
-        filters: { parent: `='${address?.toLowerCase()}'` },
+      getTeamUsers({
+        filters: { address: `='${address?.toLowerCase()}'` },
         page,
-        sort_field: 'create_time',
-        sort_order: 'desc'
       }).then((res) => {
         setList(res.data.data.items);
         setHasMore(res.data.data.total > res.data.data.items.length);
         setPage(res.data.data.pages);
+        resolve();
       });
-      resolve();
     });
   };
 

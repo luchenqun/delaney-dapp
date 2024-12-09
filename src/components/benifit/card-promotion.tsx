@@ -34,7 +34,7 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">收益来源</span>
           <div className="text-right">
-            <div className="text-sm">
+            <div className="text-sm flex items-center">
               {formatAddressString(info?.delegator as string)}
               <img
                 onClick={() => {

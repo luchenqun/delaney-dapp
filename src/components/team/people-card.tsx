@@ -46,7 +46,7 @@ export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
           </div>
         </div>
         <div className="flex justify-between items-center absolute top-0 right-0 bg-[#46D69C1A] py-1.5 px-5 rounded-bl-2xl">
-          <span className="text-[#46D69C] text-sm">第 {(info?.depth || 0) - depth} 代</span>
+          <span className="text-[#46D69C] text-sm">第 {(info?.depth || 0) - depth} 层</span>
         </div>
         {/* <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">直推质押</span>

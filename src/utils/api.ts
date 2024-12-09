@@ -66,6 +66,10 @@ export const getUsers = (data: any) => {
   return instance.get('users', { params: data });
 };
 
+export const getTeamUsers = (data: any) => {
+  return instance.get('teams', { params: data });
+};
+
 export const getDelegates = (data: any) => {
   return instance.get('delegates', { params: data });
 };
