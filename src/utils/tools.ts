@@ -1,3 +1,7 @@
+import { verifyMessage } from 'viem';
+
+const SevenDaySeconds = 7 * 24 * 3600;
+
 export function divideByMillionAndRound(input: number | bigint) {
   // 将输入转换为 number 类型
   const inputAsNumber = typeof input === 'bigint' ? Number(input) : input;
@@ -49,4 +53,41 @@ export function afterSeconds(seconds: number) {
 
 export function getHashUrl(hash: string) {
   return `${import.meta.env.VITE_APP_HASH_URL}${hash}`;
+}
+
+export function authorizationKey(address: string) {
+  return 'Authorization ' + address;
+}
+
+export function authorizationValue(address: `0x${string}`) {
+  return localStorage.getItem(authorizationKey(address));
+}
+
+export function setAuthorizationValue(address: `0x${string}`, timestamp: string, signature: string) {
+  localStorage.setItem(authorizationKey(address), timestamp + ' ' + signature);
+}
+
+export function authorizationSignMessage() {
+  return String(afterSeconds(0));
+}
+
+export async function authorizationCheck(address: `0x${string}`) {
+  const value = authorizationValue(address);
+  if (!value) {
+    return Promise.reject('authorization value is not exist');
+  }
+  const [message, signature] = value.split(' ');
+  if (!message || !signature) {
+    return Promise.reject('sign data timestamp or signature is not exist');
+  }
+
+  if (Number.isInteger(Number(message)) && message.length == 10) {
+    if (parseInt(message + SevenDaySeconds) < afterSeconds(0)) {
+      return Promise.reject('signature is expire');
+    }
+    console.log('authorizationCheck', { address, message, signature });
+    return await verifyMessage({ address, message, signature });
+  } else {
+    return Promise.reject('sign data timestamp value is not number');
+  }
 }

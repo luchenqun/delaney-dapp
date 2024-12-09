@@ -3,6 +3,7 @@ import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
 import { formatAddressString } from '../../utils/tools';
+import { authorizationSignMessage, setAuthorizationValue, authorizationCheck } from '../../utils/tools';
 import { useAccount, useConnect, useSwitchChain, useSignMessage } from 'wagmi';
 import { verifyMessage } from 'viem';
 import { injected } from 'wagmi/connectors';
@@ -14,16 +15,18 @@ export const enum ActionType {
   Switch = 1,
   Sign = 2
 }
-const message = 'verify you account';
+
+const message = authorizationSignMessage();
 
 export const WalletConnect = () => {
   const navigate = useNavigate();
   const { connect, isError: isErrorConnect, isSuccess: isSuccessConnect } = useConnect();
   const { switchChain, isError: isErrorSwitchChain, isSuccess: isSuccessSwitchChain } = useSwitchChain();
-  const { signMessage, data: signData, isError: isErrorSignMessage, isSuccess: isSuccessSignMessage } = useSignMessage();
+  const { signMessage, data: signature, isError: isErrorSignMessage, isSuccess: isSuccessSignMessage } = useSignMessage();
   const { isConnected, address, chainId } = useAccount();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState(ActionType.Connect);
+  // const [message, setMessage] = useState(authorizationSignMessage());
   const [actionText, setActionText] = useState('连接钱包');
 
   // 连接处理
@@ -52,9 +55,8 @@ export const WalletConnect = () => {
       Toast.show({ content: '切换链失败，请重试' });
     }
 
-    if (isSuccessSignMessage && signData) {
-      const key = address + 'sign';
-      localStorage.setItem(key, signData);
+    if (isSuccessSignMessage && address && signature) {
+      setAuthorizationValue(address, message, signature);
       navigate('/bind'); // 签完名任务完成，给到bind页面判断用户是否需要绑定邀请码或者直接登录
     }
 
@@ -73,15 +75,9 @@ export const WalletConnect = () => {
       return;
     }
 
-    const key = address + 'sign';
-    const signature =
-      (localStorage.getItem(key) as `0x${string}`) ||
-      '0x0x66edc32e2ab001213321ab7d959a2207fcef5190cc9abb6da5b0d2a8a9af2d4d2b0700e2c317c4106f337fd934fbbb0bf62efc8811a78603b33a8265d3b8f8cb1c';
-    console.log({ signature });
-
-    verifyMessage({ address, message, signature })
+    authorizationCheck(address)
       .then((valid) => {
-        console.log('--->', valid);
+        console.log('authorizationCheck is valid', valid);
         if (valid) {
           navigate('/');
         } else {
@@ -89,7 +85,7 @@ export const WalletConnect = () => {
         }
       })
       .catch((err) => {
-        console.log('----', err);
+        console.log('authorizationCheck error', err);
         setAction(ActionType.Sign);
       });
   }, [isConnected, chainId, address]);
