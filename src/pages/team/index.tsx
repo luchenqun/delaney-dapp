@@ -1,11 +1,12 @@
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating';
-import { DotLoading, InfiniteScroll, List, NavBar, PullToRefresh, Skeleton } from 'antd-mobile';
+import { InfiniteScroll, List, NavBar, PullToRefresh, Skeleton } from 'antd-mobile';
 import { PeopleCard } from '../../components/team/people-card';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { getUser, getUsers } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { sleep } from 'antd-mobile/es/utils/sleep';
+import teamBg from '../../assets/bg.svg';
 
 export const Team = () => {
   const [loading, setLoading] = useState(false);
@@ -95,46 +96,52 @@ export const Team = () => {
           }}
         >
           <>
-            <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl">
+            <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-10 relative z-[3] h-[13.5rem]">
               <div className="flex justify-between items-center">
-                <span className="text-[#989898] text-sm">我的星级</span>
-                <div>
-                  <Rating
-                    className="w-24 ml-1 relative"
-                    value={Math.max(userInfo?.star, userInfo?.min_star)}
-                    readOnly
-                    itemStyles={{
-                      itemShapes: ThinRoundedStar,
-                      activeFillColor: '#FEC533',
-                      inactiveFillColor: '#F3F3F3'
-                    }}
-                  />
+                <img className="absolute w-[21.4rem] top-[-2.2rem] left-0 z-[2]" src={teamBg} alt="" />
+                <div className="flex items-center relative z-[3] top-[-2.5rem]">
+                  <span className="text-[#989898] text-sm">我的星级</span>
+                  <div>
+                    <Rating
+                      className="w-24 ml-1 relative"
+                      value={Math.max(userInfo?.star, userInfo?.min_star)}
+                      readOnly
+                      itemStyles={{
+                        itemShapes: ThinRoundedStar,
+                        activeFillColor: '#FEC533',
+                        inactiveFillColor: '#F3F3F3'
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-[#989898] text-sm">直推质押</span>
-                <div className="text-right">
-                  <div className="font-semibold text-sm">{divideByMillionAndRound(userInfo?.sub_usdt)} USDT</div>
-                  <div className="text-xs">{divideByMillionAndRound(userInfo?.sub_mud)} MUD</div>
+              <div className="text-[#46D69C] text-xs text-right bg-[#46D69C1A] absolute top-[-2rem] right-0 w-44 h-12 z-1 px-6 py-2 rounded-r-xl">邀请码:{userInfo?.ref}</div>
+              <div className="flex flex-wrap justify-between z-[3] relative top-[-2rem]">
+                <div className="flex justify-center flex-wrap items-center mt-4 w-[9.375rem] bg-[#F5F5F5] py-2 rounded-lg min-h-20">
+                  <span className="text-[#989898] text-xs w-full text-center">直推质押(USDT)</span>
+                  <div className="text-center">
+                    <div className="font-semibold text-xl mt-1">{divideByMillionAndRound(userInfo?.sub_usdt)}</div>
+                    <div className="text-xs text-[#46D69C]">≈ {divideByMillionAndRound(userInfo?.sub_mud)} MUD</div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-[#989898] text-sm">团队质押</span>
-                <div className="text-right">
-                  <div className="font-semibold text-sm">{divideByMillionAndRound(userInfo?.team_usdt)} USDT</div>
-                  <div className="text-xs">{divideByMillionAndRound(userInfo?.team_mud)} MUD</div>
+                <div className="flex justify-center flex-wrap items-center mt-4 w-[9.375rem] bg-[#F5F5F5] py-2 rounded-lg min-h-20">
+                  <span className="text-[#989898] text-xs w-full text-center">团队质押(USDT)</span>
+                  <div className="text-center">
+                    <div className="font-semibold text-xl mt-1">{divideByMillionAndRound(userInfo?.team_usdt)}</div>
+                    <div className="text-xs text-[#46D69C]">≈ {divideByMillionAndRound(userInfo?.team_mud)} MUD</div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-[#989898] text-sm">直推人数</span>
-                <div>
-                  <div className="font-semibold text-sm">{userInfo?.sub_person}</div>
+                <div className="flex justify-center flex-wrap items-center mt-4 w-[9.375rem] bg-[#F5F5F5] py-2 rounded-lg min-h-20">
+                  <span className="text-[#989898] text-xs w-full text-center">直推人数</span>
+                  <div className="text-center">
+                    <div className="font-semibold text-xl mt-1">{userInfo?.sub_person}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-[#989898] text-sm">团队人数</span>
-                <div>
-                  <div className="font-semibold text-sm">{userInfo?.team_person}</div>
+                <div className="flex justify-center flex-wrap items-center mt-4 w-[9.375rem] bg-[#F5F5F5] py-2 rounded-lg min-h-20">
+                  <span className="text-[#989898] text-xs w-full text-center">团队人数</span>
+                  <div className="text-center">
+                    <div className="font-semibold text-xl mt-1">{userInfo?.team_person}</div>
+                  </div>
                 </div>
               </div>
             </div>
