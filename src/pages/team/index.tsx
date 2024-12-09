@@ -34,7 +34,7 @@ export const Team = () => {
   const getList = (page: number) => {
     return new Promise<void>((resolve) => {
       getTeamUsers({
-        filters: { address: `='${address?.toLowerCase()}'` },
+        address: `${address?.toLowerCase()}`,
         page,
       }).then((res) => {
         setList(res.data.data.items);
