@@ -75,6 +75,10 @@ export function setAuthorizationValue(address: `0x${string}`, timestamp: string,
   localStorage.setItem(authorizationKey(address), timestamp + ' ' + signature);
 }
 
+export function clearAuthorization() {
+  localStorage.setItem(authorizationKey(currentAddress()), '');
+}
+
 export function authorizationSignMessage() {
   return String(afterSeconds(0));
 }
