@@ -2,7 +2,7 @@ import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
 import { Tag, Toast } from 'antd-mobile';
 import dayjs from 'dayjs';
-import { divideByMillionAndRound, formatAddressString, getHashUrl } from '../../utils/tools';
+import { divideByMillionAndRound, formatAddressString, getAddressUrl, getHashUrl } from '../../utils/tools';
 
 export const BenifitCardPromotion = ({ info }: { info: any }) => {
   const handleCopy = (data: string) => {
@@ -35,7 +35,7 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
           <span className="text-[#989898] text-sm">收益来源</span>
           <div className="text-right">
             <div className="text-sm flex items-center">
-              {formatAddressString(info?.delegator as string)}
+              <span className="text-[#2A66FF]" onClick={() => window.open(getAddressUrl(info?.delegator as string), '_blank')}>{formatAddressString(info?.delegator as string)}</span>
               <img
                 onClick={() => {
                   handleCopy(info?.delegator);

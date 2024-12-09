@@ -17,7 +17,7 @@ export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
         <JazziconAvatar address={info?.address} diameter={12} />
         <div>
           <span className="ml-3 text-sm flex items-center">
-            <span onClick={() => window.open(getAddressUrl(info?.address), '_blank')}>{formatAddressString(info?.address)}</span>
+            <span className="text-[#2A66FF]" onClick={() => window.open(getAddressUrl(info?.address), '_blank')}>{formatAddressString(info?.address)}</span>
             <img onClick={() => handleCopy(info?.address)} className="ml-1" src={copyIcon} alt="" /></span>
           <div className="ml-3 text-sm flex items-center mt-2">邀请码: {info?.ref}
             <img onClick={() => handleCopy(info?.ref)} className="ml-1" src={copyIcon} alt="" /></div>
