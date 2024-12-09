@@ -5,7 +5,6 @@ import wallet from '../../assets/wallet.svg';
 import { formatAddressString } from '../../utils/tools';
 import { authorizationSignMessage, setAuthorizationValue, authorizationCheck } from '../../utils/tools';
 import { useAccount, useConnect, useSwitchChain, useSignMessage } from 'wagmi';
-import { verifyMessage } from 'viem';
 import { injected } from 'wagmi/connectors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +25,6 @@ export const WalletConnect = () => {
   const { isConnected, address, chainId } = useAccount();
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState(ActionType.Connect);
-  // const [message, setMessage] = useState(authorizationSignMessage());
   const [actionText, setActionText] = useState('连接钱包');
 
   // 连接处理
