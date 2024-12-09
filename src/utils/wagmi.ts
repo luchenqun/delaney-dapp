@@ -1,11 +1,8 @@
 import { createAppKit } from '@reown/appkit/react';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { http, createConfig } from 'wagmi';
-import { polygon } from 'wagmi/chains';
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors';
-import { mudTestnet, Network } from './data';
-
-const network = import.meta.env.VITE_NETWORK as Network;
+import { mudTestnet } from './data';
 
 const projectId = import.meta.env.VITE_WC_PROJECT_ID;
 if (!projectId) {
@@ -19,9 +16,9 @@ export const ADDRESS_CONFIG = {
 };
 
 export const config = createConfig({
-  chains: network == Network.Testnet ? [mudTestnet] : [polygon],
+  chains: [mudTestnet],
   connectors: [injected(), coinbaseWallet({ appName: 'delaney' }), walletConnect({ projectId })],
-  transports: network == Network.Testnet ? { [mudTestnet.id]: http() } : { [polygon.id]: http() }
+  transports: { [mudTestnet.id]: http() }
 });
 
 const metadata = {
