@@ -59,6 +59,14 @@ export function authorizationKey(address: string) {
   return 'Authorization ' + address;
 }
 
+export function currentAddress() {
+  return (localStorage.getItem('current_address') || '0x' + '0'.repeat(40)) as `0x${string}`;
+}
+
+export function setCurrentAddress(address: `0x${string}`) {
+  return localStorage.setItem('current_address', address);
+}
+
 export function authorizationValue(address: `0x${string}`) {
   return localStorage.getItem(authorizationKey(address));
 }

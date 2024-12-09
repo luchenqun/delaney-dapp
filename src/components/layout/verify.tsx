@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { useNavigate } from 'react-router-dom';
 import { getUserNoToast } from '../../utils/api';
-import { authorizationCheck } from '../../utils/tools';
+import { authorizationCheck, setCurrentAddress } from '../../utils/tools';
 
 export const VerifyLayout = () => {
   const { isConnected, address, chainId } = useAccount();
@@ -35,7 +35,9 @@ export const VerifyLayout = () => {
       }
       console.log('verify layout ' + new Date().getTime(), { isConnected, address, chainId, valid, useIsExist });
     };
-
+    if (address) {
+      setCurrentAddress(address);
+    }
     authCheck();
   }, [isConnected, address, chainId]);
 
