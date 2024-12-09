@@ -45,7 +45,7 @@ export const Bind = () => {
       })
         .then(() => {
           setLoading(false);
-          navigate('/');
+          navigate('/connect');
         })
         .catch(() => {
           Modal.alert({
