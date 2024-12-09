@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
                 element: <Benifit />
               },
               {
-                path: '/team',
+                path: '/teams',
                 element: <Team />
               }
             ]

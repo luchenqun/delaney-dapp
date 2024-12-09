@@ -7,6 +7,7 @@ import { getUser, getUsers } from '../../utils/api';
 import { divideByMillionAndRound } from '../../utils/tools';
 import { sleep } from 'antd-mobile/es/utils/sleep';
 import teamBg from '../../assets/bg.svg';
+import JazziconAvatar from '../../components/avatar';
 
 export const Team = () => {
   const [loading, setLoading] = useState(false);
@@ -100,8 +101,9 @@ export const Team = () => {
               <div className="flex justify-between items-center">
                 <img className="absolute w-[21.4rem] top-[-2.2rem] left-0 z-[2]" src={teamBg} alt="" />
                 <div className="flex items-center relative z-[3] top-[-2.5rem]">
-                  <span className="text-[#989898] text-sm">我的星级</span>
-                  <div>
+                  <JazziconAvatar address={address} diameter={6} />
+                  <span className="text-[#989898] text-sm ml-1">我的星级</span>
+                  <div className="relative top-[-0.1rem]">
                     <Rating
                       className="w-24 ml-1 relative"
                       value={Math.max(userInfo?.star, userInfo?.min_star)}

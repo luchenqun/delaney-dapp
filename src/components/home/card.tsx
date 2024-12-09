@@ -5,7 +5,7 @@ import mud from '../../assets/mud.png';
 import copyIcon from '../../assets/copy.svg';
 import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
-import { DotLoading, Modal, Skeleton, Toast } from 'antd-mobile';
+import { Modal, Skeleton, Toast } from 'antd-mobile';
 import { useAccount } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getUser } from '../../utils/api';

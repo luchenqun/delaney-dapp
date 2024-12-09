@@ -30,7 +30,7 @@ export const Footer = () => {
       activeIcon: <img src={activeBenifit} alt="" />
     },
     {
-      key: '/team',
+      key: '/teams',
       title: '团队',
       icon: <img src={team} alt="" />,
       activeIcon: <img src={activeTeam} alt="" />
