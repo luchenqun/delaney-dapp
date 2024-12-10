@@ -41,10 +41,14 @@ export const HomeHeaders = forwardRef((props, ref) => {
     }
   };
 
+  const handleShowVConsole = () => {
+    new (window as any).VConsole();
+  };
+
   return (
     <div className="header-bg px-4 py-1 flex justify-between items-center fixed top-0 left-0 right-0 z-10">
       <div className="flex">
-        <img className="w-10 h-10" src={logo} alt="logo" />
+        <img onClick={handleShowVConsole} className="w-10 h-10" src={logo} alt="logo" />
         <div className="ml-3">
           <div className="text-base flex items-center">
             <span onClick={() => { window.open(getAddressUrl(address as string), '_blank'); }}>{formatAddressString(address as string)}</span>

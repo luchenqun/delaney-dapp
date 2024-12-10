@@ -26,6 +26,7 @@ export const WalletConnect = () => {
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState(ActionType.Connect);
   const [actionText, setActionText] = useState('连接钱包');
+  const [pageHeight, setPageHeight] = useState(0);
 
   // 连接处理
   const handleConnect = async () => {
@@ -98,9 +99,13 @@ export const WalletConnect = () => {
     if (action == ActionType.Sign) setActionText('登录');
   }, [action]);
 
+  useEffect(() => {
+    setPageHeight(window.innerHeight);
+  }, []);
+
   return (
     <>
-      <div className="min-h-screen">
+      <div className="min-h-screen relative" style={{ height: pageHeight }}>
         <img className="w-screen absolute left-0 top-0" src={colorBg} alt="背景" />
         <div className="relative z-10 w-full flex justify-center pt-24">
           <div className="flex flex-wrap justify-center">
