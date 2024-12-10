@@ -146,8 +146,7 @@ export const WalletConnect = () => {
             />
           </span>
         </div>
-        <div className="h-10"></div>
-        <div className="flex justify-center w-screen absolute bottom-20 flex-wrap">
+        <div className="flex justify-center w-screen absolute bottom-10 flex-wrap">
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
             {actionText}
           </div>
