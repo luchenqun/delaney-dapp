@@ -83,3 +83,7 @@ body {
 .header-bg {
   background: linear-gradient(90deg, #FFF9EE 0%, #E4FFF2 100%);
 }
+
+.adm-skeleton.adm-skeleton-paragraph-line:last-child {
+  --width: 100%;
+}

@@ -182,7 +182,7 @@ export const Benifit = () => {
               <div className="text-[2rem] font-semibold">
                 {loading ? (
                   <>
-                    <Skeleton.Title className="h-10" animated />
+                    <Skeleton.Title className="h-10 w-full" animated />
                   </>
                 ) : (
                   <> {divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</>
@@ -191,7 +191,7 @@ export const Benifit = () => {
               <div className="text-base relative top-[-0.5rem]">
                 {loading ? (
                   <>
-                    <Skeleton.Paragraph className="h-3" lineCount={1} animated />
+                    <Skeleton.Paragraph className="h-3 w-full" lineCount={1} animated />
                   </>
                 ) : (
                   <>≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</>
