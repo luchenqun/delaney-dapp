@@ -112,13 +112,13 @@ export const WalletConnect = () => {
     <>
       <div className="min-h-screen relative" style={{ height: pageHeight }}>
         <img className="w-screen absolute left-0 top-0" src={colorBg} alt="背景" />
-        <div className="relative z-10 w-full flex justify-center pt-24">
+        <div className="relative z-10 w-full flex justify-center pt-[10vh]">
           <div onClick={handleShowVConsole} className="flex flex-wrap justify-center">
             <img src={logo} className="text-center" alt="" />
             <span className="w-full text-center font-normal text-xl">Delaney</span>
           </div>
         </div>
-        <img className="mx-auto mt-12" src={wallet} alt="" />
+        <img className="mx-auto" src={wallet} alt="" />
         <div className="mt-3 text-center text-base">
           你的钱包地址&nbsp;
           <span className="text-[#2A66FF]">{formatAddressString(address as string)}</span>
