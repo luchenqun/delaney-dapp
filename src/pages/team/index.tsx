@@ -35,7 +35,7 @@ export const Team = () => {
     return new Promise<void>((resolve) => {
       getTeamUsers({
         address: `${address?.toLowerCase()}`,
-        page,
+        page
       }).then((res) => {
         setList(res.data.data.items);
         setHasMore(res.data.data.total > res.data.data.items.length);
@@ -64,7 +64,7 @@ export const Team = () => {
               '--border-radius': '8px'
             }}
           />
-          <div className="ml-4 mt-6 font-semibold text-base">直推人员列表</div>
+          <div className="ml-4 mt-6 font-semibold text-base">社区列表</div>
           <Skeleton
             animated
             className="mt-2"
