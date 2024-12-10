@@ -1,12 +1,14 @@
-import { Button, Modal, PasscodeInput } from 'antd-mobile';
+import { Button, Modal, PasscodeInput, Toast } from 'antd-mobile';
 import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUser, getUserNoToast } from '../../utils/api';
-import { formatAddressString } from '../../utils/tools';
+import { createUser, getUserNoToast, getUsers } from '../../utils/api';
+import { formatAddressString, getAddressUrl } from '../../utils/tools';
 import { ExclamationCircleFill } from 'antd-mobile-icons';
+import copyIcon from '../../assets/copy.svg';
+import copy from 'copy-to-clipboard';
 
 export const Bind = () => {
   const navigate = useNavigate();
@@ -14,6 +16,7 @@ export const Bind = () => {
   const [value, setValue] = useState('');
   const { isConnected, address, chainId } = useAccount();
   const [pageHeight, setPageHeight] = useState(0);
+  const [refAddress, setRefAddress] = useState('');
 
   useEffect(() => {
     if (address) {
@@ -30,11 +33,35 @@ export const Bind = () => {
   }, [isConnected, address, chainId]);
 
   const handleToLink = () => {
-    // navigate('/');
+    window.open(getAddressUrl(address as string), '_blank');
+  };
+
+  const handleToLinkRef = () => {
+    window.open(getAddressUrl(refAddress), '_blank');
   };
 
   const handleChange = (value: string) => {
     setValue(value);
+  };
+
+  useEffect(() => {
+    if (value.length === 6) {
+      handleGetAddress();
+    } else {
+      setRefAddress('');
+    }
+  }, [value]);
+
+  const handleGetAddress = () => {
+    getUsers({ 'filters': {
+      ref: `=${value}`
+    } }).then((res) => {
+      if (res.data.data.items.length > 0) {
+        setRefAddress(res.data.data.items[0].address);
+      } else {
+        setRefAddress('none');
+      }
+    });
   };
 
   const handleConfirm = () => {
@@ -76,6 +103,11 @@ export const Bind = () => {
     (window as any).vConsole.show();
   };
 
+  const handleCopy = (text: string) => {
+    copy(text);
+    Toast.show('复制成功');
+  };
+
   return (
     <>
       <div className="min-h-screen relative" style={{ height: pageHeight }}>
@@ -91,10 +123,18 @@ export const Bind = () => {
           <PasscodeInput value={value} plain seperated onChange={handleChange} />
         </div>
         <div className="mt-3 text-center text-base">
-          你的钱包地址&nbsp;
-          <span className="text-[#2A66FF]" onClick={handleToLink}>
-            {formatAddressString(address as string)}
+          <span className="flex items-center justify-center">
+            你的钱包地址&nbsp;
+            <span className="text-[#2A66FF]" onClick={handleToLink}>
+              {formatAddressString(address as string)}
+            </span>
+            <img onClick={() => { handleCopy(address as string) }} className="ml-1" src={copyIcon} alt="" />
           </span>
+          {refAddress && <div className="flex items-center justify-center">
+            邀请钱包地址&nbsp;
+            <span className="text-[#2A66FF]" onClick={handleToLinkRef}>{formatAddressString(refAddress)}</span>
+            <img onClick={() => { handleCopy(refAddress) }} className="ml-1" src={copyIcon} alt="" />
+          </div>}
         </div>
         <div className="flex justify-center w-screen absolute bottom-20">
           <Button onClick={handleConfirm} loading={loading} disabled={value.length !== 6} color="primary" className="w-80 h-11 rounded-xl text-xl">
