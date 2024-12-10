@@ -14,6 +14,7 @@ export const HomeHeaders = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const { address } = useAccount();
   const [messageUnread, setMessageUnread] = useState(false);
+  const [showConsole, setShowConsole] = useState(false);
   const { price } = useMudPrice();
 
   useImperativeHandle(ref, () => ({
@@ -30,6 +31,15 @@ export const HomeHeaders = forwardRef((props, ref) => {
   };
 
   useEffect(() => {
+    (window as any).vConsole.hideSwitch(); // 默认面板我们不显示，只通过点击图片触发
+    if (showConsole) {
+      (window as any).vConsole.show();
+    } else {
+      (window as any).vConsole.hide();
+    }
+  }, [showConsole]);
+
+  useEffect(() => {
     hasUnreadMessage(address);
   }, [address]);
 
@@ -42,7 +52,7 @@ export const HomeHeaders = forwardRef((props, ref) => {
   };
 
   const handleShowVConsole = () => {
-    new (window as any).VConsole();
+    setShowConsole(!showConsole);
   };
 
   return (
@@ -51,7 +61,13 @@ export const HomeHeaders = forwardRef((props, ref) => {
         <img onClick={handleShowVConsole} className="w-10 h-10" src={logo} alt="logo" />
         <div className="ml-3">
           <div className="text-base flex items-center">
-            <span onClick={() => { window.open(getAddressUrl(address as string), '_blank'); }}>{formatAddressString(address as string)}</span>
+            <span
+              onClick={() => {
+                window.open(getAddressUrl(address as string), '_blank');
+              }}
+            >
+              {formatAddressString(address as string)}
+            </span>
             <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
           </div>
           <div className="text-primary text-sm">{price ? `MUD ≈ ${divideByMillionAndRound(price as bigint)} USDT` : '-'}</div>
