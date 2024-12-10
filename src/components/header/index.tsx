@@ -31,12 +31,12 @@ export const HomeHeaders = forwardRef((props, ref) => {
   };
 
   useEffect(() => {
-    (window as any).vConsole.hideSwitch(); // 默认面板我们不显示，只通过点击图片触发
-    if (showConsole) {
-      (window as any).vConsole.show();
-    } else {
-      (window as any).vConsole.hide();
-    }
+    // (window as any).vConsole.hideSwitch(); // 默认面板我们不显示，只通过点击图片触发
+    // if (showConsole) {
+    //   (window as any).vConsole.show();
+    // } else {
+    //   (window as any).vConsole.hide();
+    // }
   }, [showConsole]);
 
   useEffect(() => {
