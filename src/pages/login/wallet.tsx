@@ -3,11 +3,13 @@ import colorBg from '../../assets/color-bg.png';
 import logo from '../../assets/logo.svg';
 import wallet from '../../assets/wallet.svg';
 import { formatAddressString } from '../../utils/tools';
-import { authorizationSignMessage, setAuthorizationValue, authorizationCheck } from '../../utils/tools';
+import { authorizationSignMessage, setAuthorizationValue, authorizationCheck, getAddressUrl } from '../../utils/tools';
 import { useAccount, useConnect, useSwitchChain, useSignMessage } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import copyIcon from '../../assets/copy.svg';
+import copy from 'copy-to-clipboard';
 
 export const enum ActionType {
   Connect = 0,
@@ -108,6 +110,15 @@ export const WalletConnect = () => {
     (window as any).vConsole.show();
   };
 
+  const handleCopy = (text: string) => {
+    copy(text);
+    Toast.show('复制成功');
+  };
+
+  const handleToLink = () => {
+    window.open(getAddressUrl(address as string), '_blank');
+  };
+
   return (
     <>
       <div className="min-h-screen relative" style={{ height: pageHeight }}>
@@ -119,9 +130,22 @@ export const WalletConnect = () => {
           </div>
         </div>
         <img className="mx-auto" src={wallet} alt="" />
-        <div className="mt-3 text-center text-base bottom-10">
-          你的钱包地址&nbsp;
-          <span className="text-[#2A66FF]">{formatAddressString(address as string)}</span>
+
+        <div className="mt-3 text-center text-base mb-8">
+          <span className="flex items-center justify-center">
+            你的钱包地址&nbsp;
+            <span className="text-[#2A66FF]" onClick={handleToLink}>
+              {formatAddressString(address as string)}
+            </span>
+            <img
+              onClick={() => {
+                handleCopy(address as string);
+              }}
+              className="ml-1"
+              src={copyIcon}
+              alt=""
+            />
+          </span>
         </div>
         <div className="flex justify-center w-screen absolute bottom-20 flex-wrap">
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
