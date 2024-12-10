@@ -119,7 +119,7 @@ export const WalletConnect = () => {
           </div>
         </div>
         <img className="mx-auto" src={wallet} alt="" />
-        <div className="mt-3 text-center text-base">
+        <div className="mt-3 text-center text-base bottom-10">
           你的钱包地址&nbsp;
           <span className="text-[#2A66FF]">{formatAddressString(address as string)}</span>
         </div>

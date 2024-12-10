@@ -53,9 +53,11 @@ export const Bind = () => {
   }, [value]);
 
   const handleGetAddress = () => {
-    getUsers({ 'filters': {
-      ref: `=${value}`
-    } }).then((res) => {
+    getUsers({
+      filters: {
+        ref: `=${value}`
+      }
+    }).then((res) => {
       if (res.data.data.items.length > 0) {
         setRefAddress(res.data.data.items[0].address);
       } else {
@@ -128,16 +130,32 @@ export const Bind = () => {
             <span className="text-[#2A66FF]" onClick={handleToLink}>
               {formatAddressString(address as string)}
             </span>
-            <img onClick={() => { handleCopy(address as string) }} className="ml-1" src={copyIcon} alt="" />
+            <img
+              onClick={() => {
+                handleCopy(address as string);
+              }}
+              className="ml-1"
+              src={copyIcon}
+              alt=""
+            />
           </span>
-          {refAddress && refAddress !== 'none' && <div className="flex items-center justify-center">
-            邀请钱包地址&nbsp;
-            <span className="text-[#2A66FF]" onClick={handleToLinkRef}>{formatAddressString(refAddress)}</span>
-            <img onClick={() => { handleCopy(refAddress) }} className="ml-1" src={copyIcon} alt="" />
-          </div>}
-          {refAddress === 'none' && <div className="flex items-center justify-center">
-            您输入的邀请码不存在
-          </div>}
+          {refAddress && refAddress !== 'none' && (
+            <div className="flex items-center justify-center">
+              邀请钱包地址&nbsp;
+              <span className="text-[#2A66FF]" onClick={handleToLinkRef}>
+                {formatAddressString(refAddress)}
+              </span>
+              <img
+                onClick={() => {
+                  handleCopy(refAddress);
+                }}
+                className="ml-1"
+                src={copyIcon}
+                alt=""
+              />
+            </div>
+          )}
+          {refAddress === 'none' && <div className="flex items-center justify-center">您输入的邀请码不存在</div>}
         </div>
         <div className="flex justify-center w-screen absolute bottom-20">
           <Button onClick={handleConfirm} loading={loading} disabled={value.length !== 6} color="primary" className="w-80 h-11 rounded-xl text-xl">
