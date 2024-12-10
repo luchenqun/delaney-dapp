@@ -120,7 +120,7 @@ export const Bind = () => {
         </div>
         <div className="mt-10 text-xl text-center font-semibold">请输入您的邀请码</div>
         <div className="flex justify-center mt-6">
-          <PasscodeInput value={value} plain seperated onChange={handleChange} />
+          <PasscodeInput error={refAddress === 'none'} value={value} plain seperated onChange={handleChange} />
         </div>
         <div className="mt-3 text-center text-base">
           <span className="flex items-center justify-center">
@@ -130,10 +130,13 @@ export const Bind = () => {
             </span>
             <img onClick={() => { handleCopy(address as string) }} className="ml-1" src={copyIcon} alt="" />
           </span>
-          {refAddress && <div className="flex items-center justify-center">
+          {refAddress && refAddress !== 'none' && <div className="flex items-center justify-center">
             邀请钱包地址&nbsp;
             <span className="text-[#2A66FF]" onClick={handleToLinkRef}>{formatAddressString(refAddress)}</span>
             <img onClick={() => { handleCopy(refAddress) }} className="ml-1" src={copyIcon} alt="" />
+          </div>}
+          {refAddress === 'none' && <div className="flex items-center justify-center">
+            您输入的邀请码不存在
           </div>}
         </div>
         <div className="flex justify-center w-screen absolute bottom-20">
