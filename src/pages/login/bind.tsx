@@ -71,12 +71,17 @@ export const Bind = () => {
     setPageHeight(window.innerHeight);
   }, []);
 
+  const handleShowVConsole = () => {
+    (window as any).vConsole.hideSwitch(); // 默认面板我们不显示，只通过点击图片触发
+    (window as any).vConsole.show();
+  };
+
   return (
     <>
       <div className="min-h-screen relative" style={{ height: pageHeight }}>
         <img className="w-screen absolute left-0 top-0" src={colorBg} alt="背景" />
         <div className="relative z-10 w-full flex justify-center pt-24">
-          <div className="flex flex-wrap justify-center">
+          <div onClick={handleShowVConsole} className="flex flex-wrap justify-center">
             <img src={logo} className="text-center" alt="" />
             <span className="w-full text-center font-normal text-xl">Delaney</span>
           </div>

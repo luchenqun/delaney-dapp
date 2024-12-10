@@ -14,7 +14,7 @@ export const VerifyLayout = () => {
     const authCheck = async () => {
       let useIsExist = false;
       let valid = false;
-      console.log('verify layout address ' + address, currentAddress());
+
       try {
         // 如果没有连接钱包或者钱包连接错误，通通跳转到连接钱包页面
         if (!isConnected || !address || chainId !== Number(import.meta.env.VITE_APP_CHAIN_ID)) {
@@ -34,7 +34,7 @@ export const VerifyLayout = () => {
         console.log(error);
         navigate(useIsExist ? '/connect' : '/bind');
       }
-      console.log('verify layout ' + new Date().getTime(), { isConnected, address, chainId, valid, useIsExist });
+      console.log('verify layout ' + new Date().getTime(), { isConnected, address, chainId, valid, useIsExist, currentAddress: currentAddress() });
       if (address !== currentAddress()) {
         navigate('/connect');
         return;

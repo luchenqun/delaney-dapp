@@ -14,7 +14,6 @@ export const HomeHeaders = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const { address } = useAccount();
   const [messageUnread, setMessageUnread] = useState(false);
-  const [showConsole, setShowConsole] = useState(true);
   const { price } = useMudPrice();
 
   useImperativeHandle(ref, () => ({
@@ -31,15 +30,6 @@ export const HomeHeaders = forwardRef((props, ref) => {
   };
 
   useEffect(() => {
-    // (window as any).vConsole.hideSwitch(); // 默认面板我们不显示，只通过点击图片触发
-    // if (showConsole) {
-    //   (window as any).vConsole.show();
-    // } else {
-    //   (window as any).vConsole.hide();
-    // }
-  }, [showConsole]);
-
-  useEffect(() => {
     hasUnreadMessage(address);
   }, [address]);
 
@@ -52,7 +42,8 @@ export const HomeHeaders = forwardRef((props, ref) => {
   };
 
   const handleShowVConsole = () => {
-    setShowConsole(!showConsole);
+    (window as any).vConsole.hideSwitch(); // 默认面板我们不显示，只通过点击图片触发
+    (window as any).vConsole.show();
   };
 
   return (
