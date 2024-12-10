@@ -130,8 +130,7 @@ export const WalletConnect = () => {
           </div>
         </div>
         <img className="mx-auto" src={wallet} alt="" />
-
-        <div className="mt-3 text-center text-base mb-8">
+        <div className="mt-3 text-center text-base mb-20">
           <span className="flex items-center justify-center">
             你的钱包地址&nbsp;
             <span className="text-[#2A66FF]" onClick={handleToLink}>
