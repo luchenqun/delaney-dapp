@@ -14,7 +14,7 @@ export const HomeHeaders = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const { address } = useAccount();
   const [messageUnread, setMessageUnread] = useState(false);
-  const [showConsole, setShowConsole] = useState(false);
+  const [showConsole, setShowConsole] = useState(true);
   const { price } = useMudPrice();
 
   useImperativeHandle(ref, () => ({
