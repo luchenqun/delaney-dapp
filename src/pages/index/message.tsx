@@ -1,6 +1,6 @@
-import { InfiniteScroll, List, NavBar } from 'antd-mobile';
+import { InfiniteScroll, List, NavBar, Toast } from 'antd-mobile';
 import { useNavigate } from 'react-router-dom';
-import clear from '../../assets/clear.svg';
+import copy from 'copy-to-clipboard';
 import empty from '../../assets/empty.svg';
 import { useEffect, useState } from 'react';
 import { getMessages, setMessageRead } from '../../utils/api';
@@ -79,8 +79,18 @@ const MessageContent = () => {
 };
 
 const MessageItem = ({ info }: { info: any }) => {
+  const handleCopy = () => {
+    copy(info.content);
+    Toast.show('消息复制成功');
+  };
+
   return (
-    <div className="flex items-start px-4 py-3 bg-white">
+    <div
+      onClick={() => {
+        handleCopy();
+      }}
+      className="flex items-start px-4 py-3 bg-white"
+    >
       <img src={message} className="mr-2" alt="" />
       <div>
         <div className="font-semibold text-base">{info.title}</div>
