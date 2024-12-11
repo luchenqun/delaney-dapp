@@ -95,7 +95,7 @@ const MessageItem = ({ info }: { info: any }) => {
       <div>
         <div className="font-semibold text-base">{info.title}</div>
         <div className="text-sm mt-2 break-all">{info.content}</div>
-        <div className="text-xs text-gray-500 mt-1">{dayjs.unix(info.create_time).format('YYYY-MM-DD HH:mm')}</div>
+        <div className="text-xs text-gray-500 mt-1">{dayjs.unix(info.create_time).format('YYYY-MM-DD HH:mm:ss')}</div>
       </div>
     </div>
   );
