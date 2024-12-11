@@ -130,22 +130,24 @@ export const WalletConnect = () => {
           </div>
         </div>
         <img className="mx-auto" src={wallet} alt="" />
-        <div className="mt-3 text-center text-base">
-          <span className="flex items-center justify-center">
-            你的钱包地址&nbsp;
-            <span className="text-[#2A66FF]" onClick={handleToLink}>
-              {formatAddressString(address as string)}
+        {address && (
+          <div className="mt-3 text-center text-base">
+            <span className="flex items-center justify-center">
+              你的钱包地址&nbsp;
+              <span className="text-[#2A66FF]" onClick={handleToLink}>
+                {formatAddressString(address as string)}
+              </span>
+              <img
+                onClick={() => {
+                  handleCopy(address as string);
+                }}
+                className="ml-1"
+                src={copyIcon}
+                alt=""
+              />
             </span>
-            <img
-              onClick={() => {
-                handleCopy(address as string);
-              }}
-              className="ml-1"
-              src={copyIcon}
-              alt=""
-            />
-          </span>
-        </div>
+          </div>
+        )}
         <div className="flex justify-center w-screen absolute bottom-10 flex-wrap">
           <div onClick={handleConnect} className="flex justify-center items-center font-bold w-80 text-xl h-11 rounded-xl bg-[#46D69C] mt-4">
             {actionText}

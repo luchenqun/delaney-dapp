@@ -125,20 +125,22 @@ export const Bind = () => {
           <PasscodeInput error={refAddress === 'none'} value={value} plain seperated onChange={handleChange} />
         </div>
         <div className="mt-3 text-center text-base">
-          <span className="flex items-center justify-center">
-            你的钱包地址&nbsp;
-            <span className="text-[#2A66FF]" onClick={handleToLink}>
-              {formatAddressString(address as string)}
+          {address && (
+            <span className="flex items-center justify-center">
+              你的钱包地址&nbsp;
+              <span className="text-[#2A66FF]" onClick={handleToLink}>
+                {formatAddressString(address as string)}
+              </span>
+              <img
+                onClick={() => {
+                  handleCopy(address as string);
+                }}
+                className="ml-1"
+                src={copyIcon}
+                alt=""
+              />
             </span>
-            <img
-              onClick={() => {
-                handleCopy(address as string);
-              }}
-              className="ml-1"
-              src={copyIcon}
-              alt=""
-            />
-          </span>
+          )}
           {refAddress && refAddress !== 'none' && (
             <div className="flex items-center justify-center">
               邀请钱包地址&nbsp;
