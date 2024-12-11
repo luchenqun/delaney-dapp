@@ -47,7 +47,9 @@ export const Benifit = () => {
     }
     if (isSuccess) {
       Toast.show('奖励领取成功');
-      fetchData(address);
+      setTimeout(() => {
+        fetchData(address);
+      }, 3000);
     }
   }, [isLoading, isSuccess, hash, address]);
 
