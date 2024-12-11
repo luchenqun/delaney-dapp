@@ -94,7 +94,7 @@ const MessageItem = ({ info }: { info: any }) => {
       <img src={message} className="mr-2" alt="" />
       <div>
         <div className="font-semibold text-base">{info.title}</div>
-        <div className="text-sm mt-2">{info.content}</div>
+        <div className="text-sm mt-2 break-all">{info.content}</div>
         <div className="text-xs text-gray-500 mt-1">{dayjs.unix(info.create_time).format('YYYY-MM-DD HH:mm')}</div>
       </div>
     </div>
