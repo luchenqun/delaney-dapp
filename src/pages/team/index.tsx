@@ -31,22 +31,18 @@ export const Team = () => {
     }
   };
 
-  const getList = (page: number) => {
+  const loadMore = () => {
     return new Promise<void>((resolve) => {
       getTeamUsers({
         address: `${address?.toLowerCase()}`,
         page
       }).then((res) => {
-        setList(res.data.data.items);
-        setHasMore(res.data.data.total > res.data.data.items.length);
-        setPage(res.data.data.pages);
+        setList(list.concat(res.data.data.items));
+        setPage(page + 1);
+        setHasMore(res.data.data.total > list.length);
         resolve();
       });
     });
-  };
-
-  const loadMore = () => {
-    return getList(page + 1);
   };
 
   if (loading) {
