@@ -28,7 +28,9 @@ export const VerifyLayout = () => {
         valid = await authorizationCheck(address);
         if (useIsExist) {
           if (valid) {
-            // navigate(location.pathname);
+            if (location.pathname === '/connect' || location.pathname === '/bind') {
+              navigate('/');
+            }
           } else {
             navigate('/connect')
           }
