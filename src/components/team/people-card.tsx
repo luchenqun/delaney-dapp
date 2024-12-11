@@ -4,23 +4,29 @@ import { Rating, ThinRoundedStar } from '@smastrom/react-rating';
 import copyIcon from '../../assets/copy.svg';
 import copy from 'copy-to-clipboard';
 import { Toast } from 'antd-mobile';
+import dayjs from 'dayjs';
 
 export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
   const handleCopy = (text: string) => {
     copy(text);
     Toast.show('复制成功');
   };
-  
+
   return (
     <div className="w-[21.4rem] bg-white p-4 mx-auto rounded-2xl mt-3 relative overflow-hidden">
       <div className="flex items-center">
         <JazziconAvatar address={info?.address} diameter={12} />
         <div>
           <span className="ml-3 text-sm flex items-center">
-            <span className="text-[#2A66FF]" onClick={() => window.open(getAddressUrl(info?.address), '_blank')}>{formatAddressString(info?.address)}</span>
-            <img onClick={() => handleCopy(info?.address)} className="ml-1" src={copyIcon} alt="" /></span>
-          <div className="ml-3 text-sm flex items-center mt-2">邀请码: {info?.ref}
-            <img onClick={() => handleCopy(info?.ref)} className="ml-1" src={copyIcon} alt="" /></div>
+            <span className="text-[#2A66FF]" onClick={() => window.open(getAddressUrl(info?.address), '_blank')}>
+              {formatAddressString(info?.address)}
+            </span>
+            <img onClick={() => handleCopy(info?.address)} className="ml-1" src={copyIcon} alt="" />
+          </span>
+          <div className="ml-3 text-sm flex items-center mt-2">
+            邀请码: {info?.ref}
+            <img onClick={() => handleCopy(info?.ref)} className="ml-1" src={copyIcon} alt="" />
+          </div>
         </div>
       </div>
       <div className="mt-4">
@@ -38,12 +44,12 @@ export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
               className="w-24 ml-1 relative"
               value={info?.min_star > info?.star ? info?.min_star : info?.star}
               readOnly
-                itemStyles={{
-                  itemShapes: ThinRoundedStar,
-                  activeFillColor: '#FEC533',
-                  inactiveFillColor: '#F3F3F3'
-                }}
-              />
+              itemStyles={{
+                itemShapes: ThinRoundedStar,
+                activeFillColor: '#FEC533',
+                inactiveFillColor: '#F3F3F3'
+              }}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center absolute top-0 right-0 bg-[#46D69C1A] py-1.5 px-5 rounded-bl-2xl">
@@ -76,12 +82,13 @@ export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
             <div className="text-sm">{info?.team_person}</div>
           </div>
         </div>
+        */}
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">注册时间</span>
           <div className="text-right">
             <div className="text-sm">{dayjs.unix(info?.create_time).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
