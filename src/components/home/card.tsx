@@ -34,9 +34,7 @@ export const HomeCard = forwardRef((props, ref) => {
   });
 
   const handleTrade = () => {
-    window.open(
-      'https://swap.transit.finance/?locale=zh&utm_source=tokenpocket&inputChain=MATIC&inputSymbol=USDT&inputCurrency=0xc2132d05d31c914a87c6611c10748aeb04b58e8f&outputChain=MATIC&outputCurrency=0xf6EaC236757e82D6772E8bD02D36a0c791d78C51&outputSymbol=MUD#/'
-    );
+    window.open('https://swap.mud.network/');
   };
 
   useImperativeHandle(ref, () => ({
