@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getDelegateUserStat } from '../../utils/api';
-import { humanReadable, formatSeconds, afterSeconds, UsdtPrecision, usdtToMud } from '../../utils/tools';
+import { humanReadable, formatSeconds, afterSeconds, UsdtPrecision, usdtToMud, mudToUsdt } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import useContractBalance from '../../hook/useContractBalance';
@@ -80,6 +80,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
 
   const handleAll = () => {
     if (mudBalance) {
+      console.log('====================>', mudBalance);
       setUserInput(humanReadable(mudBalance || 0));
     }
   };
@@ -184,7 +185,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       {userInput && (
         <div className="flex justify-between mt-4 relative top-[-10px]">
           <span className="text-xs">质押价值</span>
-          <span className="text-xs text-[#FF3F3F]">≈ {humanReadable(Number(userInput) * Number(mudPrice)) || '-'} USDT</span>
+          <span className="text-xs text-[#FF3F3F]">≈ {humanReadable(mudToUsdt(parseEther(String(userInput)), mudPrice || 0n), UsdtPrecision) || '-'} USDT</span>
         </div>
       )}
       <div className="mt-4">
