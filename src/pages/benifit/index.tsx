@@ -160,7 +160,7 @@ export const Benifit = () => {
                           <Skeleton.Paragraph lineCount={1} animated />
                         </>
                       ) : (
-                        <> {humanReadable(claimUserStat?.usdt || 0)}</>
+                        <> {humanReadable(claimUserStat?.usdt || 0, UsdtPrecision)}</>
                       )}
                     </div>
                     <div className="text-xs">
@@ -169,7 +169,7 @@ export const Benifit = () => {
                           <Skeleton.Paragraph className="h-3" lineCount={1} animated />
                         </>
                       ) : (
-                        <>≈{humanReadable(claimUserStat?.mud || 0)} MUD</>
+                        <>≈{humanReadable(claimUserStat?.mud || 0n, MudPrecision)} MUD</>
                       )}
                     </div>
                   </div>
