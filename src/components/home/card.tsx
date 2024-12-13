@@ -21,12 +21,6 @@ export const HomeCard = forwardRef((props, ref) => {
   const [userInfo, setUserInfo] = useState<any>(null);
 
   const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useContractBalance(address as string);
-  // const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useReadContract({
-  //   address: ADDRESS_CONFIG.mud,
-  //   abi: erc20Abi,
-  //   functionName: 'balanceOf',
-  //   args: [address as `0x${string}`]
-  // });
 
   const {
     data: usdtBalance,

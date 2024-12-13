@@ -69,13 +69,6 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
     }
   }, [mudBalance, userInput]);
 
-  // const { data: mudBalance, refetch: refetchMud } = useReadContract({
-  //   address: ADDRESS_CONFIG.mud,
-  //   abi: erc20Abi,
-  //   functionName: 'balanceOf',
-  //   args: [address as `0x${string}`]
-  // });
-
   const { data: config, refetch: refetchConfig } = useReadContract({
     address: ADDRESS_CONFIG.delaney,
     abi: delaneyAbi,
