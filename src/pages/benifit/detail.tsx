@@ -5,7 +5,7 @@ import time from '../../assets/time.svg';
 import { getDynamicRewardUserStat, getStaticRewardUserStat } from '../../utils/api';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
-import { divideByMillionAndRound } from '../../utils/tools';
+import { humanReadable, UsdtPrecision } from '../../utils/tools';
 import { StaticList } from '../../components/benifit/static-list';
 import { DynamicList } from '../../components/benifit/dynamic-list';
 import './detail.css';
@@ -80,7 +80,7 @@ export const BenifitDetail = () => {
                     <span className="ml-1">已领取</span>
                   </span>
                   <div className="text-right">
-                    <div className="font-semibold text-sm">{divideByMillionAndRound(staticRewardUser?.claimed_usdt || 0)} USDT</div>
+                    <div className="font-semibold text-sm">{humanReadable(staticRewardUser?.claimed_usdt || 0, UsdtPrecision)} USDT</div>
                   </div>
                 </div>
                 <div className="flex justify-between items-center mt-4">
@@ -89,8 +89,8 @@ export const BenifitDetail = () => {
                     <span className="ml-1">待领取</span>
                   </span>
                   <div className="text-right">
-                    <div className="font-semibold text-sm">{divideByMillionAndRound(staticRewardUser?.unclaimed_usdt || 0)} USDT</div>
-                    <div className="text-xs">≈{divideByMillionAndRound(staticRewardUser?.unclaimed_mud || 0)} MUD</div>
+                    <div className="font-semibold text-sm">{humanReadable(staticRewardUser?.unclaimed_usdt || 0, UsdtPrecision)} USDT</div>
+                    <div className="text-xs">≈{humanReadable(staticRewardUser?.unclaimed_mud || 0)} MUD</div>
                   </div>
                 </div>
                 <div className="flex justify-between items-center mt-4">
@@ -99,8 +99,8 @@ export const BenifitDetail = () => {
                     <span className="ml-1">待解锁</span>
                   </span>
                   <div className="text-right">
-                    <div className="font-semibold text-sm">{divideByMillionAndRound(staticRewardUser?.locked_usdt || 0)} USDT</div>
-                    <div className="text-xs">≈{divideByMillionAndRound(staticRewardUser?.locked_mud || 0)} MUD</div>
+                    <div className="font-semibold text-sm">{humanReadable(staticRewardUser?.locked_usdt || 0, UsdtPrecision)} USDT</div>
+                    <div className="text-xs">≈{humanReadable(staticRewardUser?.locked_mud || 0)} MUD</div>
                   </div>
                 </div>
               </div>
@@ -114,7 +114,7 @@ export const BenifitDetail = () => {
                     <span className="ml-1">已领取</span>
                   </span>
                   <div className="text-right">
-                    <div className="font-semibold text-sm">{divideByMillionAndRound(dynamicRewardUser?.claimed_usdt || 0)} USDT</div>
+                    <div className="font-semibold text-sm">{humanReadable(dynamicRewardUser?.claimed_usdt || 0, UsdtPrecision)} USDT</div>
                   </div>
                 </div>
                 <div className="flex justify-between items-center mt-4">
@@ -123,8 +123,8 @@ export const BenifitDetail = () => {
                     <span className="ml-1">待领取</span>
                   </span>
                   <div className="text-right">
-                    <div className="font-semibold text-sm">{divideByMillionAndRound(dynamicRewardUser?.unclaimed_usdt || 0)} USDT</div>
-                    <div className="text-xs">≈{divideByMillionAndRound(dynamicRewardUser?.unclaimed_mud || 0)} MUD</div>
+                    <div className="font-semibold text-sm">{humanReadable(dynamicRewardUser?.unclaimed_usdt || 0, UsdtPrecision)} USDT</div>
+                    <div className="text-xs">≈{humanReadable(dynamicRewardUser?.unclaimed_mud || 0)} MUD</div>
                   </div>
                 </div>
               </div>

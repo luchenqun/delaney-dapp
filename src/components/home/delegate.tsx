@@ -5,11 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getDelegateUserStat } from '../../utils/api';
-import { divideByMillionAndRound, formatSeconds, afterSeconds } from '../../utils/tools';
+import { humanReadable, formatSeconds, afterSeconds, UsdtPrecision } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
-import { erc20Abi } from 'viem';
-import { TxType } from '../../utils/data';
 import useContractBalance from '../../hook/useContractBalance';
 import { useMudPrice } from '../../hook/useMudPrice';
 
@@ -18,10 +16,9 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   const navigate = useNavigate();
   const [delegateUserStat, setDelegateUserStat] = useState<any>(null);
   const [time, setTime] = useState('-');
-  const [mudMax, setMudMax] = useState<number>(0);
+  const [delegateMudMin, setDelegateMudMin] = useState<bigint>(0n);
   const [userInput, setUserInput] = useState<string | number>('');
   const [isAllow, setIsAllow] = useState(false);
-  const [txType, setTxType] = useState<TxType>(TxType.Approve);
   const { data: hash, writeContract, isPending, isError, status } = useWriteContract();
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
@@ -35,7 +32,6 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   const refreshData = () => {
     if (address) {
       getData();
-      refetchAllowance();
       refetchMud();
       refetchConfig();
       refetchMudPrice();
@@ -56,26 +52,21 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       setBtnLoading(isLoading);
     }
     if (isSuccess) {
-      Toast.show({ content: txType == TxType.Approve ? '授权成功' : '质押成功' });
+      Toast.show({ content: '质押成功' });
       setTimeout(() => {
         refreshData();
         props?.refresh?.();
       }, 1000);
     }
-  }, [isLoading, isSuccess, txType, hash]);
+  }, [isLoading, isSuccess, hash]);
 
-  const { data: allowance, refetch: refetchAllowance } = useReadContract({
-    address: ADDRESS_CONFIG.mud,
-    abi: erc20Abi,
-    functionName: 'allowance',
-    args: [address as `0x${string}`, ADDRESS_CONFIG.delaney]
-  });
+  const { data: mudBalance, refetch: refetchMud } = useContractBalance(address as string);
 
   useEffect(() => {
-    if (allowance) {
-      setIsAllow(divideByMillionAndRound(Number(allowance)) > Number(userInput));
+    if (mudBalance) {
+      setIsAllow(Number(humanReadable(mudBalance)) > Number(userInput));
     }
-  }, [allowance, userInput]);
+  }, [mudBalance, userInput]);
 
   // const { data: mudBalance, refetch: refetchMud } = useReadContract({
   //   address: ADDRESS_CONFIG.mud,
@@ -84,37 +75,29 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   //   args: [address as `0x${string}`]
   // });
 
-  const { data: mudBalance, refetch: refetchMud } = useContractBalance(address as string, ADDRESS_CONFIG.mud);
-
-  const { data: configData, refetch: refetchConfig } = useReadContract({
+  const { data: config, refetch: refetchConfig } = useReadContract({
     address: ADDRESS_CONFIG.delaney,
     abi: delaneyAbi,
     functionName: 'getConfigs',
     args: []
   });
 
-  // const { data: mudPrice, refetch: refetchMudPrice } = useReadContract({
-  //   functionName: 'mudPrice',
-  //   abi: delaneyAbi,
-  //   address: import.meta.env.VITE_APP_DELANEY_ADDRESS,
-  //   args: []
-  // });
-
   const { price: mudPrice, refetch: refetchMudPrice } = useMudPrice();
 
   const handleAll = () => {
     if (mudBalance) {
-      setUserInput(divideByMillionAndRound(mudBalance));
+      console.log('====================>', mudBalance);
+      setUserInput(humanReadable(mudBalance || 0));
     }
   };
 
   useEffect(() => {
-    if (configData) {
-      const time = Number(configData[0]) * Number(configData[1]);
+    if (config) {
+      const time = Number(config[1]) * Number(config[2]);
       setTime(formatSeconds(time));
-      setMudMax(divideByMillionAndRound(Number(configData?.[13] || 0) / divideByMillionAndRound(Number(mudPrice))));
+      setDelegateMudMin(humanReadable(Number(config?.[14] || 0) / humanReadable(Number(mudPrice))));
     }
-  }, [configData, mudPrice]);
+  }, [config, mudPrice]);
 
   const handleToDelegate = () => {
     navigate('/home/history');
@@ -133,44 +116,27 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   };
 
   const handleGetBtnDisabled = () => {
-    return !userInput || Number(userInput) <= mudMax || Number(userInput) > (Number(mudBalance) / 1000000);
+    return !userInput || Number(userInput) <= delegateMudMin || Number(userInput) > Number(mudBalance) / 1000000;
   };
 
   const handleDelegate = async () => {
     if (userInput) {
       const input = Number(userInput);
-      if (input > (Number(mudBalance) / 1000000)) {
-        Toast.show({
-          content: '质押数量不能超过最大可质押数量'
-        });
-        refetchAllowance();
-      } else if (input <= mudMax) {
-        Toast.show({
-          content: '质押数量不能低于起投金额'
-        });
+      if (input > Number(mudBalance) / 1000000) {
+        Toast.show({ content: '质押数量不能超过最大可质押数量' });
+      } else if (input <= delegateMudMin) {
+        Toast.show({ content: '质押数量不能低于起投金额' });
         return;
       }
     }
     setBtnLoading(true);
-    if (isAllow) {
-      // 质押
-      writeContract({
-        address: ADDRESS_CONFIG.delaney,
-        abi: delaneyAbi,
-        functionName: 'delegate',
-        args: [BigInt(Number(userInput) * 1000000), 0, afterSeconds(10 * 60)]
-      });
-      setTxType(TxType.Delegate);
-    } else {
-      // 授权
-      writeContract({
-        address: ADDRESS_CONFIG.mud,
-        abi: erc20Abi,
-        functionName: 'approve',
-        args: [ADDRESS_CONFIG.delaney, 100000000000000n]
-      });
-      setTxType(TxType.Approve);
-    }
+    // 质押
+    writeContract({
+      address: ADDRESS_CONFIG.delaney,
+      abi: delaneyAbi,
+      functionName: 'delegate',
+      args: [BigInt(Number(userInput) * 1000000), 0, afterSeconds(10 * 60)]
+    });
   };
 
   return (
@@ -187,8 +153,8 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
         <span className="text-sm">已质押</span>
         <div className="flex items-center">
           <div className="text-right mr-2">
-            <div className="text-sm">{divideByMillionAndRound(delegateUserStat?.mud || 0)} MUD</div>
-            <div className="text-xs text-[#989898]">{divideByMillionAndRound(delegateUserStat?.usdt || 0)} USDT</div>
+            <div className="text-sm">{humanReadable(delegateUserStat?.mud || 0)} MUD</div>
+            <div className="text-xs text-[#989898]">{humanReadable(delegateUserStat?.usdt || 0)} USDT</div>
           </div>
           <img src={right} className="w-4 h-4" alt="" />
         </div>
@@ -200,18 +166,18 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
         <div className="text-center relative">
-          <div className="text-sm">{divideByMillionAndRound(configData?.[13] || 0)} USDT</div>
-          <div className="text-xs text-[#989898]">≈ {mudMax} MUD</div>
+          <div className="text-sm">{humanReadable(config?.[14] || 0)} USDT</div>
+          <div className="text-xs text-[#989898]">≈ {delegateMudMin} MUD</div>
           <div className="absolute right-[-15px] top-[-15px] text-xs rounded-lg rounded-bl-none bg-[#FF3636] font-[10px] text-white px-1">起投</div>
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
         <div className="text-center">
-          <div className="text-sm">{configData?.[1]?.toString() || '-'}</div>
+          <div className="text-sm">{config?.[2]?.toString() || '-'}</div>
           <div className="text-xs text-[#989898]">期数</div>
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
         <div className="text-center">
-          <div className="text-sm">{formatSeconds(Number(configData?.[0]))}</div>
+          <div className="text-sm">{formatSeconds(Number(config?.[1]))}</div>
           <div className="text-xs text-[#989898]">每期</div>
         </div>
       </div>
@@ -225,7 +191,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       {userInput && (
         <div className="flex justify-between mt-4 relative top-[-10px]">
           <span className="text-xs">质押价值</span>
-          <span className="text-xs text-[#FF3F3F]">≈ {divideByMillionAndRound(Number(userInput) * Number(mudPrice)) || '-'} USDT</span>
+          <span className="text-xs text-[#FF3F3F]">≈ {humanReadable(Number(userInput) * Number(mudPrice)) || '-'} USDT</span>
         </div>
       )}
       <div className="mt-4">

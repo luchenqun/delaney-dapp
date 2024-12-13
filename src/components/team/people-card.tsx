@@ -1,4 +1,4 @@
-import { divideByMillionAndRound, formatAddressString, getAddressUrl } from '../../utils/tools';
+import { humanReadable, formatAddressString, getAddressUrl, UsdtPrecision } from '../../utils/tools';
 import JazziconAvatar from '../avatar';
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating';
 import copyIcon from '../../assets/copy.svg';
@@ -33,8 +33,8 @@ export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">质押</span>
           <div className="text-right">
-            <div className="text-sm">{divideByMillionAndRound(info?.usdt)} USDT</div>
-            <div className="text-xs text-[#46D69C]">{divideByMillionAndRound(info?.mud)} MUD</div>
+            <div className="text-sm">{humanReadable(info?.usdt, UsdtPrecision)} USDT</div>
+            <div className="text-xs text-[#46D69C]">{humanReadable(info?.mud)} MUD</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
@@ -58,15 +58,15 @@ export const PeopleCard = ({ info, depth }: { info: any; depth: any }) => {
         {/* <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">直推质押</span>
           <div className="text-right">
-            <div className="text-sm">{divideByMillionAndRound(info?.sub_usdt)} USDT</div>
-            <div className="text-xs text-[#989898]">{divideByMillionAndRound(info?.sub_mud)} MUD</div>
+            <div className="text-sm">{humanReadable(info?.sub_usdt, UsdtPrecision)} USDT</div>
+            <div className="text-xs text-[#989898]">{humanReadable(info?.sub_mud)} MUD</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">团队质押</span>
           <div className="text-right">
-            <div className="text-sm">{divideByMillionAndRound(info?.team_usdt)} USDT</div>
-            <div className="text-xs text-[#989898]">{divideByMillionAndRound(info?.team_mud)} MUD</div>
+            <div className="text-sm">{humanReadable(info?.team_usdt, UsdtPrecision)} USDT</div>
+            <div className="text-xs text-[#989898]">{humanReadable(info?.team_mud)} MUD</div>
           </div>
         </div>
         <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>

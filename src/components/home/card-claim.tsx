@@ -3,7 +3,7 @@ import { useAccount } from 'wagmi';
 import copyIcon from '../../assets/copy.svg';
 import { Tag, Toast, Button } from 'antd-mobile';
 import { clearClaim } from '../../utils/api';
-import { divideByMillionAndRound, formatAddressString, getHashUrl, afterSeconds } from '../../utils/tools';
+import { humanReadable, formatAddressString, getHashUrl, afterSeconds, UsdtPrecision } from '../../utils/tools';
 import dayjs from 'dayjs';
 
 export const CardClaim = ({ info }: { info: any }) => {
@@ -38,8 +38,8 @@ export const CardClaim = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center">
           <span className="text-[#989898] text-sm">奖励</span>
           <div className="text-right">
-            <div className="text-sm">{divideByMillionAndRound(info.usdt)} USDT</div>
-            <div className="text-xs text-[#989898]">{divideByMillionAndRound(info.mud)} MUD</div>
+            <div className="text-sm">{humanReadable(info.usdt, UsdtPrecision)} USDT</div>
+            <div className="text-xs text-[#989898]">{humanReadable(info.mud)} MUD</div>
           </div>
         </div>
         {info.status === 1 && (

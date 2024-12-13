@@ -4,7 +4,7 @@ import { PeopleCard } from '../../components/team/people-card';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { getTeamUsers, getUser } from '../../utils/api';
-import { divideByMillionAndRound } from '../../utils/tools';
+import { humanReadable, UsdtPrecision } from '../../utils/tools';
 import { sleep } from 'antd-mobile/es/utils/sleep';
 import teamBg from '../../assets/bg.svg';
 import JazziconAvatar from '../../components/avatar';
@@ -116,15 +116,15 @@ export const Team = () => {
                 <div className="flex justify-center flex-wrap items-center mt-4 w-[9.375rem] bg-[#F5F5F5] py-2 rounded-lg min-h-20">
                   <span className="text-[#989898] text-xs w-full text-center">直推质押(USDT)</span>
                   <div className="text-center">
-                    <div className="font-semibold text-xl mt-1">{divideByMillionAndRound(userInfo?.sub_usdt)}</div>
-                    <div className="text-xs text-[#46D69C]">≈ {divideByMillionAndRound(userInfo?.sub_mud)} MUD</div>
+                    <div className="font-semibold text-xl mt-1">{humanReadable(userInfo?.sub_usdt, UsdtPrecision)}</div>
+                    <div className="text-xs text-[#46D69C]">≈ {humanReadable(userInfo?.sub_mud)} MUD</div>
                   </div>
                 </div>
                 <div className="flex justify-center flex-wrap items-center mt-4 w-[9.375rem] bg-[#F5F5F5] py-2 rounded-lg min-h-20">
                   <span className="text-[#989898] text-xs w-full text-center">团队质押(USDT)</span>
                   <div className="text-center">
-                    <div className="font-semibold text-xl mt-1">{divideByMillionAndRound(userInfo?.team_usdt)}</div>
-                    <div className="text-xs text-[#46D69C]">≈ {divideByMillionAndRound(userInfo?.team_mud)} MUD</div>
+                    <div className="font-semibold text-xl mt-1">{humanReadable(userInfo?.team_usdt, UsdtPrecision)}</div>
+                    <div className="text-xs text-[#46D69C]">≈ {humanReadable(userInfo?.team_mud)} MUD</div>
                   </div>
                 </div>
                 <div className="flex justify-center flex-wrap items-center mt-4 w-[9.375rem] bg-[#F5F5F5] py-2 rounded-lg min-h-20">

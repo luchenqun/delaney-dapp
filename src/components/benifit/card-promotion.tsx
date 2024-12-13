@@ -2,7 +2,7 @@ import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
 import { Tag, Toast } from 'antd-mobile';
 import dayjs from 'dayjs';
-import { divideByMillionAndRound, formatAddressString, getAddressUrl, getHashUrl } from '../../utils/tools';
+import { humanReadable, formatAddressString, getAddressUrl, getHashUrl, UsdtPrecision } from '../../utils/tools';
 
 export const BenifitCardPromotion = ({ info }: { info: any }) => {
   const handleCopy = (data: string) => {
@@ -28,14 +28,16 @@ export const BenifitCardPromotion = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center">
           <span className="text-[#989898] text-sm">收益</span>
           <div className="text-right">
-            <div className="text-sm">{divideByMillionAndRound(info?.usdt)} USDT</div>
+            <div className="text-sm">{humanReadable(info?.usdt, UsdtPrecision)} USDT</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">收益来源</span>
           <div className="text-right">
             <div className="text-sm flex items-center">
-              <span className="text-[#2A66FF]" onClick={() => window.open(getAddressUrl(info?.delegator as string), '_blank')}>{formatAddressString(info?.delegator as string)}</span>
+              <span className="text-[#2A66FF]" onClick={() => window.open(getAddressUrl(info?.delegator as string), '_blank')}>
+                {formatAddressString(info?.delegator as string)}
+              </span>
               <img
                 onClick={() => {
                   handleCopy(info?.delegator);

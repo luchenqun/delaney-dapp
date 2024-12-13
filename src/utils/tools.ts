@@ -1,15 +1,29 @@
 import { verifyMessage } from 'viem';
 
-const SevenDaySeconds = 7 * 24 * 3600;
+export const SevenDaySeconds = 7 * 24 * 3600;
+export const UsdtPrecision = 1000000n;
+export const MudPrecision = 1000000000000000000n;
 
-export function divideByMillionAndRound(input: number | bigint) {
-  // 将输入转换为 number 类型
-  const inputAsNumber = typeof input === 'bigint' ? Number(input) : input;
-  // 将输入除以 10^6
-  const result = inputAsNumber / 1000000;
-  // 直接使用 toFixed(2) 来保留两位小数，然后转换回数字
-  return Math.floor(result * 100) / 100;
+// mudToUsdt
+export function mudToUsdt(mud: number | bigint | string, mud_price: number | bigint | string) {
+  return (BigInt(mud) * BigInt(mud_price)) / MudPrecision;
 }
+
+// usdtToMud
+function usdtToMud(usdt: number | bigint | string, mud_price: number | bigint | string) {
+  return (BigInt(usdt) * MudPrecision) / BigInt(mud_price);
+}
+
+export const humanReadable = (value: number | bigint | string, precision = 1000000000000000000n) => {
+  // console.log('====================>', value);
+
+  value = BigInt(value);
+  const result = ((value * 100n) / precision).toString(); // 将结果扩大100倍以保留两位小数
+  const integerPart = result.slice(0, -2) || '0'; // 获取整数部分
+  const decimalPart = result.slice(-2); // 获取小数部分
+
+  return decimalPart === '00' ? integerPart : `${integerPart}.${decimalPart}`;
+};
 
 export function formatAddressString(address: string) {
   if (!address) return '';

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { getClaimUserStat, getLatestClaim, getRewardUserStat, signClaim, getConfig } from '../../utils/api';
-import { divideByMillionAndRound } from '../../utils/tools';
+import { humanReadable, UsdtPrecision } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { sleep } from 'antd-mobile/es/utils/sleep';
@@ -129,7 +129,7 @@ export const Benifit = () => {
                           <Skeleton.Paragraph lineCount={1} animated />
                         </>
                       ) : (
-                        <> {divideByMillionAndRound(rewardUserStat?.usdt || 0)}</>
+                        <> {humanReadable(rewardUserStat?.usdt || 0, UsdtPrecision)}</>
                       )}
                     </div>
                     <div className="text-xs">
@@ -138,7 +138,7 @@ export const Benifit = () => {
                           <Skeleton.Paragraph className="h-3" lineCount={1} animated />
                         </>
                       ) : (
-                        <>≈{divideByMillionAndRound(rewardUserStat?.mud || 0)} MUD</>
+                        <>≈{humanReadable(rewardUserStat?.mud || 0)} MUD</>
                       )}
                     </div>
                   </div>
@@ -160,7 +160,7 @@ export const Benifit = () => {
                           <Skeleton.Paragraph lineCount={1} animated />
                         </>
                       ) : (
-                        <> {divideByMillionAndRound(claimUserStat?.usdt || 0)}</>
+                        <> {humanReadable(claimUserStat?.usdt || 0)}</>
                       )}
                     </div>
                     <div className="text-xs">
@@ -169,7 +169,7 @@ export const Benifit = () => {
                           <Skeleton.Paragraph className="h-3" lineCount={1} animated />
                         </>
                       ) : (
-                        <>≈{divideByMillionAndRound(claimUserStat?.mud || 0)} MUD</>
+                        <>≈{humanReadable(claimUserStat?.mud || 0)} MUD</>
                       )}
                     </div>
                   </div>
@@ -187,7 +187,7 @@ export const Benifit = () => {
                     <Skeleton.Title className="h-10 w-full" animated />
                   </>
                 ) : (
-                  <> {divideByMillionAndRound(latestClaim?.usdt || 0)} USDT</>
+                  <> {humanReadable(latestClaim?.usdt || 0, UsdtPrecision)} USDT</>
                 )}
               </div>
               <div className="text-base relative top-[-0.5rem]">
@@ -196,7 +196,7 @@ export const Benifit = () => {
                     <Skeleton.Paragraph className="h-3 w-full" lineCount={1} animated />
                   </>
                 ) : (
-                  <>≈ {divideByMillionAndRound(latestClaim?.mud || 0)} MUD</>
+                  <>≈ {humanReadable(latestClaim?.mud || 0)} MUD</>
                 )}
               </div>
               <div className="w-full flex justify-between mt-4 items-center">
@@ -209,7 +209,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <>{(divideByMillionAndRound(latestClaim?.mud || 0) * fee) / 100} USDT</>
+                    <>{(humanReadable(latestClaim?.mud || 0) * fee, UsdtPrecision) / 100} USDT</>
                   )}
                 </span>
               </div>
@@ -221,7 +221,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <>{(divideByMillionAndRound(latestClaim?.mud || 0) * (100 - fee)) / 100} USDT</>
+                    <>{(humanReadable(latestClaim?.mud || 0, UsdtPrecision) * (100 - fee)) / 100} USDT</>
                   )}
                 </span>
               </div>
@@ -233,7 +233,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <> {divideByMillionAndRound(claimMinUsdt)} USDT</>
+                    <> {humanReadable(claimMinUsdt, UsdtPrecision)} USDT</>
                   )}
                 </span>
               </div>

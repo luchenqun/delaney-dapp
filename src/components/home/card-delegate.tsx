@@ -3,7 +3,7 @@ import copyIcon from '../../assets/copy.svg';
 import { Button, Tag, Toast } from 'antd-mobile';
 import { useEffect, useState } from 'react';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { divideByMillionAndRound, formatAddressString, afterSeconds, getHashUrl } from '../../utils/tools';
+import { humanReadable, formatAddressString, afterSeconds, getHashUrl, UsdtPrecision } from '../../utils/tools';
 import dayjs from 'dayjs';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
@@ -106,8 +106,8 @@ export const CardDelegate = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center">
           <span className="text-[#989898] text-sm">质押数量</span>
           <div className="text-right">
-            <div className="text-sm">{divideByMillionAndRound(info.usdt)} USDT</div>
-            <div className="text-xs text-[#989898]">{divideByMillionAndRound(info.mud)} MUD</div>
+            <div className="text-sm">{humanReadable(info.usdt, UsdtPrecision)} USDT</div>
+            <div className="text-xs text-[#989898]">{humanReadable(info.mud)} MUD</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
@@ -139,7 +139,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
             <div className="flex justify-between items-center mt-4">
               <span className="text-[#989898] text-sm">提取MUD</span>
               <div className="text-right">
-                <div className="text-sm">{divideByMillionAndRound(info.back_mud)} MUD</div>
+                <div className="text-sm">{humanReadable(info.back_mud)} MUD</div>
               </div>
             </div>
             <div className="flex justify-between items-center mt-4">

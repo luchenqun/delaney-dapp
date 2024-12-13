@@ -6,22 +6,21 @@ import copyIcon from '../../assets/copy.svg';
 import link from '../../assets/link.svg';
 import copy from 'copy-to-clipboard';
 import { Modal, Skeleton, Toast } from 'antd-mobile';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getUser } from '../../utils/api';
-import { divideByMillionAndRound } from '../../utils/tools';
+import { humanReadable, UsdtPrecision } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import JazziconAvatar from '../avatar';
 import useContractBalance from '../../hook/useContractBalance';
+import { erc20Abi } from 'viem';
 
 export const HomeCard = forwardRef((props, ref) => {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const [userInfo, setUserInfo] = useState<any>(null);
 
-  const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useContractBalance(address as string, ADDRESS_CONFIG.mud as string);
-  const { data: usdtBalance, isLoading: usdtLoading, refetch: refetchUsdt } = useContractBalance(address as string, ADDRESS_CONFIG.usdt as string);
-
+  const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useContractBalance(address as string);
   // const { data: mudBalance, isLoading: mudLoading, refetch: refetchMud } = useReadContract({
   //   address: ADDRESS_CONFIG.mud,
   //   abi: erc20Abi,
@@ -29,15 +28,21 @@ export const HomeCard = forwardRef((props, ref) => {
   //   args: [address as `0x${string}`]
   // });
 
-  // const { data: usdtBalance, isLoading: usdtLoading, refetch: refetchUsdt } = useReadContract({
-  //   address: ADDRESS_CONFIG.usdt,
-  //   abi: erc20Abi,
-  //   functionName: 'balanceOf',
-  //   args: [address as `0x${string}`]
-  // });
+  const {
+    data: usdtBalance,
+    isLoading: usdtLoading,
+    refetch: refetchUsdt
+  } = useReadContract({
+    address: ADDRESS_CONFIG.usdt,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [address as `0x${string}`]
+  });
 
   const handleTrade = () => {
-    window.open('https://swap.transit.finance/?locale=zh&utm_source=tokenpocket&inputChain=MATIC&inputSymbol=USDT&inputCurrency=0xc2132d05d31c914a87c6611c10748aeb04b58e8f&outputChain=MATIC&outputCurrency=0xf6EaC236757e82D6772E8bD02D36a0c791d78C51&outputSymbol=MUD#/');
+    window.open(
+      'https://swap.transit.finance/?locale=zh&utm_source=tokenpocket&inputChain=MATIC&inputSymbol=USDT&inputCurrency=0xc2132d05d31c914a87c6611c10748aeb04b58e8f&outputChain=MATIC&outputCurrency=0xf6EaC236757e82D6772E8bD02D36a0c791d78C51&outputSymbol=MUD#/'
+    );
   };
 
   useImperativeHandle(ref, () => ({
@@ -72,7 +77,7 @@ export const HomeCard = forwardRef((props, ref) => {
   };
 
   const handleLink = () => {
-    copy("https://delaney.app");
+    copy('https://delaney.app');
     Modal.alert({
       content: '复制网址成功, 分享给好友吧~'
     });
@@ -120,16 +125,18 @@ export const HomeCard = forwardRef((props, ref) => {
             <img className="w-4 h-4" src={usdt} alt="" />
             <span className="ml-1 text-sm">USDT</span>
           </div>
-          <div className="font-medium text-base w-full text-center">{divideByMillionAndRound(usdtBalance || 0)}</div>
+          <div className="font-medium text-base w-full text-center">{humanReadable(usdtBalance || 0, UsdtPrecision)}</div>
         </div>
         <div className="w-24 bg-[#F3F3F3] rounded-xl flex flex-wrap justify-center py-1">
           <div className="flex items-center">
             <img className="w-4 h-4" src={mud} alt="" />
             <span className="ml-1 text-sm">MUD</span>
           </div>
-          <div className="font-medium text-base w-full text-center">{divideByMillionAndRound(mudBalance || 0)}</div>
+          <div className="font-medium text-base w-full text-center">{humanReadable(mudBalance || 0)}</div>
         </div>
-        <div className="w-24 bg-[#FEC533] font-semibold text-base rounded-xl flex flex-wrap justify-center items-center py-1" onClick={handleTrade}>交易</div>
+        <div className="w-24 bg-[#FEC533] font-semibold text-base rounded-xl flex flex-wrap justify-center items-center py-1" onClick={handleTrade}>
+          交易
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
 import { Tag, Toast } from 'antd-mobile';
-import { divideByMillionAndRound, formatAddressString, getHashUrl } from '../../utils/tools';
+import { humanReadable, formatAddressString, getHashUrl, UsdtPrecision } from '../../utils/tools';
 import dayjs from 'dayjs';
 
 export const BenifitCard = ({ info }: { info: any }) => {
@@ -28,7 +28,7 @@ export const BenifitCard = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center">
           <span className="text-[#989898] text-sm">收益</span>
           <div className="text-right">
-            <div className="text-sm">{divideByMillionAndRound(info?.usdt)} USDT</div>
+            <div className="text-sm">{humanReadable(info?.usdt, UsdtPrecision)} USDT</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">

@@ -2,7 +2,7 @@ import { Badge, Toast } from 'antd-mobile';
 import logo from '../../assets/logo.svg';
 import bell from '../../assets/bell.svg';
 import { useAccount } from 'wagmi';
-import { divideByMillionAndRound, formatAddressString, getAddressUrl } from '../../utils/tools';
+import { humanReadable, formatAddressString, getAddressUrl, UsdtPrecision } from '../../utils/tools';
 import { useNavigate } from 'react-router-dom';
 import copyIcon from '../../assets/copy.svg';
 import copy from 'copy-to-clipboard';
@@ -61,7 +61,7 @@ export const HomeHeaders = forwardRef((props, ref) => {
             </span>
             <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
           </div>
-          <div className="text-primary text-sm">{price ? `MUD ≈ ${divideByMillionAndRound(price as bigint)} USDT` : '-'}</div>
+          <div className="text-primary text-sm">{price ? `MUD ≈ ${humanReadable(price as bigint, UsdtPrecision)} USDT` : '-'}</div>
         </div>
       </div>
       <Badge content={messageUnread ? Badge.dot : ''}>
