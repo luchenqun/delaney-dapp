@@ -19,7 +19,6 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   const [time, setTime] = useState('-');
   const [delegateMudMin, setDelegateMudMin] = useState<bigint>(0n);
   const [userInput, setUserInput] = useState<string | number>('');
-  const [isAllow, setIsAllow] = useState(false);
   const { data: hash, writeContract, isPending, isError, status } = useWriteContract();
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
   const [btnLoading, setBtnLoading] = useState(false);
@@ -63,12 +62,6 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
 
   const { data: mudBalance, refetch: refetchMud } = useContractBalance(address as string);
 
-  useEffect(() => {
-    if (mudBalance) {
-      setIsAllow(Number(humanReadable(mudBalance)) > Number(userInput));
-    }
-  }, [mudBalance, userInput]);
-
   const { data: config, refetch: refetchConfig } = useReadContract({
     address: ADDRESS_CONFIG.delaney,
     abi: delaneyAbi,
@@ -80,7 +73,6 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
 
   const handleAll = () => {
     if (mudBalance) {
-      console.log('====================>', mudBalance);
       setUserInput(humanReadable(mudBalance || 0));
     }
   };
@@ -129,7 +121,8 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       address: ADDRESS_CONFIG.delaney,
       abi: delaneyAbi,
       functionName: 'delegate',
-      args: [parseEther(String(userInput)), 0, afterSeconds(10 * 60)]
+      value: parseEther(String(userInput)),
+      args: [0, afterSeconds(10 * 60)]
     });
   };
 
@@ -190,7 +183,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       )}
       <div className="mt-4">
         <Button loading={btnLoading} disabled={!userInput || handleGetBtnDisabled()} className="w-full" color="primary" onClick={handleDelegate}>
-          {isAllow ? '质押' : '授权'}
+          质押
         </Button>
       </div>
     </div>
