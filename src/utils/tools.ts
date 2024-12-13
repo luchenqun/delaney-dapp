@@ -10,7 +10,7 @@ export function mudToUsdt(mud: number | bigint | string, mud_price: number | big
 }
 
 // usdtToMud
-function usdtToMud(usdt: number | bigint | string, mud_price: number | bigint | string) {
+export function usdtToMud(usdt: number | bigint | string, mud_price: number | bigint | string) {
   return (BigInt(usdt) * MudPrecision) / BigInt(mud_price);
 }
 

@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getDelegateUserStat } from '../../utils/api';
-import { humanReadable, formatSeconds, afterSeconds, UsdtPrecision } from '../../utils/tools';
+import { humanReadable, formatSeconds, afterSeconds, UsdtPrecision, usdtToMud } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import useContractBalance from '../../hook/useContractBalance';
 import { useMudPrice } from '../../hook/useMudPrice';
+import { parseEther } from 'viem';
 
 export const HomeDelegate = forwardRef((props: any, ref) => {
   const { address } = useAccount();
@@ -86,16 +87,15 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
 
   const handleAll = () => {
     if (mudBalance) {
-      console.log('====================>', mudBalance);
       setUserInput(humanReadable(mudBalance || 0));
     }
   };
 
   useEffect(() => {
-    if (config) {
+    if (config && mudPrice) {
       const time = Number(config[1]) * Number(config[2]);
       setTime(formatSeconds(time));
-      setDelegateMudMin(humanReadable(Number(config?.[14] || 0) / humanReadable(Number(mudPrice))));
+      setDelegateMudMin(usdtToMud(Number(config?.[14] || 0), mudPrice));
     }
   }, [config, mudPrice]);
 
@@ -116,18 +116,18 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   };
 
   const handleGetBtnDisabled = () => {
-    return !userInput || Number(userInput) <= delegateMudMin || Number(userInput) > Number(mudBalance) / 1000000;
+    return !userInput || parseEther(String(userInput)) <= delegateMudMin || parseEther(String(userInput)) > (mudBalance || 0n);
   };
 
   const handleDelegate = async () => {
-    if (userInput) {
-      const input = Number(userInput);
-      if (input > Number(mudBalance) / 1000000) {
-        Toast.show({ content: '质押数量不能超过最大可质押数量' });
-      } else if (input <= delegateMudMin) {
-        Toast.show({ content: '质押数量不能低于起投金额' });
-        return;
-      }
+    if (!userInput || !mudBalance) return;
+
+    const input = parseEther(String(userInput));
+    if (input > mudBalance) {
+      Toast.show({ content: '质押数量不能超过最大可质押数量' });
+    } else if (input < delegateMudMin) {
+      Toast.show({ content: '质押数量不能低于起投金额' });
+      return;
     }
     setBtnLoading(true);
     // 质押
@@ -135,7 +135,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       address: ADDRESS_CONFIG.delaney,
       abi: delaneyAbi,
       functionName: 'delegate',
-      args: [BigInt(Number(userInput) * 1000000), 0, afterSeconds(10 * 60)]
+      args: [parseEther(String(userInput)), 0, afterSeconds(10 * 60)]
     });
   };
 
