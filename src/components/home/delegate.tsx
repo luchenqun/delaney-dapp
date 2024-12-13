@@ -141,7 +141,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
         <div className="flex items-center">
           <div className="text-right mr-2">
             <div className="text-sm">{humanReadable(delegateUserStat?.mud || 0)} MUD</div>
-            <div className="text-xs text-[#989898]">{humanReadable(delegateUserStat?.usdt || 0)} USDT</div>
+            <div className="text-xs text-[#989898]">{humanReadable(delegateUserStat?.usdt || 0, UsdtPrecision)} USDT</div>
           </div>
           <img src={right} className="w-4 h-4" alt="" />
         </div>
