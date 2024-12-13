@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { getClaimUserStat, getLatestClaim, getRewardUserStat, signClaim, getConfig } from '../../utils/api';
-import { humanReadable, UsdtPrecision } from '../../utils/tools';
+import { humanReadable, MudPrecision, mudToUsdt, UsdtPrecision } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { sleep } from 'antd-mobile/es/utils/sleep';
@@ -64,7 +64,7 @@ export const Benifit = () => {
         setClaimUserStat(claimRes.data.data);
         setLatestClaim(latestClaimRes.data.data);
         setClaimMinUsdt(configRes.data.data.claim_min_usdt);
-        setFee(configRes.data.data.fee / 10000);
+        setFee(configRes.data.data.fee);
         setLoading(false);
       })
       .catch((error) => {
@@ -201,7 +201,7 @@ export const Benifit = () => {
               </div>
               <div className="w-full flex justify-between mt-4 items-center">
                 <span className="flex-shrink-0">
-                  手续费 <span className="text-[#46D69C]">{fee}%</span>
+                  手续费 <span className="text-[#46D69C]">{fee / 100}%</span>
                 </span>
                 <span>
                   {loading ? (
@@ -209,7 +209,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <>{(humanReadable(latestClaim?.mud || 0) * fee, UsdtPrecision) / 100} USDT</>
+                    <>{humanReadable((BigInt(latestClaim?.mud || 0n) * BigInt(fee)) / BigInt(10000))} MUD</>
                   )}
                 </span>
               </div>
@@ -221,7 +221,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <>{(humanReadable(latestClaim?.mud || 0, UsdtPrecision) * (100 - fee)) / 100} USDT</>
+                    <>{(humanReadable(latestClaim?.mud || 0n, MudPrecision) * (10000 - fee)) / 10000} MUD</>
                   )}
                 </span>
               </div>

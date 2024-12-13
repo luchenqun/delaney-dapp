@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { useNavigate } from 'react-router-dom';
 import { getUserNoToast } from '../../utils/api';
@@ -8,6 +8,7 @@ import { authorizationCheck, setCurrentAddress, currentAddress } from '../../uti
 export const VerifyLayout = () => {
   const { isConnected, address, chainId } = useAccount();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // 这里只解决跳转链接的问题
@@ -26,7 +27,13 @@ export const VerifyLayout = () => {
         useIsExist = !!res.data.data;
         valid = await authorizationCheck(address);
         if (useIsExist) {
-          navigate(valid ? '/' : '/connect'); // 签名登录在钱包页面完成
+          if (valid) {
+            if (location.pathname === '/connect' || location.pathname === '/bind') {
+              navigate('/');
+            }
+          } else {
+            navigate('/connect');
+          }
         } else {
           navigate('/bind');
         }

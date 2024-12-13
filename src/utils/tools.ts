@@ -16,6 +16,8 @@ export function usdtToMud(usdt: number | bigint | string, mud_price: number | bi
 
 export const humanReadable = (value: number | bigint | string, precision = 1000000000000000000n) => {
   value = BigInt(value);
+  if (value === 0n) return '0';
+
   const result = ((value * 100n) / precision).toString(); // 将结果扩大100倍以保留两位小数
   const integerPart = result.slice(0, -2) || '0'; // 获取整数部分
   const decimalPart = result.slice(-2); // 获取小数部分
