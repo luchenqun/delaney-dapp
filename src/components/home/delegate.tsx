@@ -166,8 +166,8 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
         <div className="text-center relative">
-          <div className="text-sm">{humanReadable(config?.[14] || 0)} USDT</div>
-          <div className="text-xs text-[#989898]">≈ {delegateMudMin} MUD</div>
+          <div className="text-sm">{humanReadable(config?.[14] || 0, UsdtPrecision)} USDT</div>
+          <div className="text-xs text-[#989898]">≈ {humanReadable(delegateMudMin)} MUD</div>
           <div className="absolute right-[-15px] top-[-15px] text-xs rounded-lg rounded-bl-none bg-[#FF3636] font-[10px] text-white px-1">起投</div>
         </div>
         <div className="h-5 w-[1px] bg-[#F0F0F0] mt-2"></div>
