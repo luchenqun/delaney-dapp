@@ -2,7 +2,7 @@ import copy from 'copy-to-clipboard';
 import copyIcon from '../../assets/copy.svg';
 import { Button, Tag, Toast } from 'antd-mobile';
 import { useEffect, useState } from 'react';
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
 import { humanReadable, formatAddressString, afterSeconds, getHashUrl, UsdtPrecision } from '../../utils/tools';
 import dayjs from 'dayjs';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
@@ -38,6 +38,20 @@ export const CardDelegate = ({ info }: { info: any }) => {
       }, 1000);
     }
   }, [isLoading, isSuccess, txType, hash]);
+
+  const { data: paused } = useReadContract({
+    address: ADDRESS_CONFIG.delaney,
+    abi: delaneyAbi,
+    functionName: 'paused',
+    args: []
+  });
+
+  const { data: clearing } = useReadContract({
+    address: ADDRESS_CONFIG.delaney,
+    abi: delaneyAbi,
+    functionName: 'productCleared',
+    args: [info.product_id]
+  });
 
   const handleCopy = () => {
     copy(info.hash);
@@ -156,7 +170,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
             <div className="text-sm">{renderStatus()}</div>
           </div>
         </div>
-        {info.status == 1 && !isExpired && dayjs().isBefore(dayjs.unix(info.unlock_time)) && (
+        {info.status == 1 && !isExpired && dayjs().isBefore(dayjs.unix(info.unlock_time)) && !clearing && !paused && (
           <div className="mt-6">
             <Button color="primary" className="w-full">
               <span className="text-white mr-1">
@@ -170,14 +184,21 @@ export const CardDelegate = ({ info }: { info: any }) => {
           <>
             <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
             <div className="flex gap-4 mt-4">
-              <Button loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
-                复投
+              <Button disabled={clearing || paused} loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
+                {clearing ? '清算中' : paused ? '暂停复投' : '复投'}
               </Button>
               <Button loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
                 提取
               </Button>
             </div>
           </>
+        )}
+        {info.status == 1 && clearing && (
+          <div className="mt-6">
+            <Button color="primary" className="w-full" onClick={handleUndelegate}>
+              提取
+            </Button>
+          </div>
         )}
       </div>
     </div>
