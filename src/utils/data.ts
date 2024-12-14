@@ -1,13 +1,5 @@
 import { type Chain } from 'viem';
 
-export const network = import.meta.env.VITE_NETWORK as Network;
-
-export const enum Network {
-  Dev = 'DEV',
-  Testnet = 'TESTNET',
-  Mainnet = 'MAINNET'
-}
-
 export const mudTestnet = {
   id: 168169,
   name: 'MUD Testnet',

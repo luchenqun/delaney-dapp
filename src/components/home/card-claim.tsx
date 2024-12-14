@@ -3,7 +3,7 @@ import { useAccount } from 'wagmi';
 import copyIcon from '../../assets/copy.svg';
 import { Tag, Toast, Button } from 'antd-mobile';
 import { clearClaim } from '../../utils/api';
-import { humanReadable, formatAddressString, getHashUrl, afterSeconds, UsdtPrecision } from '../../utils/tools';
+import { humanReadable, formatAddressString, getTxUrl, afterSeconds, UsdtPrecision } from '../../utils/tools';
 import dayjs from 'dayjs';
 
 export const CardClaim = ({ info }: { info: any }) => {
@@ -47,7 +47,7 @@ export const CardClaim = ({ info }: { info: any }) => {
             <span className="text-[#989898] text-sm">交易哈希</span>
             <div className="text-right">
               <div className="text-sm text-[#2A66FF] flex">
-                <a href={getHashUrl(info.hash)} target="_blank">
+                <a href={getTxUrl(info.hash)} target="_blank">
                   {formatAddressString(info.hash)}
                 </a>
                 <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />

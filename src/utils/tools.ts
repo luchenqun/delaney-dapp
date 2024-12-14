@@ -72,12 +72,12 @@ export function afterSeconds(seconds: number) {
   return parseInt((new Date().getTime() / 1000).toString()) + seconds;
 }
 
-export function getHashUrl(hash: string) {
-  return `${import.meta.env.VITE_APP_HASH_URL}/tx/${hash}`;
+export function getTxUrl(hash: string) {
+  return `${import.meta.env.VITE_MUD_SCAN_URL}/tx/${hash}`;
 }
 
 export function getAddressUrl(address: string) {
-  return `${import.meta.env.VITE_APP_HASH_URL}/address/${address}`;
+  return `${import.meta.env.VITE_MUD_SCAN_URL}/address/${address}`;
 }
 
 export function authorizationKey(address: string) {

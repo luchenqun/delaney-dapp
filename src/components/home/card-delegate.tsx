@@ -3,7 +3,7 @@ import copyIcon from '../../assets/copy.svg';
 import { Button, Tag, Toast } from 'antd-mobile';
 import { useEffect, useState } from 'react';
 import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
-import { humanReadable, formatAddressString, afterSeconds, getHashUrl, UsdtPrecision } from '../../utils/tools';
+import { humanReadable, formatAddressString, afterSeconds, getTxUrl, UsdtPrecision } from '../../utils/tools';
 import dayjs from 'dayjs';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
@@ -128,7 +128,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
           <span className="text-[#989898] text-sm">交易哈希</span>
           <div className="text-right">
             <div className="text-sm text-[#2A66FF] flex">
-              <a href={getHashUrl(info.hash)} target="_blank">
+              <a href={getTxUrl(info.hash)} target="_blank">
                 {formatAddressString(info.hash)}
               </a>
               <img onClick={handleCopy} className="ml-1" src={copyIcon} alt="" />
