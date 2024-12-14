@@ -187,8 +187,8 @@ export const CardDelegate = ({ info }: { info: any }) => {
               <Button disabled={pausedBusiness || paused} loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
                 {pausedBusiness || paused ? '暂停复投' : '复投'}
               </Button>
-              <Button loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
-                提取
+              <Button disabled={paused} loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
+                {paused ? '暂停提取' : '提取'}
               </Button>
             </div>
           </>
