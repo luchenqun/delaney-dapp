@@ -36,7 +36,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       refetchConfig();
       refetchMudPrice();
       refetchPaused();
-      refetchClearing();
+      refetchPausedBusiness();
     }
   };
 
@@ -71,10 +71,10 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
     args: []
   });
 
-  const { data: clearing, refetch: refetchClearing } = useReadContract({
+  const { data: pausedBusiness, refetch: refetchPausedBusiness } = useReadContract({
     address: ADDRESS_CONFIG.delaney,
     abi: delaneyAbi,
-    functionName: 'clearing',
+    functionName: 'pausedBusiness',
     args: []
   });
 
@@ -118,7 +118,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
   };
 
   const handleGetBtnDisabled = () => {
-    return !userInput || parseEther(String(userInput)) <= delegateMudMin || parseEther(String(userInput)) > (mudBalance || 0n) || paused || clearing;
+    return !userInput || parseEther(String(userInput)) <= delegateMudMin || parseEther(String(userInput)) > (mudBalance || 0n) || paused || pausedBusiness;
   };
 
   const handleDelegate = async () => {
@@ -131,12 +131,8 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       Toast.show({ content: '质押数量不能低于起投金额' });
       return;
     }
-    if (paused) {
+    if (paused || pausedBusiness) {
       Toast.show({ content: '质押已暂停' });
-      return;
-    }
-    if (clearing) {
-      Toast.show({ content: '清算中...' });
       return;
     }
     setBtnLoading(true);
@@ -207,7 +203,7 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
       )}
       <div className="mt-4">
         <Button loading={btnLoading} disabled={!userInput || handleGetBtnDisabled()} className="w-full" color="primary" onClick={handleDelegate}>
-          {clearing ? '清算中' : paused ? '暂停质押' : '质押'}
+          {pausedBusiness || paused ? '暂停质押' : '质押'}
         </Button>
       </div>
     </div>

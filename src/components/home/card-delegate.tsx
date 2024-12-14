@@ -46,11 +46,11 @@ export const CardDelegate = ({ info }: { info: any }) => {
     args: []
   });
 
-  const { data: clearing } = useReadContract({
+  const { data: pausedBusiness } = useReadContract({
     address: ADDRESS_CONFIG.delaney,
     abi: delaneyAbi,
-    functionName: 'productCleared',
-    args: [info.product_id]
+    functionName: 'pausedBusiness',
+    args: []
   });
 
   const handleCopy = () => {
@@ -170,7 +170,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
             <div className="text-sm">{renderStatus()}</div>
           </div>
         </div>
-        {info.status == 1 && !isExpired && dayjs().isBefore(dayjs.unix(info.unlock_time)) && !clearing && !paused && (
+        {info.status == 1 && !isExpired && dayjs().isBefore(dayjs.unix(info.unlock_time)) && (
           <div className="mt-6">
             <Button color="primary" className="w-full">
               <span className="text-white mr-1">
@@ -184,21 +184,14 @@ export const CardDelegate = ({ info }: { info: any }) => {
           <>
             <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-4"></div>
             <div className="flex gap-4 mt-4">
-              <Button disabled={clearing || paused} loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
-                {clearing ? '清算中' : paused ? '暂停复投' : '复投'}
+              <Button disabled={pausedBusiness || paused} loading={btnLoading} className="w-full bg-[#FEC533] h-10 rounded-xl" onClick={handleRedelegate}>
+                {pausedBusiness || paused ? '暂停复投' : '复投'}
               </Button>
               <Button loading={btnLoading} className="w-full bg-[#F3F3F3] rounded-xl" onClick={handleUndelegate}>
                 提取
               </Button>
             </div>
           </>
-        )}
-        {info.status == 1 && clearing && (
-          <div className="mt-6">
-            <Button color="primary" className="w-full" onClick={handleUndelegate}>
-              提取
-            </Button>
-          </div>
         )}
       </div>
     </div>

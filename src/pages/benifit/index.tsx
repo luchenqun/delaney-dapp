@@ -2,7 +2,7 @@ import { Button, DotLoading, NavBar, PullToRefresh, Skeleton, Toast, NoticeBar }
 import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
 import { getClaimUserStat, getLatestClaim, getRewardUserStat, signClaim, getConfig } from '../../utils/api';
 import { humanReadable, MudPrecision, mudToUsdt, UsdtPrecision } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
@@ -80,6 +80,15 @@ export const Benifit = () => {
   const handleToClaimDetail = () => {
     navigate('/claim');
   };
+
+  const { data: paused } = useReadContract({
+    address: ADDRESS_CONFIG.delaney,
+    abi: delaneyAbi,
+    functionName: 'paused',
+    args: []
+  });
+
+  console.log({ paused });
 
   const handleClaim = async () => {
     if (!address) {
@@ -247,12 +256,12 @@ export const Benifit = () => {
               <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
               <Button
                 loading={btnLoading}
-                disabled={isLoading || !latestClaim?.usdt || latestClaim?.usdt < claimMinUsdt || latestClaim?.is_sign}
+                disabled={isLoading || !latestClaim?.usdt || latestClaim?.usdt < claimMinUsdt || latestClaim?.is_sign || paused}
                 color="primary"
                 className="w-full"
                 onClick={handleClaim}
               >
-                提取
+                {paused ? '暂停提取' : '提取'}
               </Button>
             </div>
           </>
