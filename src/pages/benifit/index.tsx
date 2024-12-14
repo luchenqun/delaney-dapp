@@ -88,8 +88,6 @@ export const Benifit = () => {
     args: []
   });
 
-  console.log({ paused });
-
   const handleClaim = async () => {
     if (!address) {
       return;
@@ -210,7 +208,7 @@ export const Benifit = () => {
               </div>
               <div className="w-full flex justify-between mt-4 items-center">
                 <span className="flex-shrink-0">
-                  手续费 <span className="text-[#46D69C]">{fee / 100}%</span>
+                  手续费 <span className="text-[#46D69C]">{fee}%</span>
                 </span>
                 <span>
                   {loading ? (
@@ -218,7 +216,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <>{humanReadable((BigInt(latestClaim?.mud || 0n) * BigInt(fee)) / BigInt(10000))} MUD</>
+                    <>{Number((humanReadable(BigInt(latestClaim?.mud || 0n), MudPrecision) * (fee || 0)) / 100).toFixed(2)} MUD</>
                   )}
                 </span>
               </div>
@@ -230,7 +228,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <>{humanReadable((latestClaim?.mud || 0n) * (100n - BigInt(fee) / 100n), MudPrecision)} MUD</>
+                    <>{Number((humanReadable(BigInt(latestClaim?.mud || 0n), MudPrecision) * (100 - (fee || 0))) / 100).toFixed(2)} MUD</>
                   )}
                 </span>
               </div>
