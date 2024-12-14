@@ -230,7 +230,7 @@ export const Benifit = () => {
                       <Skeleton.Paragraph className="h-1 w-10" lineCount={1} animated />
                     </>
                   ) : (
-                    <>{(humanReadable(latestClaim?.mud || 0n, MudPrecision) * (10000 - fee)) / 10000} MUD</>
+                    <>{humanReadable((latestClaim?.mud || 0n) * (100n - BigInt(fee) / 100n), MudPrecision)} MUD</>
                   )}
                 </span>
               </div>
