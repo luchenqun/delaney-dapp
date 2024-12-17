@@ -138,7 +138,7 @@ export const CardDelegate = ({ info }: { info: any }) => {
         <div className="flex justify-between items-center mt-4">
           <span className="text-[#989898] text-sm">质押时间</span>
           <div className="text-right">
-            <div className="text-sm">{dayjs.unix(info.create_time).format('YYYY-MM-DD HH:mm:ss')}</div>
+            <div className="text-sm">{dayjs.unix(info.delegate_time).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
