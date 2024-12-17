@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { getDelegateUserStat } from '../../utils/api';
-import { humanReadable, formatSeconds, afterSeconds, UsdtPrecision, usdtToMud, mudToUsdt } from '../../utils/tools';
+import { humanReadable, formatSeconds, afterSeconds, UsdtPrecision, usdtToMud, mudToUsdt, MudPrecision } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import useContractBalance from '../../hook/useContractBalance';
@@ -97,7 +97,8 @@ export const HomeDelegate = forwardRef((props: any, ref) => {
     if (config && mudPrice) {
       const time = Number(config[1]) * Number(config[2]);
       setTime(formatSeconds(time));
-      setDelegateMudMin(usdtToMud(Number(config?.[14] || 0), mudPrice));
+      const min = usdtToMud(Number(config?.[14] || 0), mudPrice);
+      setDelegateMudMin(min);
     }
   }, [config, mudPrice]);
 
