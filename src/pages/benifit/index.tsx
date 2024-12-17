@@ -2,9 +2,9 @@ import { Button, DotLoading, NavBar, PullToRefresh, Skeleton, Toast, NoticeBar }
 import right from '../../assets/right.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract, useBalance } from 'wagmi';
 import { getClaimUserStat, getLatestClaim, getRewardUserStat, signClaim, getConfig } from '../../utils/api';
-import { humanReadable, MudPrecision, mudToUsdt, UsdtPrecision } from '../../utils/tools';
+import { afterSeconds, formatSeconds, humanReadable, MudPrecision, mudToUsdt, UsdtPrecision } from '../../utils/tools';
 import { ADDRESS_CONFIG } from '../../utils/wagmi';
 import delaneyAbi from '../../../abi/delaney.json';
 import { sleep } from 'antd-mobile/es/utils/sleep';
@@ -12,6 +12,7 @@ import { sleep } from 'antd-mobile/es/utils/sleep';
 export const Benifit = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const { address, isConnected } = useAccount();
   const [rewardUserStat, setRewardUserStat] = useState<any>(null);
   const [claimUserStat, setClaimUserStat] = useState<any>(null);
@@ -87,6 +88,42 @@ export const Benifit = () => {
     functionName: 'paused',
     args: []
   });
+
+  const { data: lastClaimTimestamp } = useReadContract({
+    address: ADDRESS_CONFIG.delaney,
+    abi: delaneyAbi,
+    functionName: 'lastClaimTimestamp',
+    args: [address]
+  });
+
+  const { data: claimGap } = useReadContract({
+    address: ADDRESS_CONFIG.delaney,
+    abi: delaneyAbi,
+    functionName: 'configs',
+    args: ['claim_gap']
+  });
+
+  const { data: balance } = useBalance({
+    address: ADDRESS_CONFIG.delaney as `0x${string}`
+  });
+
+  useEffect(() => {
+    if (balance && latestClaim) {
+      if (balance.value < BigInt(latestClaim.mud)) {
+        Toast.show('合约余额不足，请稍后再提取');
+        setDisabled(true);
+      }
+    }
+
+    if (claimGap && lastClaimTimestamp) {
+      const now = afterSeconds(0);
+      const gap = now - parseInt(lastClaimTimestamp);
+      if (gap < parseInt(claimGap)) {
+        Toast.show({ content: '您需要等待' + formatSeconds(parseInt(claimGap) - gap) + '后才能再次提取', position: 'top' });
+        setDisabled(true);
+      }
+    }
+  }, [balance, latestClaim, claimGap, lastClaimTimestamp]);
 
   const handleClaim = async () => {
     if (!address) {
@@ -248,13 +285,18 @@ export const Benifit = () => {
                 {loading ? (
                   <Skeleton.Paragraph className="w-full" lineCount={1} animated />
                 ) : (
-                  <NoticeBar content={latestClaim?.is_sign ? '您有一笔交易正在提取中，点击已提取可查看' : '一天只允许提取一次奖励，点击提取后不允许取消'} color="alert" />
+                  <NoticeBar
+                    content={
+                      latestClaim?.is_sign ? '您有一笔交易正在提取中，点击已提取可查看' : formatSeconds(parseInt(claimGap || 86400)) + '只允许提取一次奖励，点击提取后不允许取消'
+                    }
+                    color="alert"
+                  />
                 )}
               </div>
               <div className="bg-[#F0F0F0] h-[1px] w-full mt-4 mb-28"></div>
               <Button
                 loading={btnLoading}
-                disabled={isLoading || !latestClaim?.usdt || latestClaim?.usdt < claimMinUsdt || latestClaim?.is_sign || paused}
+                disabled={isLoading || !latestClaim?.usdt || latestClaim?.usdt < claimMinUsdt || latestClaim?.is_sign || paused || disabled}
                 color="primary"
                 className="w-full"
                 onClick={handleClaim}
