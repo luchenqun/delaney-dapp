@@ -5,6 +5,10 @@ import empty from '../../assets/empty.svg';
 import { useEffect, useState } from 'react';
 import { getMessages, setMessageRead } from '../../utils/api';
 import message from '../../assets/message.svg';
+import message1 from '../../assets/m1.svg';
+import message2 from '../../assets/m2.svg';
+import message3 from '../../assets/m3.svg';
+
 import { useAccount } from 'wagmi';
 import dayjs from 'dayjs';
 import './message.css';
@@ -91,7 +95,11 @@ const MessageItem = ({ info }: { info: any }) => {
       }}
       className="flex items-start px-4 py-3 bg-white"
     >
-      <img src={message} className="mr-2" alt="" />
+      {(info.type === 0 || info.type === 10) && <img src={message} className="mr-2" alt="" />}
+      {(info.type >= 5 && info.type <= 9) && <img src={message1} className="mr-2" alt="" />}
+      {(info.type === 1 || info.type === 2) && <img src={message3} className="mr-2" alt="" />}
+      {(info.type === 3 || info.type === 4) && <img src={message2} className="mr-2" alt="" />}
+
       <div>
         <div className="font-semibold text-base">{info.title}</div>
         <div className="text-sm mt-2 break-all">{info.content}</div>
